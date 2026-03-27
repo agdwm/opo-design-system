@@ -31,24 +31,6 @@ Construir una landing page usando `Stencil` y documentar los componentes en `Sto
 
 La idea es que la pagina viva fuera de la librería de componentes, como ocurriría en una web consumidora del paquete.
 
-## Donde trabajar
-
-Componente base:
-
-`src/components/opo-button/`
-
-Landing principal:
-
-`landing/`
-
-Historias de Storybook:
-
-`src/components/**/*.stories.ts`
-
-Estilos globales:
-
-`src/global/global.css`
-
 ## Lo que ya viene hecho
 
 - Entorno base de Stencil listo para arrancar.
