@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { baseTokens, semanticTokens } from './tokens-data';
+
+<Meta title="Foundations/Colors" parameters={{ viewport: { disable: true } }} />
+
+<div className="style-guide-stories colors-stories">
+  # Colors
+
+  <p>Base palette and shared semantic tokens used by both the landing and the component layer.</p>
+
+  ## Base
+
+  <div className="color-palette">
+    {baseTokens.map(([label, variable]) => (
+      <div key={label} className="color-item">
+        <div className="color-name">
+          <strong>{label}</strong>
+        </div>
+        <div className="color-swatch" style={{ backgroundColor: `var(${variable})` }} />
+        <div className="color-hex">{variable}</div>
+      </div>
+    ))}
+  </div>
+
+  ## Semantic
+
+  <div className="color-palette">
+    {semanticTokens.map(([label, variable]) => (
+      <div key={label} className="color-item">
+        <div className="color-name">
+          <strong>{label}</strong>
+        </div>
+        <div className="color-swatch" style={{ backgroundColor: `var(${variable})` }} />
+        <div className="color-hex">{variable}</div>
+      </div>
+    ))}
+  </div>
+</div>

@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { fontFamily, fontWeights, scales } from './tokens-data';
+
+<Meta title="Foundations/Typography" parameters={{ viewport: { disable: true } }} />
+
+<div className="style-guide-stories typography-stories">
+  # Typography
+
+  <p>Shared typography tokens used by the landing and the component layer.</p>
+
+  ## Font name
+
+  <ul>
+    {Object.entries(fontFamily).map(([key, value]) => (
+      <li key={key}>
+        <b>{key}:</b> {value}
+      </li>
+    ))}
+  </ul>
+
+  ## Font weight
+
+  <ul>
+    {Object.entries(fontWeights).map(([key, value]) => (
+      <li key={key}>
+        <span style={{ fontWeight: value }}>{key}: {value}</span>
+      </li>
+    ))}
+  </ul>
+
+  ## Font sizes
+
+  <small className="type-meta">
+    <b className="type-key">key</b>: Desktop (fontSize / lineHeight) - Mobile (fontSize / lineHeight)
+  </small>
+
+  <div className="type-stack">
+    {scales.map(([key, desktopSize, desktopLineHeight, mobileSize, mobileLineHeight]) => (
+      <div key={key} className="type-item">
+        <div className="type-meta">
+          <span className="type-key">{key}</span>: Desktop {desktopSize} / {desktopLineHeight} - Mobile {mobileSize} / {mobileLineHeight}
+        </div>
+        <div
+          style={{
+            color: 'var(--color-text-primary)',
+            fontFamily: 'var(--font-family-main)',
+            fontSize: desktopSize,
+            fontWeight: 'var(--font-weight-text)',
+            lineHeight: desktopLineHeight,
+          }}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

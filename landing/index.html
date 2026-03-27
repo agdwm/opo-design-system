@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opo Landing Challenge</title>
+  <script type="module" src="./main.ts"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <strong class="topbar-brand">Opo UI</strong>
+      <nav class="topbar-nav" aria-label="Principal">
+        <a href="#requisitos">Requisitos</a>
+        <a href="#valoracion">Valoracion</a>
+        <a href="#entrega">Entrega</a>
+        <a href="https://www.figma.com/design/mCvs5Jk4893VNlelRsDPnW/Landing-prueba?node-id=4-444" target="_blank"
+          rel="noreferrer">Figma</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <main class="site-shell">
+      <div class="hero-layout">
+        <header class="site-header">
+          <p class="site-kicker">Prueba tecnica</p>
+          <h1>Stencil, Web Components y Storybook</h1>
+          <p class="site-intro">
+            Construye una pequena landing page usando <code>Stencil</code> y documenta los componentes en
+            <code>Storybook</code>. La pagina debe vivir fuera de la libreria, como ocurriria en una web consumidora del
+            paquete.
+          </p>
+          <div class="site-actions">
+            <a class="site-figma-link"
+              href="https://www.figma.com/design/mCvs5Jk4893VNlelRsDPnW/Landing-prueba?node-id=4-444" target="_blank"
+              rel="noreferrer">
+              Abrir Figma →
+            </a>
+          </div>
+        </header>
+
+        <figure class="hero-reference">
+          <img src="./assets/img/hero-reference.jpg" alt="Referencia visual de la landing objetivo" />
+        </figure>
+      </div>
+    </main>
+  </section>
+
+  <main class="content">
+    <section class="site-summary">
+      <div class="site-shell site-summary-grid" aria-label="Resumen">
+        <article class="site-summary-item">
+          <span class="site-summary-label">Base</span>
+          <strong>Stencil + Storybook</strong>
+          <p>Starter listo para construir componentes y documentarlos.</p>
+        </article>
+        <article class="site-summary-item">
+          <span class="site-summary-label">Scope</span>
+          <strong>Landing externa</strong>
+          <p>La página debe vivir fuera de la librería y consumir sus componentes.</p>
+        </article>
+        <article class="site-summary-item">
+          <span class="site-summary-label">Referencia</span>
+          <strong>Figma incluido</strong>
+          <p>Úsalo como guía visual sin necesidad de replicarlo al pixel.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="site-shell">
+        <div class="site-block site-block-example" aria-labelledby="example-title">
+          <div class="site-example-copy">
+            <h2 id="example-title">Componente de ejemplo</h2>
+            <p class="site-block-intro">
+              Este boton es solo una prueba de que la libreria de componentes esta cargando correctamente en la landing
+              externa.
+            </p>
+            <p>
+              Puedes cambiar su API, estilos, comportamiento o incluso sustituirlo por otra estructura si eso mejora tu
+              solucion.
+            </p>
+          </div>
+          <div class="site-example-preview">
+            <opo-button>Ejemplo de opo-button</opo-button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section" id="requisitos">
+      <div class="site-shell">
+        <div class="site-block" aria-labelledby="requisitos-title">
+          <h2 id="requisitos-title">Que tienes que construir</h2>
+          <p class="site-block-intro">
+            Construye la landing con una arquitectura clara de componentes y documenta en Storybook lo necesario para
+            que otra persona pueda reutilizarlos.
+          </p>
+          <ul class="site-list">
+            <li>Usar <code>Stencil</code> para construir componentes reutilizables.</li>
+            <li>Montar la landing desde la web externa, no desde un componente contenedor dentro de la libreria.</li>
+            <li>Documentar en Storybook los componentes.</li>
+            <li>Trabajar a partir de la referencia visual de Figma.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section site-section-alt" id="valoracion">
+      <div class="site-shell">
+        <div class="site-block" aria-labelledby="valoracion-title">
+          <h2 id="valoracion-title">Se valorara especialmente</h2>
+          <p class="site-block-intro">
+            Lo mas importante no es hacer mas componentes, sino tomar buenas decisiones de sistema.
+          </p>
+          <ul class="site-list">
+            <li>Jerarquía de componentes bien pensada: atomos, moleculas, organismos o una estructura equivalente
+              coherente.</li>
+            <li>Reutilización real, naming claro y una API consistente.</li>
+            <li>Estados, variantes, accesibilidad básica y uso de CSS variables.</li>
+            <li>Calidad visual general.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="site-shell site-grid-two">
+        <div class="site-block site-block-deliver" id="entrega" aria-labelledby="entrega-title">
+          <h2 id="entrega-title">Entrega</h2>
+          <p class="site-block-intro">
+            Comparte la solución y deja contexto suficiente para entender tus decisiones.
+          </p>
+          <p>
+            Sube tus cambios al repositorio o comparte un enlace con tu solución. Incluye una breve explicación con
+            decisiones técnicas, tradeoffs y que mejorarías con más tiempo.
+          </p>
+        </div>
+
+        <div class="site-block" aria-labelledby="bonus-title">
+          <h2 id="bonus-title">Bonus</h2>
+          <p class="site-block-intro">
+            Solo si te da tiempo. No son obligatorios para completar la prueba.
+          </p>
+          <ul class="site-list">
+            <li>Mejoras de accesibilidad.</li>
+            <li>Documentación más completa en Storybook.</li>
+            <li>Theming mediante variables CSS.</li>
+            <li>Tests básicos de componentes.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

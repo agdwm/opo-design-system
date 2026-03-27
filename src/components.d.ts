@@ -6,63 +6,70 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
+    interface OpoButton {
         /**
-          * The first name
+          * @default false
          */
-        "first": string;
+        "disabled": boolean;
         /**
-          * The last name
+          * @default 'primary'
          */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
+        "variant": 'primary' | 'secondary';
     }
 }
+export interface OpoButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOpoButtonElement;
+}
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLOpoButtonElementEventMap {
+        "opoClick": void;
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    interface HTMLOpoButtonElement extends Components.OpoButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLOpoButtonElementEventMap>(type: K, listener: (this: HTMLOpoButtonElement, ev: OpoButtonCustomEvent<HTMLOpoButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLOpoButtonElementEventMap>(type: K, listener: (this: HTMLOpoButtonElement, ev: OpoButtonCustomEvent<HTMLOpoButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLOpoButtonElement: {
+        prototype: HTMLOpoButtonElement;
+        new (): HTMLOpoButtonElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "opo-button": HTMLOpoButtonElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
+    interface OpoButton {
         /**
-          * The first name
+          * @default false
          */
-        "first"?: string;
+        "disabled"?: boolean;
+        "onOpoClick"?: (event: OpoButtonCustomEvent<void>) => void;
         /**
-          * The last name
+          * @default 'primary'
          */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
+        "variant"?: 'primary' | 'secondary';
     }
 
-    interface MyComponentAttributes {
-        "first": string;
-        "middle": string;
-        "last": string;
+    interface OpoButtonAttributes {
+        "variant": 'primary' | 'secondary';
+        "disabled": boolean;
     }
 
     interface IntrinsicElements {
-        "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
+        "opo-button": Omit<OpoButton, keyof OpoButtonAttributes> & { [K in keyof OpoButton & keyof OpoButtonAttributes]?: OpoButton[K] } & { [K in keyof OpoButton & keyof OpoButtonAttributes as `attr:${K}`]?: OpoButtonAttributes[K] } & { [K in keyof OpoButton & keyof OpoButtonAttributes as `prop:${K}`]?: OpoButton[K] };
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "opo-button": LocalJSX.IntrinsicElements["opo-button"] & JSXBase.HTMLAttributes<HTMLOpoButtonElement>;
         }
     }
 }

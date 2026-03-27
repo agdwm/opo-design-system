@@ -1,111 +1,107 @@
-[![Built With Stencil](https://img.shields.io/badge/-Built%20With%20Stencil-16161d.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI%2BCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI%2BCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU%2BCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00MjQuNywzNzMuOWMwLDM3LjYtNTUuMSw2OC42LTkyLjcsNjguNkgxODAuNGMtMzcuOSwwLTkyLjctMzAuNy05Mi43LTY4LjZ2LTMuNmgzMzYuOVYzNzMuOXoiLz4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTQyNC43LDI5Mi4xSDE4MC40Yy0zNy42LDAtOTIuNy0zMS05Mi43LTY4LjZ2LTMuNkgzMzJjMzcuNiwwLDkyLjcsMzEsOTIuNyw2OC42VjI5Mi4xeiIvPgo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDI0LjcsMTQxLjdIODcuN3YtMy42YzAtMzcuNiw1NC44LTY4LjYsOTIuNy02OC42SDMzMmMzNy45LDAsOTIuNywzMC43LDkyLjcsNjguNlYxNDEuN3oiLz4KPC9zdmc%2BCg%3D%3D&colorA=16161d&style=flat-square)](https://stenciljs.com)
+# Stencil Landing Challenge
 
-# Stencil Component Starter
+Starter para una prueba técnica centrada en `Stencil`, `Web Components` y `Storybook`.
 
-> This is a starter project for building a standalone Web Components using Stencil.
+La base está preparada para que la persona candidata clone el repo, instale dependencias y empiece a trabajar sin perder tiempo en setup. El starter incluye un único componente de ejemplo, `opo-button`, y una landing externa separada de la librería.
 
-Stencil is a compiler for building fast web apps using Web Components.
-
-Stencil combines the best concepts of the most popular frontend frameworks into a compile-time rather than runtime tool. Stencil takes TypeScript, JSX, a tiny virtual DOM layer, efficient one-way data binding, an asynchronous rendering pipeline (similar to React Fiber), and lazy-loading out of the box, and generates 100% standards-based Web Components that run in any browser supporting the Custom Elements specification.
-
-Stencil components are just Web Components, so they work in any major framework or with no framework at all.
-
-## Getting Started
-
-To start building a new web component using Stencil, clone this repo to a new directory:
-
-```bash
-git clone https://github.com/stenciljs/component-starter.git my-component
-cd my-component
-git remote rm origin
-```
-
-and run:
+## Setup
 
 ```bash
 npm install
 npm start
 ```
 
-To build the component for production, run:
+Landing local:
+
+`http://localhost:3333`
+
+Storybook:
 
 ```bash
-npm run build
+npm run storybook
 ```
 
-To run the unit tests for the components, run:
+Storybook local:
 
-```bash
-npm test
-```
+`http://localhost:6006`
 
-Need help? Check out our docs [here](https://stenciljs.com/docs/my-first-component).
+## Objetivo de la prueba
 
-## Naming Components
+Construir una landing page usando `Stencil` y documentar los componentes en `Storybook`.
 
-When creating new component tags, we recommend _not_ using `stencil` in the component name (ex: `<stencil-datepicker>`). This is because the generated component has little to nothing to do with Stencil; it's just a web component!
+La idea es que la pagina viva fuera de la librería de componentes, como ocurriría en una web consumidora del paquete.
 
-Instead, use a prefix that fits your company or any name for a group of related components. For example, all of the [Ionic-generated](https://ionicframework.com/) web components use the prefix `ion`.
+## Donde trabajar
 
-## Using this component
+Componente base:
 
-There are two strategies we recommend for using web components built with Stencil.
+`src/components/opo-button/`
 
-The first step for all two of these strategies is to [publish to NPM](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+Landing principal:
 
-You can read more about these different approaches in the [Stencil docs](https://stenciljs.com/docs/publishing).
+`landing/`
 
-### Lazy Loading
+Historias de Storybook:
 
-If your Stencil project is built with the [`dist`](https://stenciljs.com/docs/distribution) output target, you can import a small bootstrap script that registers all components and allows you to load individual component scripts lazily.
+`src/components/**/*.stories.ts`
 
-For example, given your Stencil project namespace is called `my-design-system`, to use `my-component` on any website, inject this into your HTML:
+Estilos globales:
 
-```html
-<script type="module" src="https://unpkg.com/my-design-system"></script>
-<!--
-To avoid unpkg.com redirects to the actual file, you can also directly import:
-https://unpkg.com/foobar-design-system@0.0.1/dist/foobar-design-system/foobar-design-system.esm.js
--->
-<my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
-```
+`src/global/global.css`
 
-This will only load the necessary scripts needed to render `<my-component />`. Once more components of this package are used, they will automatically be loaded lazily.
+## Lo que ya viene hecho
 
-You can also import the script as part of your `node_modules` in your applications entry file:
+- Entorno base de Stencil listo para arrancar.
+- Landing externa inicial en `landing/`.
+- Un único componente de ejemplo: `opo-button`.
+- Storybook configurado para documentar componentes de la librería.
 
-```tsx
-import 'foobar-design-system/dist/foobar-design-system/foobar-design-system.esm.js';
-```
+El resto de componentes debe decidirlo y construirlo la persona candidata.
 
-Check out this [Live Demo](https://stackblitz.com/edit/vitejs-vite-y6v26a?file=src%2Fmain.tsx).
+## Como consume la landing la librería
 
-### Standalone
+La landing no importa componentes uno a uno ni requiere tocar `package.json` cada vez que se añade uno nuevo.
 
-If you are using a Stencil component library with `dist-custom-elements`, we recommend importing Stencil components individually in those files where they are needed.
+La web externa carga solo el bundle raíz de Stencil desde:
 
-To export Stencil components as standalone components make sure you have the [`dist-custom-elements`](https://stenciljs.com/docs/custom-elements) output target defined in your `stencil.config.ts`.
+`landing/main.ts`
 
-For example, given you'd like to use `<my-component />` as part of a React component, you can import the component directly via:
+Ese bundle registra automáticamente los Web Components compilados por la librería, así que cualquier componente nuevo que se cree en `src/components/` pasa a estar disponible en la landing tras recompilar.
 
-```tsx
-import 'foobar-design-system/my-component';
+## Requisitos esperados
 
-function App() {
-  return (
-    <>
-      <div>
-        <my-component
-          first="Stencil"
-          middle="'Don't call me a framework'"
-          last="JS"
-        ></my-component>
-      </div>
-    </>
-  );
-}
+- Usar `Stencil` para construir componentes reutilizables.
+- Montar la landing desde la web externa, no desde un componente contenedor dentro de la librería.
+- Documentar en Storybook los componentes.
+- Organizar la solución con una jerarquía de componentes clara.
 
-export default App;
-```
+## Se valorara especialmente
 
-Check out this [Live Demo](https://stackblitz.com/edit/vitejs-vite-b6zuds?file=src%2FApp.tsx).
+- Reutilización real de componentes.
+- Jerarquía de componentes bien pensada.
+- Buen manejo de estados y variantes.
+- Calidad visual general.
+- Accesibilidad básica.
+- Uso de CSS variables o un sistema visual consistente.
+
+## Bonus
+
+- Mejoras de accesibilidad.
+- Mejor documentación en Storybook.
+- Theming mediante variables CSS.
+- Tests básicos de componentes.
+
+## Entrega
+
+- Sube tus cambios al repositorio o comparte un enlace con tu solución.
+- Incluye una breve explicación:
+  - decisiones técnicas
+  - tradeoffs
+  - qué mejorarías con más tiempo
+
+## Nota para evaluación
+
+La estructura actual está pensada para que la landing y la librería convivan en el mismo repo, pero separadas:
+
+- `npm start` levanta una landing externa en Vite y recompila la librería de Stencil en paralelo.
+- `npm run storybook` levanta Storybook y recompila Stencil en paralelo para reflejar cambios en componentes.
