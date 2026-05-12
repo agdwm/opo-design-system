@@ -1,0 +1,97 @@
+@layer tokens {
+  :root {
+    /* =========================
+     System tokens
+     Reusable design decisions.
+     Consume reference tokens and provide semantic meaning.
+  ========================= */
+
+    /* Color */
+    --sys-color-brand-primary: var(--ref-color-amber-500); /* #ffb142 */
+    --sys-color-brand-primary-hover: var(--ref-color-amber-400); /* #ffc470 */
+    --sys-color-brand-primary-pressed: var(--ref-color-amber-300); /* #ffd599 */
+
+    --sys-color-brand-accent: var(--ref-color-orange-500); /* #ff793f */
+    --sys-color-brand-accent-soft: var(--ref-color-orange-300); /* #ffc6ad */
+
+    --sys-color-action-primary: var(--sys-color-brand-primary); /* #ffb142 */
+    --sys-color-action-primary-hover: var(--sys-color-brand-primary-hover); /* #ffc470 */
+    --sys-color-action-primary-pressed: var(--sys-color-brand-primary-pressed); /* #ffd599 */
+    --sys-color-action-secondary: var(--ref-color-white); /* #ffffff */
+
+    --sys-color-text-primary: var(--ref-color-zinc-950); /* #1f1f21 */
+    --sys-color-text-secondary: var(--ref-color-zinc-700); /* #605e67 */
+    --sys-color-text-tertiary: var(--ref-color-zinc-600); /* #88868d */
+    --sys-color-text-inverse: var(--ref-color-white); /* #ffffff */
+    --sys-color-text-accent: var(--sys-color-brand-accent); /* #ff793f */
+
+    --sys-color-surface-page: var(--ref-color-zinc-50); /* #fafafa */
+    --sys-color-surface-panel: var(--ref-color-white); /* #ffffff */
+    --sys-color-surface-muted: var(--ref-color-amber-25); /* #fffcf8 */
+    --sys-color-surface-highlight: var(--ref-color-amber-100); /* #fff0dd */
+    --sys-color-surface-brand: var(--ref-color-indigo-100); /* #e1e3fa */
+
+    --sys-color-border-default: var(--ref-color-zinc-400); /* #d7d7d9 */
+    --sys-color-border-soft: var(--ref-color-zinc-300); /* #ebeaec */
+    --sys-color-border-accent: var(--sys-color-brand-accent-soft); /* #ffc6ad */
+
+    /* --sys-color-focus-ring */
+
+    --sys-color-feedback-info: var(--ref-color-teal-500); /* #59b3b3 */
+    --sys-color-feedback-info-strong: var(--ref-color-teal-700); /* #227093 */
+
+    /* Font family */
+    --sys-font-family-body: var(--ref-font-family-sans);
+    --sys-font-family-heading: var(--ref-font-family-sans);
+
+    /* Typography */
+    --sys-typography-body-md-size: var(--ref-font-size-300);
+    --sys-typography-body-md-line-height: var(--ref-line-height-base);
+    --sys-typography-body-md-weight: var(--ref-font-weight-regular);
+
+    --sys-typography-heading-md-size: var(--ref-font-size-700);
+    --sys-typography-heading-md-line-height: var(--ref-line-height-snug);
+    --sys-typography-heading-md-weight: var(--ref-font-weight-bold);
+
+    /* Spacing */
+    --sys-space-3xs: var(--ref-spacing-100); /* 4px */
+    --sys-space-2xs: var(--ref-spacing-200); /* 8px */
+    --sys-space-xs: var(--ref-spacing-300); /* 12px */
+    --sys-space-sm: var(--ref-spacing-400); /* 16px */
+    --sys-space-md: var(--ref-spacing-500); /* 20px */
+    --sys-space-lg: var(--ref-spacing-600); /* 24px */
+    --sys-space-xl: var(--ref-spacing-700); /* 28px */
+    --sys-space-2xl: var(--ref-spacing-800); /* 32px */
+    --sys-space-3xl: var(--ref-spacing-900); /* 36px */
+    --sys-space-4xl: var(--ref-spacing-1000); /* 40px */
+
+    /* Radius */
+    --sys-radius-sm: var(--ref-radius-xs);
+    --sys-radius-md: var(--ref-radius-md);
+    --sys-radius-lg: var(--ref-radius-lg);
+    --sys-radius-pill: var(--ref-radius-full);
+
+    /* Shadows */
+    --sys-shadow-sm: var(--ref-shadow-sm);
+    --sys-shadow-md: var(--ref-shadow-md);
+
+    /* Layout */
+    --sys-container-sm: var(--ref-container-sm);
+    --sys-container-md: var(--ref-container-md);
+    --sys-container-xl: var(--ref-container-xl);
+
+    /* Z-index */
+    --sys-z-index-base: var(--ref-z-index-0);
+    --sys-z-index-header: var(--ref-z-index-200);
+    --sys-z-index-dropdown: var(--ref-z-index-300);
+    --sys-z-index-overlay: var(--ref-z-index-400);
+    --sys-z-index-modal: var(--ref-z-index-500);
+    --sys-z-index-toast: var(--ref-z-index-600);
+    --sys-z-index-tooltip: var(--ref-z-index-700);
+
+    /* Motion */
+    --sys-motion-duration-fast: var(--ref-motion-duration-fast);
+    --sys-motion-duration-base: var(--ref-motion-duration-base);
+    --sys-motion-duration-slow: var(--ref-motion-duration-slow);
+  }
+}
