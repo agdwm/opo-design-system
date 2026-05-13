@@ -39,6 +39,7 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
+    "@fontsource/ibm-plex-sans": "^5.2.8",
     "@stencil/core": "^4.27.1",
     "@stencil/vitest": "^1.8.3",
     "@storybook/addon-docs": "^10.3.3",
@@ -50,5 +51,8 @@
     "vite": "^8.0.3",
     "vitest": "^4.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "lit": "^3.3.2"
+  }
 }
