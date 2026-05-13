@@ -14,13 +14,13 @@
 }
 
 .button {
-  appearance: none;
+  padding: var(--opo-button-padding-y) var(--opo-button-padding-x);
   border: 0;
   border-radius: 999px;
-  cursor: pointer;
   font: inherit;
   font-weight: var(--opo-button-weight);
-  padding: var(--opo-button-padding-y) var(--opo-button-padding-x);
+  appearance: none;
+  cursor: pointer;
   transition:
     transform 120ms ease,
     box-shadow 120ms ease,
@@ -34,8 +34,8 @@
 }
 
 .button:disabled {
-  cursor: not-allowed;
   opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .button:not(:disabled):hover {
@@ -53,7 +53,7 @@
 }
 
 .button--secondary {
-  background: var(--opo-button-surface);
   border: 1px solid var(--opo-button-secondary-border);
+  background: var(--opo-button-surface);
   color: var(--opo-button-text-secondary);
 }

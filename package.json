@@ -28,6 +28,8 @@
     "loader/"
   ],
   "scripts": {
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
     "build": "stencil build",
     "dev:lib": "stencil build --dev --watch",
     "start:lib": "stencil build --dev --watch --serve",
@@ -48,6 +50,9 @@
     "@vitest/browser-playwright": "^4.0.0",
     "concurrently": "^9.1.2",
     "storybook": "^10.3.3",
+    "stylelint": "^17.11.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-order": "^8.1.1",
     "vite": "^8.0.12",
     "vitest": "^4.0.0"
   },

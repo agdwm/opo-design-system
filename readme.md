@@ -660,8 +660,12 @@ En un contexto real de evolución del sistema, algunos aspectos que podrían des
 - Definición de motion tokens reutilizables.
 - Estrategias de internacionalización (`i18n`).
 - Mayor adopción progresiva de `container queries`.
+
 - Evolución hacia pipelines automatizados de design tokens con herramientas como [Style Dictionary](https://styledictionary.com/) en escenarios multi-brand o multi-platform.
+
 - Auditorías de accesibilidad ([axe-core](https://www.deque.com/axe/)) y performance más exhaustivas ([WebPageTest](https://www.webpagetest.org/)).
 - Integración progresiva de visual regression testing ([Chromatic](https://www.chromatic.com/)) y end-to-end testing ([Playwright](https://playwright.dev/)).
-- Integración de herramientas de monitoring y runtime error tracking mediante plataformas como [Sentry](https://sentry.io/).
 - Automatización de análisis estático y métricas de calidad mediante herramientas como [SonarQube](https://www.sonarsource.com/es/products/sonarqube/).
+- Integración de herramientas de monitoring y runtime error tracking mediante plataformas como [Sentry](https://sentry.io/).
+
+- Utilización de `pnpm` en lugar de `npm` para mejorar la velocidad de instalación, reducir el espacio en disco y ofrecer una gestión de dependencias más segura.
