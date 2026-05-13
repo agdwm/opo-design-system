@@ -107,6 +107,12 @@ De este modo, la landing no actúa únicamente como una implementación visual c
 
 ### Storybook Documentation
 
+Storybook se ha utilizado como entorno de documentación y validación visual de los componentes reutilizables de la librería, permitiendo aislar variantes, estados y foundations del sistema de forma independiente a la landing.
+
+La documentación de foundations se ha centrado principalmente en los **reference tokens** (`--ref-*`) como capa visual estable y reutilizable del sistema. Aunque se ha comenzado a explorar una primera aproximación de system tokens (`--sys-*`), se ha evitado formalizar completamente esta capa semántica durante esta iteración para no consolidar prematuramente decisiones demasiado condicionadas por las necesidades concretas de una única landing page.
+
+En sistemas de diseño reales, la semántica de los tokens suele evolucionar progresivamente junto al propio sistema.
+
 ## Component Architecture
 
 Cómo se ha separado la librería y la landing.
