@@ -1,7 +1,15 @@
+import { addons } from 'storybook/manager-api';
+
 import '@fontsource/ibm-plex-sans/400.css';
 import '@fontsource/ibm-plex-sans/500.css';
 import '@fontsource/ibm-plex-sans/600.css';
 import '@fontsource/ibm-plex-sans/700.css';
+
+import { theme } from './theme';
+
+addons.setConfig({
+  theme,
+});
 
 const managerFontFamily = 'IBM Plex Sans, system-ui, sans-serif';
 
