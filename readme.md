@@ -668,4 +668,4 @@ En un contexto real de evolución del sistema, algunos aspectos que podrían des
 - Automatización de análisis estático y métricas de calidad mediante herramientas como [SonarQube](https://www.sonarsource.com/es/products/sonarqube/).
 - Integración de herramientas de monitoring y runtime error tracking mediante plataformas como [Sentry](https://sentry.io/).
 
-- Utilización de `pnpm` en lugar de `npm` para mejorar la velocidad de instalación, reducir el espacio en disco y ofrecer una gestión de dependencias más segura.
+- Migrar de `npm` a [`pnpm@^11`](https://pnpm.io/) para obtener una **gestión de dependencias más segura** (resolución estricta, prevención de dependencias fantasma y lockfile más robusto), junto con instalaciones más rápidas y menor consumo de disco.

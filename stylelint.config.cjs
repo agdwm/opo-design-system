@@ -58,7 +58,18 @@ module.exports = {
 
         {
           groupName: 'spacing',
-          properties: ['margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'],
+          properties: [
+            'margin',
+            'margin-top',
+            'margin-right',
+            'margin-bottom',
+            'margin-left',
+            'padding',
+            'padding-top',
+            'padding-right',
+            'padding-bottom',
+            'padding-left',
+          ],
         },
 
         {
@@ -94,7 +105,16 @@ module.exports = {
 
         {
           groupName: 'background',
-          properties: ['background', 'background-color', 'background-image', 'background-size', 'background-position', 'background-repeat', 'box-shadow', 'opacity'],
+          properties: [
+            'background',
+            'background-color',
+            'background-image',
+            'background-size',
+            'background-position',
+            'background-repeat',
+            'box-shadow',
+            'opacity',
+          ],
         },
 
         {
@@ -154,7 +174,7 @@ module.exports = {
 
     'color-hex-length': 'long',
 
-    'selector-class-pattern': '^[a-z][a-z0-9-]*$',
+    'selector-class-pattern': '^[a-z][a-z0-9-]*(?:__[a-z0-9-]+)?(?:--[a-z0-9-]+)?$',
     'selector-id-pattern': null,
 
     'custom-property-empty-line-before': null,
