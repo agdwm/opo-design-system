@@ -94,7 +94,7 @@ La estructura actual está pensada para que la landing y la librería convivan e
 
 ## Solution Overview
 
-He priorizado una aproximación component-driven: antes de completar la landing como una página aislada, he identificado las piezas reutilizables del diseño y las he construido como componentes de la librería, utilizando posteriormente la landing externa como un caso de uso real de consumo.
+He priorizado una aproximación `component-driven`: antes de completar la landing como una página aislada, he identificado las piezas reutilizables del diseño y las he construido como componentes de la librería, utilizando posteriormente la landing externa como un caso de uso real de consumo.
 
 De este modo, la landing no actúa únicamente como una implementación visual concreta, sino también como una validación práctica de la reutilización, composición y flexibilidad de los componentes definidos dentro del sistema.
 
@@ -102,6 +102,62 @@ De este modo, la landing no actúa únicamente como una implementación visual c
 > Parte de las decisiones documentadas en este README representan una dirección arquitectónica explorada durante la prueba y no necesariamente una implementación completamente desarrollada en esta iteración inicial.
 
 ### Component Library
+
+#### Icon
+
+Se gestionan mediante **SVG optimizados** que se compilan en un **sprite** para su consumo eficiente.
+
+##### Consideraciones sobre el Sistema de Iconos
+
+Los iconos facilitados en el archivo de Figma seguían una estrategia de exportación válida, aunque diferente a algunas de las convenciones habituales utilizadas en sistemas de diseño orientados a componentes reutilizables.
+
+En escenarios de Design Systems escalables, suele ser recomendable seguir ciertas convenciones técnicas para facilitar la reutilización, consistencia e integración de los assets SVG:
+
+##### Propuesta basada en convenciones y estándares técnicos
+
+1. Grid y ViewBox consistente
+
+- Utilizar una grid de iconografía consistente (por ejemplo `24x24`).
+- Incluir siempre `viewBox` para garantizar la correcta escalabilidad del SVG (ej: `viewBox="0 0 24 24"`).
+
+2. Uso de currentColor
+
+- Utilizar `currentColor` en los iconos de interfaz (ui) para facilitar la herencia de color desde CSS y el soporte de theming.
+- Iconos de interfaz (`ui/`): Usar currentColor.
+- Iconos de marca (`brand/`): Flexibilidad para usar colores fijos.
+
+3. Limpieza técnica
+
+- Evaluar la eliminación de `width` y `height` en función de la estrategia de consumo de los SVG para favorecer una mayor adaptabilidad mediante CSS.
+- Eliminar atributos innecesarios (`id`, `data-*`, comentarios o metadatos generados por herramientas de diseño) para reducir el peso de los SVG y evitar posibles conflictos o colisiones dentro del sprite final.
+- Utilizar `fill="none"` en iconos outline/stroke-based cuando corresponda.
+- No usar estilos inline (<style>).
+
+1. Nomenclatura clara y consistente
+
+- Mantener una nomenclatura clara y consistente (`kebab-case`) y uso de prefijos útiles (`ui-`, `brand-`), ej: `ui-chevron-down`
+
+5. Separación por tipo:
+
+- raw-icons/ui/ → Iconos de interfaz
+- raw-icons/brand/ → Logos y pictogramas
+
+```bash
+src/components/opo-icon/
+├── raw-icons/
+│   ├── ui/                ← Iconos de interfaz (outline)
+│   └── brand/             ← Logos, redes sociales y pictogramas
+└── sprites/
+  ├── opo-sprite-ui.svg
+  └── opo-sprite-brand.svg
+```
+
+6. Optimización
+
+- Todos los SVGs deberían pasar por herramientas como `SVGO` para sanitización.
+- Sprite generado debe ser lo más pequeño posible.
+
+No obstante, la estrategia concreta depende del pipeline de iconografía, del sistema de build y de cómo los SVG van a ser consumidos dentro de la aplicación. En cualquier caso, resulta recomendable definir una estrategia consistente de exportación, optimización e integración de iconos dentro del sistema de componentes.
 
 ### Landing Integration
 
@@ -164,11 +220,11 @@ Este reset proporciona una base más consistente para la librería de componente
 
 Los tokens del sistema se organizan en distintas capas independientes con el objetivo de desacoplar los **valores base** del sistema de diseño de su **intención de diseño reutilizable** y de las necesidades concretas de **implementación** de cada componente.
 
-| Nivel         | Prefijo  | Propósito                                                                                                      | Ejemplo                            |
-| :------------ | :------- | :------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
-| **Reference** | `--ref-` | Valores base reutilizables. No representan intención ni contexto de uso.                                       | `--ref-font-size-500`              |
-| **System**    | `--sys-` | Representan decisiones reutilizables del sistema. Pueden adaptarse según tema, contexto o criterio responsive. | `--sys-typography-heading-md-size` |
-| **Component** | `--cmp-` | Adaptación específica del componente. Desacopla la implementación de decisiones globales del sistema.          | `--cmp-button-bg`                  |
+| Nivel         | Prefijo  | Propósito                | Ejemplo                            |
+| ------------- | -------- | ------------------------ | ---------------------------------- |
+| **Reference** | `--ref-` | Valores primitivos base  | `--ref-font-size-500`              |
+| **System**    | `--sys-` | Decisiones reutilizables | `--sys-typography-heading-md-size` |
+| **Component** | `--cmp-` | Adaptación específica    | `--cmp-button-bg`                  |
 
 ---
 
