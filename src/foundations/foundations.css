@@ -1,29 +1,42 @@
 /* -------------------------------------------------------------------------- */
+
 /* Storybook docs layout */
+
 /* -------------------------------------------------------------------------- */
 .sbdocs-wrapper .sbdocs-content {
   max-width: 75rem;
 }
 
 .sbdocs-wrapper .style-guide-stories {
-  --docs-meta-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  --docs-meta-font-family:
+    ui-monospace, sfmono-regular, menlo, monaco, consolas, "Liberation Mono",
+    monospace;
   --docs-meta-font-size: 13px;
   --docs-meta-font-weight: var(--ref-font-weight-regular);
   --docs-meta-color: var(--ref-color-zinc-700);
   --docs-meta-muted-color: var(--ref-color-zinc-500);
-
   --docs-token-name-color: var(--ref-color-zinc-900);
   --docs-token-name-size: var(--ref-font-size-400);
   --docs-token-name-weight: var(--ref-font-weight-semibold);
-
-  --docs-card-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 4px 8px rgb(0 0 0 / 0.06);
+  --docs-card-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 8px rgb(0 0 0 / 6%);
 
   color: var(--ref-color-zinc-950);
   font-family: var(--ref-font-family-sans);
 
-  h1 {
-    margin-bottom: var(--ref-spacing-300);
-    line-height: var(--ref-line-height-tight);
+  a,
+  b {
+    font-weight: var(--ref-font-weight-medium);
+  }
+
+  .code-inline {
+    display: inline-block;
+    margin-right: var(--ref-spacing-100);
+    padding: calc(var(--ref-spacing-100)) calc(var(--ref-spacing-300) / 2);
+    border: 1px solid var(--ref-color-zinc-300);
+    border-radius: var(--ref-radius-xs);
+    background: var(--ref-color-zinc-100);
+    color: var(--ref-color-zinc-900);
+    line-height: var(--ref-line-height-none);
   }
 
   h2 {
@@ -42,7 +55,7 @@
   }
 
   p {
-    margin: 0 0 var(--ref-spacing-600);
+    margin: 0 0 var(--ref-spacing-400);
     font-size: var(--ref-font-size-300);
     line-height: var(--ref-line-height-base);
   }
@@ -56,7 +69,10 @@
     --docs-token-grid-min: 15rem;
 
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--docs-token-grid-min), 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(var(--docs-token-grid-min), 1fr)
+    );
     gap: var(--ref-spacing-600);
     padding: var(--ref-spacing-300) 0;
   }
@@ -66,15 +82,19 @@
     grid-template-columns: 1fr;
     gap: var(--ref-spacing-100);
     padding: var(--ref-spacing-300) 0;
+    font-size: 16px;
   }
 
   .docs-token-surface {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     min-height: 90px;
     padding: var(--ref-spacing-400);
+    border-bottom: 1px solid var(--ref-color-zinc-200);
     border-radius: var(--ref-radius-xs) var(--ref-radius-xs) 0 0;
+    color: var(--ref-color-zinc-900);
   }
 
   .docs-token-preview {
@@ -110,11 +130,11 @@
 
   .docs-token-card {
     display: flex;
-    overflow: hidden;
     flex-direction: column;
     border-radius: var(--ref-radius-xs);
     background: var(--ref-color-white);
     box-shadow: var(--docs-card-shadow);
+    overflow: hidden;
   }
 
   .docs-token-card-caption {
@@ -124,8 +144,17 @@
     padding: var(--ref-spacing-400);
   }
 
+  .docs-token-list {
+    margin-bottom: var(--ref-spacing-600);
+    list-style: disc;
+
+    li {
+      font-size: var(--ref-font-size-300);
+    }
+  }
+
   /* Colors */
-  .color-swatch {
+  .color-surface {
     width: 100%;
     min-height: 90px;
     border-radius: var(--ref-radius-xs) var(--ref-radius-xs) 0 0;
@@ -177,5 +206,14 @@
   /* Letter spacing */
   .letter-spacing-preview {
     text-transform: uppercase;
+  }
+
+  /* Icons */
+  .icon-palette {
+    --docs-token-grid-min: 9rem;
+  }
+
+  .icon-surface {
+    background-color: var(--ref-color-zinc-200);
   }
 }

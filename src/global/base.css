@@ -2,7 +2,7 @@
   html {
     background: var(--sys-color-surface-page);
     color: var(--sys-color-text-primary);
-    font-family: var(--sys-font-family-body);
+    font-family: var(--sys-typography-body-font-family);
   }
 
   body {

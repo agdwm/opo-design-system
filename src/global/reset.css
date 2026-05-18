@@ -26,6 +26,7 @@
   body {
     /* 4. Improve text readability with a more accessible default line-height */
     line-height: 1.5;
+
     /* 5. Improve font rendering on macOS */
     -webkit-font-smoothing: antialiased;
   }

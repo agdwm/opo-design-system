@@ -41,8 +41,12 @@
     --ref-color-indigo-500: oklch(0.6077 0.1733 275.54); /* #6874e8 */
     --ref-color-indigo-700: oklch(0.4424 0.1816 272); /* #3541b5 */
 
+    --ref-color-red-500: oklch(0.62 0.22 25); /* #D92D20 */
+    --ref-color-green-500: oklch(0.62 0.17 145); /* #15803D */
+    --ref-color-mustard-500: oklch(0.67 0.16 70); /* #B45309 */
+
     /* Font family */
-    --ref-font-family-sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --ref-font-family-sans: "IBM Plex Sans", system-ui, sans-serif;
 
     /* Font sizes */
     --ref-font-size-100: 0.75rem; /* 12px */
@@ -55,6 +59,18 @@
     --ref-font-size-800: 1.75rem; /* 28px */
     --ref-font-size-900: 2rem; /* 32px */
     --ref-font-size-1000: 3rem; /* 48px */
+
+    /* Sizes (Ej: Icons) */
+    --ref-size-100: 0.75rem; /* 12px */
+    --ref-size-200: 0.875rem; /* 14px */
+    --ref-size-300: 1rem; /* 16px */
+    --ref-size-400: 1.125rem; /* 18px */
+    --ref-size-500: 1.25rem; /* 20px */
+    --ref-size-600: 1.375rem; /* 22px */
+    --ref-size-700: 1.5rem; /* 24px */
+    --ref-size-800: 1.75rem; /* 28px */
+    --ref-size-900: 2rem; /* 32px */
+    --ref-size-1000: 3rem; /* 48px */
 
     /* Line heights */
     --ref-line-height-none: 1; /* no extra spacing, only for specific cases */
@@ -133,5 +149,6 @@
     --ref-motion-duration-fast: 150ms; /* hover, focus, subtle feedback */
     --ref-motion-duration-base: 250ms; /* standard UI transitions */
     --ref-motion-duration-slow: 400ms; /* expressive or large-surface transitions */
+    --ref-motion-duration-slower: 1000ms; /* continuous or looping motion, such as spinners or loading indicators */
   }
 }

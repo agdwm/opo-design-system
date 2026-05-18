@@ -81,3 +81,50 @@ export const previewText = 'The quick brown fox jumps over the lazy dog';
 
 export const lineHeightPreviewText =
   'The quick brown fox jumps over the lazy dog while typography systems balance readability, vertical rhythm and visual density across different interface contexts.';
+
+export const uiIconNames = [
+  'arrow-down',
+  'arrow-left',
+  'arrow-right',
+  'arrow-up',
+  'bell',
+  'calendar',
+  'check',
+  'chevron-down',
+  'chevron-left',
+  'chevron-right',
+  'chevron-up',
+  'clock',
+  'copy',
+  'download',
+  'edit',
+  'ellipsis-vertical',
+  'external-link',
+  'eye-off',
+  'eye',
+  'heart',
+  'info-circle',
+  'info',
+  'link',
+  'log-out',
+  'mail',
+  'map-pin',
+  'menu',
+  'minus',
+  'phone',
+  'plus',
+  'refresh-cw',
+  'search',
+  'settings',
+  'share-2',
+  'sliders',
+  'star',
+  'trash-2',
+  'upload',
+  'user',
+  'x',
+];
+
+export const brandIconNames = [];
+
+export const brandBrokenIconNames = ['blog', 'cart', 'challenge', 'facebook', 'gift', 'home', 'instagram', 'lock', 'oppositions', 'schemes', 'twitter'];

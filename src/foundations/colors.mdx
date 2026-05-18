@@ -15,7 +15,7 @@ import { referenceColorTokens } from './tokens-data';
     <div className="docs-token-grid">
     {referenceColorTokens.map(([label, _var, hex, oklch]) => (
       <div key={label} className="docs-token-card">
-        <div className="color-swatch" style={{ backgroundColor: hex }} />
+        <div className="docs-token-surface" style={{ backgroundColor: hex }} />
 
         <div className="docs-token-card-caption">
           <div className="color-title">{label}</div>
