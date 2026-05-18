@@ -6,6 +6,7 @@
     "experimentalDecorators": true,
     "lib": ["dom", "es2022"],
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "module": "esnext",
     "target": "es2022",
     "noUnusedLocals": true,

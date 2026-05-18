@@ -14,13 +14,19 @@
     "icons:optimize:brand": "svgo --config svgo.config.brand.js -f src/components/opo-icon/raw-icons/brand --multipass",
     "icons:optimize": "npm run icons:optimize:ui && npm run icons:optimize:brand",
     "icons:build": "node src/components/opo-icon/scripts/generate-icon-sprite.js",
-    "icons:watch": "nodemon --watch src/components/opo-icon/raw-icons -e svg --exec \"npm run icons:build\"",
-    "build": "npm run icons:build && stencil build",
+    "icons:watch": "npm run icons:build && nodemon --watch src/components/opo-icon/raw-icons -e svg --exec \"npm run icons:build\"",
+    "build": "node -e \"require('node:fs').mkdirSync('dist/icons', { recursive: true })\" && stencil build && npm run icons:build",
     "dev:lib": "stencil build --watch --docs --log-level=info",
     "prestorybook": "npm run build",
     "storybook": "storybook dev -p 6006 --no-open",
+    "storybook:dev": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "dev": "concurrently -k -n ICONS,STENCIL,SB \"npm run icons:watch\" \"npm run dev:lib\" \"npm run storybook\"",
+    "landing:dev": "npm run icons:build && vite --config landing/vite.config.ts --host 0.0.0.0 --port 3333",
+    "landing:build": "npm run icons:build && vite build --config landing/vite.config.ts",
+    "dev": "npm run dev:ordered",
+    "dev:ordered": "npm run build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
+    "dev:reset": "pkill -f storybook || true && pkill -f concurrently || true && pkill -f \"stencil build --watch\" || true && lsof -ti:6006 | xargs kill -9 2>/dev/null || true",
+    "dev:fresh": "npm run dev:reset && npm run dev:ordered",
     "clean": "rimraf dist www loader",
     "prebuild-storybook": "npm run clean && npm run build",
     "lint": "npm run lint:css",
@@ -29,11 +35,13 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist/",
-    "loader/"
+    "loader/",
+    "dist/icons"
   ],
   "devDependencies": {
     "@fontsource/ibm-plex-sans": "^5.2.8",
@@ -56,6 +64,7 @@
     "stylelint": "^17.11.0",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-order": "^8.1.1",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1",
     "svg-sprite": "^2.0.4",
     "svgo": "^4.0.0",
     "vite": "^8.0.12",
