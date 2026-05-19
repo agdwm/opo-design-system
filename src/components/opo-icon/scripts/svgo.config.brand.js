@@ -1,8 +1,8 @@
-export default {
-  plugins: [
-    { removeViewBox: false },
-    { cleanupIDs: true },
-    { removeDimensions: true },
-    { removeAttrs: { attrs: '(fill|stroke)' } },
-  ],
-};
+import { createSvgoConfig } from "./svgo.config.base.js";
+
+export default createSvgoConfig({
+  presetOverrides: {
+    cleanupIds: true,
+  },
+  preserveBrandIdentity: true,
+});

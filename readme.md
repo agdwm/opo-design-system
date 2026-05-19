@@ -263,13 +263,74 @@ docs/
 
 ---
 
-## Design System Approach
+> [!IMPORTANT]
+>
+> ## 🧩 Design System Approach
+>
+> Aunque considero que muchas de las decisiones presentes en la implementación original eran totalmente válidas para el alcance inicial de esta prueba técnica, he optado por aprovechar el ejercicio como una **oportunidad para explorar cómo podría evolucionar la arquitectura frontend** hacia un enfoque más _“design-system-oriented”_ en lugar de _“page-oriented”_, al considerar que este enfoque está más alineado con las responsabilidades asociadas a la posición.
+>
+> Dado que no parto de un sistema de diseño previamente definido ni de una arquitectura de tokens establecida desde diseño, muchas de las decisiones documentadas en este README han sido inferidas a partir de buenas prácticas ampliamente utilizadas en sistemas de diseño modernos, priorizando aspectos como:
+>
+> - consistencia,
+> - reutilización,
+> - mantenibilidad,
+> - escalabilidad,
+> - accesibilidad,
+> - y desacoplamiento entre diseño e implementación.
+>
+> Esto incluye decisiones relacionadas no solo con los design tokens, sino también con otros aspectos de la arquitectura frontend como:
+>
+> - resets CSS,
+> - estructura de tokens,
+> - nomenclatura,
+> - tipografía,
+> - estrategias tipográficas responsive,
+> - estrategias de theming,
+> - o adopción progresiva de características modernas de CSS.
+>
+> Al mismo tiempo, entiendo los **sistemas de diseño** no tanto como conjuntos rígidos de reglas cerradas, sino como **ecosistemas vivos sujetos a evolución** constante según las necesidades de producto, contexto de uso, accesibilidad, escalabilidad y colaboración entre equipos. Desde esta perspectiva, aunque muchas de las decisiones documentadas en este README parten de patrones y aproximaciones ampliamente adoptadas en arquitecturas frontend modernas, también han sido interpretadas y adaptadas desde mi propia experiencia, criterio técnico y comprensión del contexto concreto de la prueba, **evitando aplicar soluciones de forma dogmática** o descontextualizada.
+>
+> Por otro lado, entiendo este tipo de decisiones como parte de un **proceso colaborativo y transversal** entre diseño, desarrollo, producto... En un entorno real, cualquier evolución del sistema debería idealmente consensuarse con los equipos implicados para garantizar coherencia tanto visual como técnica a largo plazo.
+>
+> También soy consciente de que parte del nivel de abstracción y profundidad arquitectónica explorado en este README excede probablemente las necesidades estrictamente necesarias para el alcance actual de la prueba. Sin embargo, he preferido abordarlo deliberadamente como un ejercicio de exploración técnica orientado a reflejar mejor mi aproximación habitual al desarrollo de sistemas frontend y librerías de componentes reutilizables.
+>
+> En definitiva, las decisiones documentadas en este README no pretenden cuestionar la aproximación original, sino explorar una posible dirección de evolución arquitectónica del sistema tomando esta propuesta de landing page como punto de partida.
 
-La implementación prioriza una aproximación:
+---
 
-- component-driven,
-- reusable-first,
-- y desacoplada entre source, build y runtime.
+## Component Architecture
+
+### Landing Integration
+
+Cómo se ha separado la librería y la landing.
+
+---
+
+## CSS Reset
+
+Dado que este proyecto parte de una base limpia, he añadido un reset ligero inspirado en [Josh Comeau's reset](https://www.joshwcomeau.com/css/custom-css-reset/) con el objetivo de establecer comportamientos base más predecibles y accesibles entre navegadores, sin imponer decisiones visuales o estéticas.
+
+Este reset proporciona una base más consistente para la librería de componentes y adopta mejoras progresivas mediante características modernas de CSS (ej: `text-wrap: balance;` `interpolate-size: allow-keywords;`)
+
+---
+
+## Design Tokens
+
+El sistema de tokens sigue una arquitectura en capas:
+
+```txt
+reference → system → (component)
+```
+
+con separación entre:
+
+- valores primitivos,
+- decisiones semánticas,
+- y adaptación específica de componentes.
+
+Más detalles:
+
+- [Design Tokens](./docs/architecture/design-tokens.md)
 
 ---
 
@@ -292,28 +353,6 @@ raw-icons → dist/icons → runtime serving
 Más detalles:
 
 - [Icon System](./docs/architecture/icon-system.md)
-
----
-
-## Design Tokens
-
-El sistema de tokens sigue una arquitectura en capas:
-
-```txt
-reference → system → component
-```
-
-con separación entre:
-
-- valores primitivos,
-- decisiones semánticas,
-- y adaptación específica de componentes.
-
-Más detalles:
-
-- [Design Tokens](./docs/architecture/design-tokens.md)
-
----
 
 ## Storybook
 
@@ -340,11 +379,13 @@ Más detalles sobre foundations y decisiones arquitectónicas:
 
 ## Architecture Documentation
 
-- [Icon System](./docs/architecture/icon-system.md)
 - [Design Tokens](./docs/architecture/design-tokens.md)
 - [Typography](./docs/architecture/typography.md)
+- [Responsive Strategy](./docs/architecture/responsive.md)
+- [Icon System](./docs/architecture/icon-system.md)
 - [Layering & Motion](./docs/architecture/layering-and-motion.md)
 - [Accessibility](./docs/architecture/accessibility.md)
+- [Testing](./docs/architecture/testing.md)
 
 ---
 

@@ -1,59 +1,124 @@
 :host {
+  display: inline-block;
+  width: fit-content;
+}
+
+.opo-button {
+  --opo-button-height: 40px;
+  --opo-button-font-size: var(--sys-typography-action-md-size);
+  --opo-button-padding-block: var(--sys-space-xs);
+
+  position: relative;
   display: inline-flex;
-  --opo-button-primary: var(--color-action-primary, #ffb142);
-  --opo-button-primary-hover: var(--color-action-primary-hover, #ffc470);
-  --opo-button-secondary-border: var(--color-action-secondary-border, #ffc6ad);
-  --opo-button-text: var(--color-text-primary, #1f1f21);
-  --opo-button-text-secondary: var(--color-text-primary, #383641);
-  --opo-button-surface: var(--color-action-secondary, #ffffff);
-  --opo-button-shadow: var(--shadow-s, 0px 10px 20px 0px #3836411a);
-  --opo-button-focus: var(--color-border-accent, #ffc6ad);
-  --opo-button-padding-y: var(--spacing-desktop-xs, 16px);
-  --opo-button-padding-x: var(--spacing-desktop-s, 24px);
-  --opo-button-weight: var(--font-weight-semibold, 600);
-}
-
-.button {
-  padding: var(--opo-button-padding-y) var(--opo-button-padding-x);
-  border: 0;
-  border-radius: 999px;
-  font: inherit;
-  font-weight: var(--opo-button-weight);
-  appearance: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sys-space-2xs);
+  min-height: var(--opo-button-height);
+  padding-block: var(--opo-button-padding-block);
+  padding-inline: 24px;
+  border: none;
+  border-radius: var(--ref-radius-xs);
+  font-family: var(--sys-typography-action-font-family);
+  font-size: var(--opo-button-font-size);
+  font-weight: var(--sys-typography-action-weight);
+  line-height: var(--sys-typography-action-line-height);
+  white-space: nowrap;
   cursor: pointer;
-  transition:
-    transform 120ms ease,
-    box-shadow 120ms ease,
-    background-color 120ms ease,
-    border-color 120ms ease;
+  transition: all var(--sys-motion-duration-fast) ease;
 }
 
-.button:focus-visible {
-  outline: 3px solid var(--opo-button-focus);
-  outline-offset: 3px;
+/* Sizes */
+.opo-button--sm {
+  --opo-button-height: 40px;
+  --opo-button-font-size: var(--sys-typography-action-sm-size);
+  --opo-button-padding-block: var(--sys-space-2xs);
 }
 
-.button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+.opo-button--md {
+  --opo-button-height: 48px;
+  --opo-button-font-size: var(--sys-typography-action-md-size);
+  --opo-button-padding-block: var(--sys-space-xs);
 }
 
-.button:not(:disabled):hover {
+.opo-button--icon {
+  --opo-button-height: 40px;
+
+  width: 40px;
+  padding: 0;
+}
+
+/* Variants */
+.opo-button--primary {
+  background-color: var(--sys-color-action-primary);
+  color: var(--sys-color-on-action-primary);
+}
+
+.opo-button--secondary {
+  background-color: var(--sys-color-action-secondary);
+  color: var(--sys-color-on-action-secondary);
+}
+
+.opo-button--outline {
+  border: 1px solid var(--opo-color-border, #e2e8f0);
+  background: transparent;
+  color: var(--opo-color-primary, #3b82f6);
+}
+
+.opo-button--ghost {
+  background: transparent;
+  color: var(--opo-color-foreground, #0f172a);
+}
+
+.opo-button--destructive {
+  background: var(--opo-color-destructive, #ef4444);
+  color: white;
+}
+
+.opo-button--link {
+  height: auto;
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--opo-color-primary, #3b82f6);
+}
+
+/* States */
+.opo-button:hover:not(:disabled, .opo-button--loading) {
+  filter: brightness(1.08);
   transform: translateY(-1px);
 }
 
-.button--primary {
-  background: var(--opo-button-primary);
-  box-shadow: var(--opo-button-shadow);
-  color: var(--opo-button-text);
+.opo-button:active:not(:disabled, .opo-button--loading) {
+  transform: translateY(1px);
 }
 
-.button--primary:not(:disabled):hover {
-  background: var(--opo-button-primary-hover);
+.opo-button--full-width {
+  width: 100%;
 }
 
-.button--secondary {
-  border: 1px solid var(--opo-button-secondary-border);
-  background: var(--opo-button-surface);
-  color: var(--opo-button-text-secondary);
+.opo-button--loading {
+  opacity: 0.85;
+  cursor: wait;
+  pointer-events: none;
+}
+
+.opo-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loader */
+.opo-button__loader {
+  display: inline-flex;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

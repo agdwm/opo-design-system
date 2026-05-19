@@ -1,0 +1,73 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './opo-button.stories';
+
+<Meta of={ButtonStories} />
+
+# opo-button
+
+Boton principal del **Design System OPO**. Es un componente flexible, accesible y altamente reutilizable.
+
+## Descripcion
+
+El componente `opo-button` permite crear botones con multiples variantes, tamaños, estados de carga y soporte para iconos mediante slots.
+
+---
+
+## Uso basico
+
+```html
+<opo-button variant="primary">Guardar cambios</opo-button>
+```
+
+## Variantes
+
+<Canvas of={ButtonStories.Primary} />
+<Canvas of={ButtonStories.Secondary} />
+<Canvas of={ButtonStories.Outline} />
+<Canvas of={ButtonStories.Ghost} />
+<Canvas of={ButtonStories.Destructive} />
+
+## Estados
+
+### Loading
+
+<Canvas of={ButtonStories.Loading} />
+
+## Con Iconos
+
+<Canvas of={ButtonStories.WithIcons} />
+
+### Icon Only
+
+<Canvas of={ButtonStories.IconOnly} />
+
+## Full Width
+
+<Canvas of={ButtonStories.FullWidth} />
+
+## Propiedades
+
+<ArgTypes of={ButtonStories} />
+
+## Accesibilidad
+
+- Cumple con estandares WCAG 2.1 AA
+- Gestiona correctamente `aria-busy` en estado de carga
+- Totalmente navegable por teclado
+- Soporta `aria-label` en botones solo con icono
+
+## Tokens CSS utilizados
+
+- `--opo-color-primary`
+- `--opo-color-secondary`
+- `--opo-color-destructive`
+- `--opo-radius-md`
+- `--opo-button-height`
+- `--opo-font-weight-semibold`
+- `--opo-transition-fast`
+
+## Mejores practicas
+
+- Usa los slots `icon-start` e `icon-end` para iconos
+- Para enlaces externos usa `as="a"` + `href`
+- Siempre proporciona `aria-label` cuando uses `size="icon"`

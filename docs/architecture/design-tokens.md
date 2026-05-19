@@ -1,42 +1,48 @@
 # Design Tokens
 
+---
+
 ## Overview
 
-El sistema de tokens se organiza en capas para separar:
+> [!NOTE]
+> La **nomenclatura** propuesta para los system tokens (`--sys-`) debe entenderse como una interpretación razonada a partir de la landing implementada, los valores presentes en el archivo de tokens original y los posibles contextos de uso observados durante la prueba.
+>
+> Su objetivo es ilustrar cómo los reference tokens podrían evolucionar hacia una capa semántica capaz de expresar decisiones reutilizables de producto, interfaz y marca.
+>
+> En un entorno real, esta nomenclatura debería consensuarse con diseño para garantizar que los nombres utilizados tanto en Figma como en código respondan al mismo lenguaje compartido.
 
-- valores primitivos reutilizables,
-- decisiones semánticas del sistema,
-- y adaptaciones específicas de componentes.
+Los tokens del sistema se organizan en distintas capas independientes con el objetivo de desacoplar:
 
-La intención es evitar que los componentes dependan directamente de valores visuales crudos y facilitar una evolución más ordenada del sistema.
+- los valores base del sistema,
+- las decisiones semánticas reutilizables,
+- y los detalles concretos de implementación de componentes.
 
 ```txt
 reference tokens
         ↓
 system tokens
         ↓
-component tokens
+component-scoped variables
         ↓
 component styles
 ```
 
 ---
 
-## Token Architecture
+## Arquitectura de tokens
 
-| Nivel     | Prefijo  | Propósito                            | Ejemplo                    |
-| --------- | -------- | ------------------------------------ | -------------------------- |
-| Reference | `--ref-` | Valores primitivos base              | `--ref-color-amber-500`    |
-| System    | `--sys-` | Decisiones reutilizables del sistema | `--sys-color-text-primary` |
-| Component | `--cmp-` | Adaptación específica de componente  | `--cmp-button-background`  |
+| Nivel | Prefijo | Propósito | Ejemplo |
+| - | -- | | - |
+| **Reference** | `--ref-` | Valores primitivos base | `--ref-font-size-500` |
+| **System** | `--sys-` | Decisiones reutilizables | `--sys-typography-heading-md-size` |
+| **Scoped** | `--opo-` | Variables internas | `--opo-button-height` |
+| **Component** | `--cmp-` | Adaptación específica | `--cmp-button-bg` |
 
----
+### Reference Tokens (`--ref-`)
 
-## Reference Tokens
-
-Los reference tokens contienen valores base del sistema.
-
-No representan intención de uso ni contexto semántico. Son primitives reutilizables.
+- Son primitives reutilizables.
+- Contienen los valores primitivos compartidos del sistema (`colors`, `typography`, `spacing`, `radius`, `shadows`, etc.).
+- No representan intención ni contexto de uso.
 
 Ejemplos:
 
@@ -50,11 +56,11 @@ Ejemplos:
 
 Su función es proporcionar una base estable sobre la que construir decisiones semánticas.
 
----
+### System Tokens (`--sys-`)
 
-## System Tokens
-
-Los system tokens expresan decisiones reutilizables del sistema.
+- Actúan como capa de abstracción sobre los reference tokens.
+- Expresan intención de uso.
+- Pueden adaptarse según tema, contexto o estrategia responsive o de accesilibidad.
 
 Ejemplos:
 
@@ -64,8 +70,6 @@ Ejemplos:
 --sys-color-border-default
 ```
 
-A diferencia de los reference tokens, estos nombres sí expresan intención de uso.
-
 Por ejemplo:
 
 ```css
@@ -74,63 +78,81 @@ Por ejemplo:
 
 Esto permite cambiar el valor real del color sin modificar los componentes que consumen la decisión semántica.
 
----
+### Component-Scoped Variables (`--opo-*`)
 
-## Component Tokens
+Además de los reference y system tokens, algunos componentes utilizan **variables CSS internas** scoped con prefijos propios del componente.
 
-Los component tokens adaptan decisiones globales a un componente concreto.
+Ejemplos reales del sistema:
 
-Ejemplo:
+```css
+--opo-button-height
+--opo-button-font-size
+--opo-button-padding-block
+```
+
+Estas variables no representan necesariamente una capa formal de “component tokens” globales del sistema, sino variables internas orientadas a:
+
+- desacoplar detalles de implementación,
+- mejorar legibilidad y mantenibilidad del componente,
+- facilitar overrides controlados,
+- y evitar repetir decisiones internas complejas dentro del CSS del componente.
+
+Por ejemplo:
+
+```css
+.opo-button {
+  --opo-button-height: 40px;
+  --opo-button-font-size: var(--sys-typography-action-md-size);
+
+  min-height: var(--opo-button-height);
+  font-size: var(--opo-button-font-size);
+}
+```
+
+### Possible Future Component Tokens (`--cmp-*`)
+
+- Adaptan las decisiones globales del sistema a las necesidades concretas de cada componente.
+- Favorecen una arquitectura más independiente entre capas y extensible.
+- Permiten introducir una capa adicional de personalización sin acoplar directamente el componente al sistema global.
+
+> [!NOTE]
+> En esta iteración, se ha priorizado una aproximación más ligera basada en **variables scoped** por componente frente a una capa completa de `--cmp-*` globales, evitando introducir abstracción semántica prematuramente.
+
+En sistemas más complejos o multi-brand, podría evolucionarse progresivamente hacia una capa más formal de _component tokens_ públicos reutilizables.
+
+Ejemplo conceptual:
 
 ```css
 --cmp-button-background: var(--sys-color-action-primary);
 ```
 
-Y después:
-
-```css
-.opo-button {
-  background-color: var(--cmp-button-background);
-}
-```
-
-Esta capa puede ser útil en sistemas grandes, multi-producto o white-label.
-
-En sistemas pequeños, no siempre es necesario crear component tokens para todo. Algunos componentes pueden consumir system tokens directamente cuando no existe una necesidad real de personalización adicional.
-
 ---
 
-## Consumption Flow
+## Flujo de consumo
 
-Ejemplo de flujo completo:
-
-```css
-/* reference.tokens.css */
---ref-color-amber-500: #ffb142;
-
-/* system.tokens.css */
---sys-color-brand-primary: var(--ref-color-amber-500);
-
-/* component token */
---cmp-button-background: var(--sys-color-brand-primary);
-
-/* component style */
-.opo-button {
-  background-color: var(--cmp-button-background);
-}
-```
-
-La dirección recomendada es:
+La dirección habitual de consumo dentro del sistema seguiría una estructura similar a:
 
 ```txt
-ref → sys → cmp → component
+reference tokens
+(--ref-color-amber-500: #ffb142)
+        ↓
+system tokens
+(--sys-color-brand: var(--ref-color-amber-500))
+        ↓
+component tokens
+(--cmp-button-bg: var(--sys-color-brand))
+        ↓
+component styles
+.button {
+  background-color: var(--cmp-button-bg);
+}
 ```
 
 No obstante, esta arquitectura debe aplicarse con criterio. Añadir capas que no aportan intención real puede generar abstracción innecesaria.
 
 ---
 
-## Token Philosophy
+## Filosofía de tokens
 
 La regla principal es:
 
@@ -152,47 +174,42 @@ Pero esto aporta más intención:
 
 ```css
 --sys-radius-card: var(--ref-radius-md);
---sys-radius-control: var(--ref-radius-xs);
 ```
 
-La decisión depende del grado de madurez del sistema. En esta iteración se ha evitado formalizar demasiada semántica prematuramente.
+> [!NOTE]
+> Por otro lado, no todos los component tokens necesariamente deberían exponerse globalmente mediante `:root`.
+
+> Aquellos tokens que formen parte de la API pública de personalización del componente (`theming`, `branding`, `white-label`, etc.) pueden exponerse como tokens globales reutilizables. Sin embargo, tokens más específicos o relacionados con detalles internos de implementación suelen mantenerse scoped dentro del propio componente para evitar acoplamientos innecesarios y reducir contaminación del namespace global.
 
 ---
 
 ## Color Tokens
 
-### Reference Color Tokens
+Los colores se organizan como reference color tokens reutilizables.
 
-Los colores se definen primero como reference tokens.
-
-Ejemplo:
+En lugar de asociar directamente los tokens a contextos específicos de uso `(primary, hover, background, pressed…)`, he adoptado una estrategia de nomenclatura más neutral y escalable inspirada en sistemas modernos de diseño como Tailwind CSS.
 
 ```css
---ref-color-amber-500: oklch(0.8168 0.1513 71.72);
---ref-color-zinc-950: oklch(0.2401 0.0038 286.11);
+/* Before */
+--color-primary-main-hover: #ffc470;
+
+/* After */
+--ref-color-amber-400: oklch(0.8567 0.1219 74.66);
 ```
 
-Esta capa describe valores cromáticos reutilizables, sin asumir todavía dónde se usarán.
+Esto permite **desacoplar la definición física del color de su intención de uso** dentro de la interfaz.
 
----
+Posteriormente, estos reference tokens pueden ser reutilizados por system tokens que representan el propósito real del color dentro del sistema.
 
-### OKLCH
+Además, he optado por definir los colores utilizando `oklch()` debido a las ventajas que ofrece frente a espacios de color tradicionales como `hex` o `hsl`:
 
-Los colores se han definido en `oklch()` para favorecer:
+- Permite controlar de forma independiente luminosidad (L), saturación (C) y tono (H), facilitando la construcción de paletas más coherentes y sistemáticas.
+- Produce transiciones cromáticas perceptualmente más uniformes.
+- Evita problemas habituales de otros modelos de color donde algunos tonos pueden volverse excesivamente apagados, grisáceos o artificialmente saturados.
 
-- escalas perceptualmente más uniformes,
-- mejor control de luminosidad, croma y tono,
-- y una evolución más predecible de la paleta.
+Para la conversión y validación de colores entre formatos `hex` y `oklch()` he utilizado [oklch.com](https://oklch.com/), en lugar del selector nativo de VS Code, ya que se trata de una herramienta especializada en espacios de color desarrollada por [Evil Martians](https://evilmartians.com/devtools) y creada por Andrey Sitnik (autor de PostCSS y Autoprefixer).
 
-Aunque se conservan comentarios con valores hexadecimales por trazabilidad, el valor principal del token se expresa en OKLCH.
-
-```css
---ref-color-amber-500: oklch(0.8168 0.1513 71.72); /* #ffb142 */
-```
-
----
-
-### System Color Tokens
+Por otro lado, he conservado todos los valores cromáticos presentes en el sistema original, incluso cuando algunos tonos neutros resultaban visualmente muy próximos (ej: `#ebeaec`, `#eeedf0`), para preservar trazabilidad respecto a la propuesta inicial y evitar perder posibles usos previstos desde diseño.
 
 Los system color tokens expresan intención visual.
 
@@ -204,10 +221,6 @@ Ejemplos:
 --sys-color-border-default: var(--ref-color-zinc-400);
 ```
 
-Este tipo de token sí aporta semántica, porque describe el rol del color dentro de la interfaz.
-
----
-
 ### Brand & Feedback Colors
 
 También se definen colores semánticos asociados a marca y feedback:
@@ -215,6 +228,7 @@ También se definen colores semánticos asociados a marca y feedback:
 ```css
 --sys-color-brand-primary
 --sys-color-brand-accent
+
 --sys-color-danger
 --sys-color-success
 --sys-color-warning
@@ -224,103 +238,87 @@ Estos tokens permiten que componentes como botones, iconos o estados visuales pu
 
 ---
 
-## Spacing Tokens
+## Container Tokens
 
-Los spacing tokens se mantienen como reference tokens numéricos:
+El sistema original ya incluía una pequeña serie de tokens orientados a definir restricciones de anchura máxima para distintos contextos de layout y composición.
 
 ```css
---ref-spacing-100: 4px;
---ref-spacing-200: 8px;
---ref-spacing-300: 12px;
---ref-spacing-400: 16px;
+/* Before */
+--container-medium: 880px;
+
+/* After */
+--ref-container-md: 880px;
 ```
 
-En esta iteración, el spacing se mantiene en `px` para preservar estabilidad estructural del layout.
+He optado por mantener esta aproximación, actualizando únicamente la nomenclatura neutral hacia una convención más consistente con el resto de reference tokens del sistema.
 
-La decisión busca evitar que los espacios estructurales escalen de forma excesiva al modificar el tamaño de fuente raíz del navegador.
+Estos tokens representan restricciones reutilizables de composición que posteriormente pueden ser consumidas por distintas capas del sistema (`sections`, wrappers, grids o componentes) según las necesidades de cada contexto.
 
-Esto no significa que `rem` sea incorrecto para spacing, sino que en este contexto se prioriza una composición UI más estable y predecible.
+Los valores se han mantenido en `px` al considerar que representan restricciones estructurales de layout y no escalas tipográficas. Esto permite preservar una composición horizontal más estable y predecible independientemente de posibles cambios en el `font-size` raíz del navegador.
+
+Por otro lado, he optado deliberadamente por mantener una **escala de containers relativamente reducida** para evitar introducir una granularidad excesiva que añadiría complejidad prematura al sistema.
+
+---
+
+## Spacing Tokens
+
+Aunque muchos sistemas modernos utilizan unidades relativas como `rem` también para los spacing tokens, he decidido mantener los espaciados estructurales del sistema en `px`.
+
+Si bien utilizar `rem` en spacing puede resultar beneficioso en contextos más editoriales o centrados en lectura, en interfaces UI y layouts estructurales **un escalado excesivo del spacing puede reducir significativamente el espacio útil disponible para el contenido**, comprometiendo la densidad visual de la interfaz y afectando potencialmente a la experiencia de uso.
+
+Por este motivo, esta decisión busca preservar un comportamiento espacial más estable y predecible dentro de la interfaz, evitando que el espaciado crezca proporcionalmente junto al tamaño tipográfico cuando el usuario modifica el `font-size` raíz del navegador.
+
+Por otro lado, he refactorizado la nomenclatura original de los spacing tokens para alinearla con la utilizada en el resto de tokens del sistema, siguiendo la misma lógica de desacoplamiento del contexto de uso.
+
+```css
+/* Before */
+--spacing-desktop-xxs: 8px;
+
+/* After */
+--ref-spacing-200: 8px;
+```
 
 ---
 
 ## Radius Tokens
 
-La escala de radius se mantiene reducida y reutilizable:
+El sistema original ya incorporaba una serie reducida de valores de `border-radius` orientados a construir una interfaz visualmente suave y consistente.
 
 ```css
---ref-radius-xs
---ref-radius-sm
---ref-radius-md
---ref-radius-lg
---ref-radius-full
+/* Before */
+--radius-md: 24px;
+
+/* After */
+--ref-radius-lg: 24px;
 ```
 
-Los reference tokens describen valores base.
+He optado por mantener esta aproximación, actualizando la nomenclatura hacia una convención más alineada con el resto de reference tokens del sistema.
 
-Si el sistema crece, puede tener sentido introducir system tokens más semánticos:
-
-```css
---sys-radius-control
---sys-radius-card
---sys-radius-pill
-```
-
-En esta iteración, se evita crear demasiados alias semánticos hasta que los patrones de uso estén más consolidados.
-
----
-
-## Shadow Tokens
-
-Las sombras se definen como reference tokens:
-
-```css
---ref-shadow-sm
---ref-shadow-md
-```
-
-La escala se mantiene deliberadamente contenida para evitar granularidad innecesaria.
-
-En el futuro, si aparecen patrones más estables de elevación, podría evolucionar hacia tokens semánticos como:
-
-```css
---sys-shadow-surface-raised
---sys-shadow-overlay
---sys-shadow-popover
-```
-
-En esta iteración, los shadows siguen funcionando principalmente como foundation tokens reutilizables.
-
----
-
-## Motion Tokens
-
-La escala de motion durations se define como reference tokens:
-
-```css
---ref-motion-duration-fast: 150ms;
---ref-motion-duration-base: 250ms;
---ref-motion-duration-slow: 400ms;
---ref-motion-duration-slower: 1000ms;
-```
-
-Estos valores cubren:
-
-- feedback rápido,
-- transiciones estándar,
-- transiciones más expresivas,
-- y motion continua o en loop.
-
-Ejemplo:
-
-```css
---ref-motion-duration-slower: 1000ms; /* continuous or looping motion, such as spinners or loading indicators */
-```
-
-En esta iteración se evita crear demasiados system motion tokens específicos como `--sys-motion-duration-spinner`, salvo que aparezcan patrones repetidos que justifiquen esa semántica.
+Aunque los tokens originales utilizaban radios relativamente amplios (`16px`, `24px`, `32px`), probablemente alineados con una dirección visual más “soft” y contemporánea, también se han incorporado tamaños más reducidos como `6px`, presentes en determinados elementos del diseño original (`buttons`), para cubrir componentes funcionales de menor escala.
 
 ---
 
 ## Avoiding Over-Abstraction
+
+En esta iteración, varias escalas del sistema —como radius, shadows o motion— se han mantenido deliberadamente contenidas para evitar introducir semántica y abstracción prematuramente.
+
+Estas capas podrían evolucionar progresivamente cuando aparezcan patrones de uso más estables.
+
+Ejemplos actuales:
+
+```css
+--ref-radius-md
+--ref-shadow-sm
+--ref-motion-duration-fast
+```
+
+Posibles evoluciones futuras:
+
+```css
+--sys-radius-card
+--sys-shadow-overlay
+--sys-motion-duration-feedback
+```
 
 No todos los valores necesitan pasar por todas las capas.
 
@@ -344,30 +342,95 @@ Aun así, incluso este tipo de token debe introducirse solo cuando el sistema lo
 
 ---
 
-## Current Scope
+## Alcance actual
 
-En esta iteración, la capa de tokens se ha mantenido deliberadamente contenida.
-
-El objetivo principal es:
+El objetivo principal en esta iteración es:
 
 - establecer una base reutilizable,
-- mejorar la consistencia visual,
-- evitar valores mágicos en componentes,
-- y preparar el sistema para una evolución futura.
+- mejorar consistencia visual,
+- evitar valores mágicos,
+- y preparar el sistema para futuras evoluciones.
 
 No se ha intentado cerrar una taxonomía semántica definitiva, ya que en un entorno real debería consensuarse con diseño y evolucionar junto al producto.
 
 ---
 
-## Future Improvements
+## Validación de tokens
+
+El sistema incorpora validación automática de custom properties utilizadas en CSS.
+(plugin: `stylelint-value-no-unknown-custom-properties`)
+
+Esto permite detectar referencias a tokens inexistentes durante desarrollo y linting.
+
+Por ejemplo:
+
+```css
+color: var(--sys-color-does-not-exist);
+```
+
+genera un warning automático mediante Stylelint.
+
+La validación utiliza como fuente de verdad los archivos de tokens del sistema (`reference.tokens.css` y `system.tokens.css`) para ayudar a mantener consistencia entre:
+
+- tokens definidos,
+- tokens consumidos,
+- y documentación del sistema.
+
+El objetivo principal es reducir:
+
+- errores tipográficos,
+- referencias inválidas,
+- y divergencias entre la arquitectura de tokens y el consumo real dentro de componentes.
+
+---
+
+## Posibles evoluciones futuras
 
 Posibles evoluciones futuras:
 
-- definición más madura de component tokens,
-- tematización light/dark,
-- soporte multi-brand,
-- integración con Style Dictionary,
-- sincronización con Figma Tokens / Tokens Studio,
-- versionado de tokens,
-- validación automática de tokens,
-- y generación de documentación visual desde la fuente de tokens.
+- **Definición más madura de tokens**
+  - Evolucionar progresivamente desde variables scoped por componente (`--opo-*`) hacia una capa más formal de component tokens reutilizables (`--cmp-*`) en aquellos casos donde aparezcan necesidades reales de `theming`, `white-label` o reutilización `cross-product`.
+  - Esto permitiría desacoplar todavía más los componentes de las decisiones globales del sistema.
+
+- **Tematización light/dark**
+  - Incorporar soporte oficial para múltiples temas visuales (`light`, `dark`, high-contrast, etc.) mediante system tokens adaptativos.
+  - Esto implicaría separar más claramente los valores semánticos (`--sys-*`) de los reference tokens base (`--ref-*`).
+
+- **Soporte multi-brand**
+  - Permitir que distintas marcas o productos compartan la misma librería de componentes reutilizando la arquitectura de tokens y modificando únicamente capas de branding.
+  - Por ejemplo: colores de marca, tipografía, radios, motion o iconografía específica.
+
+- **Integración con Style Dictionary**
+  - Automatizar generación, transformación y distribución de design tokens mediante herramientas como [Style Dictionary](https://styledictionary.com/).
+  - Esto facilitaría exportar tokens hacia:
+    - CSS,
+    - TypeScript,
+    - JSON,
+    - iOS,
+    - Android,
+    - o tooling de diseño.
+
+- **Sincronización con Figma Tokens / Tokens Studio**
+  - Explorar una sincronización más estructurada entre diseño y desarrollo utilizando herramientas como Tokens Studio.
+  - El objetivo sería reducir divergencias entre Figma y código y favorecer un lenguaje compartido entre equipos.
+
+- **Versionado de tokens**
+  - Introducir estrategias de versionado y cambios controlados para tokens críticos del sistema.
+  - Esto ayudaría a gestionar breaking changes, migraciones y compatibilidad entre componentes y aplicaciones consumidoras.
+
+- **Validación automática de tokens**
+  - Incorporar tooling que permita detectar automáticamente:
+    - tokens duplicados,
+    - referencias inválidas,
+    - inconsistencias semánticas,
+    - naming incorrecto,
+    - o dependencias circulares entre tokens.
+
+- **Generación automática de documentación visual**
+  - Generar documentación visual y playgrounds directamente desde la fuente de tokens.
+  - Por ejemplo:
+    - paletas de color,
+    - escalas tipográficas,
+    - spacing systems,
+    - motion tokens,
+    - o ejemplos de theming en Storybook.

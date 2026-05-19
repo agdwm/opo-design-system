@@ -1,10 +1,12 @@
 # Icon System
 
+---
+
 ## Overview
 
-El sistema de iconos se ha planteado como una arquitectura reutilizable orientada a componentes, donde los SVG originales pasan por una pipeline de normalización y compilación antes de ser consumidos por el componente `opo-icon`.
+El sistema de iconos se ha planteado como una arquitectura reutilizable orientada a componentes, donde los SVG originales pasan por una pipeline de optimización, validación y compilación antes de ser consumidos por el componente `opo-icon`.
 
-La estrategia final se basa en:
+La estrategia general se basa en:
 
 ```txt
 raw-icons → build pipeline → dist/icons → runtime serving
@@ -14,18 +16,114 @@ Esto permite:
 
 - mantener una única fuente de verdad para los SVG originales,
 - desacoplar el runtime de los assets fuente,
-- generar automáticamente sprite, manifest y typings,
+- generar automáticamente sprites SVG, manifest y typings,
 - y distribuir el sistema de iconos como parte de la librería de componentes.
 
 ---
 
-## Architecture Overview
+## Contexto y problemas detectados
+
+Los SVG originales proporcionados desde Figma seguían una estrategia de exportación válida para diseño visual, aunque presentaban varias inconsistencias habituales al integrarlos dentro de un sistema de iconografía reutilizable.
+
+Algunos de los problemas detectados fueron:
+
+- `viewBox` y tamaños inconsistentes (`16x18`, `20x38`, `32x31`, etc.).
+- Colores hardcodeados en iconos de interfaz.
+- Metadata y atributos generados automáticamente (`id`, grupos redundantes, transforms, etc.).
+- Diferencias estructurales importantes entre iconos UI y assets de marca.
+- Proporciones y áreas visuales poco consistentes respecto a una grid común.
+- Exportaciones heterogéneas según el tipo de asset o herramienta utilizada.
+
+Estos aspectos no impedían el renderizado de los iconos, pero sí dificultaban:
+
+- consistencia visual,
+- theming,
+- integración segura en sprites,
+- reutilización escalable,
+- y mantenibilidad del sistema.
+
+Por este motivo se definió una pipeline diferenciada de optimización, validación y compilación.
+
+---
+
+## Flujo de iconos
+
+### Comandos recomendados
+
+El sistema de iconos utiliza varios scripts npm para gestionar, optimizar y construir los recursos SVG.
+
+```bash
+npm run icons:format
+```
+
+Formatea los SVG originales dentro de `raw-icons` utilizando `xmllint`.
+
+```bash
+npm run icons:optimize
+```
+
+Ejecuta la optimización de los SVG de `ui` y `brand` usando SVGO, con reglas diferenciadas según el tipo de icono.
+
+```bash
+npm run icons:build
+```
+
+Genera los sprites SVG, el manifest JSON y los typings TypeScript a partir de los SVG optimizados.
+
+```bash
+npm run icons:watch
+```
+
+Reconstruye automáticamente los artefactos de iconos cada vez que se detectan cambios en los SVG dentro de `raw-icons`.
+
+> [!TIP]
+> En el flujo habitual de trabajo normalmente basta con ejecutar:
+>
+> ```bash
+> npm run icons:optimize
+> npm run icons:build
+> ```
+>
+> `icons:optimize` ejecuta automáticamente el formateo y la optimización de los SVG de `ui` y `brand`, por lo que no suele ser necesario lanzar `icons:format` manualmente salvo que únicamente se quiera reformatear los archivos sin optimizarlos.
+
+---
+
+### Resumen de scripts
+
+- `icons:format`: formatea todos los SVG en `raw-icons`.
+- `icons:optimize:ui`: optimiza los SVG de `raw-icons/ui` usando `svgo.config.ui.js`.
+- `icons:optimize:brand`: optimiza los SVG de `raw-icons/brand` usando `svgo.config.brand.js`.
+- `icons:optimize`: ejecuta formateo + optimización UI + optimización Brand.
+- `icons:build`: genera sprites, manifest y typings.
+- `icons:watch`: ejecuta una build inicial y reconstruye automáticamente al detectar cambios.
+
+---
+
+### Artefactos generados
+
+Durante `icons:build` se generan automáticamente:
 
 ```txt
+dist/icons/
+├── opo-sprite-ui.svg
+├── opo-sprite-brand.svg
+├── icons.manifest.json
+└── icon-name.d.ts
+```
+
+Estos archivos representan los artefactos runtime consumidos por el sistema.
+
+Los archivos dentro de `dist/icons` no deben editarse manualmente.
+
+---
+
+## Arquitectura general
+
+```bash
 src/components/opo-icon/
 ├── raw-icons/
-│   ├── ui/
-│   └── brand/
+│   ├── ui/                ← Iconos de interfaz (outline)
+│   └── brand/             ← Logos, redes sociales y pictogramas
 │
 dist/icons/
 ├── opo-sprite-ui.svg
@@ -33,6 +131,8 @@ dist/icons/
 ├── icons.manifest.json
 └── icon-name.d.ts
 ```
+
+---
 
 ### Source Layer
 
@@ -42,8 +142,8 @@ raw-icons/
 
 Contiene los SVG originales y representa la única fuente editable del sistema.
 
-- `ui/` → iconos de interfaz reutilizables
-- `brand/` → logos y pictogramas de marca
+- `ui/` → iconos de interfaz reutilizables.
+- `brand/` → logos, pictogramas y assets de marca.
 
 Los archivos dentro de `raw-icons` nunca se sirven directamente al navegador.
 
@@ -59,12 +159,10 @@ Se generan automáticamente durante `icons:build`.
 
 Estos artefactos incluyen:
 
-- SVG sprite compilado
-- manifest JSON
-- typings TypeScript
-- assets distribuibles para runtime
-
-Los archivos dentro de `dist/icons` no deben editarse manualmente.
+- sprites SVG compilados,
+- manifest JSON,
+- typings TypeScript,
+- y assets distribuibles para runtime.
 
 ---
 
@@ -87,11 +185,11 @@ Esto desacopla completamente el componente de:
 - Storybook,
 - Vite,
 - Stencil,
-- o la estructura interna del repositorio.
+- y la estructura interna del repositorio.
 
 ---
 
-# SVG Sprite Strategy
+## Estrategia Runtime basada en Sprite
 
 Todos los iconos se renderizan mediante un modelo basado en:
 
@@ -102,53 +200,26 @@ Todos los iconos se renderizan mediante un modelo basado en:
 Durante la build:
 
 1. Los SVG originales se transforman en símbolos SVG (`<symbol>`).
-2. Cada símbolo recibe un ID único:
-
-   ```txt
-   opo-icon-check
-   ```
-
-3. El sprite final se genera en:
-
-   ```txt
-   dist/icons/opo-sprite-ui.svg
-   ```
-
-4. El componente `opo-icon` renderiza:
-
-   ```html
-   <use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
-   ```
+2. Cada símbolo recibe un ID único.
+3. Los sprites finales se generan dentro de `dist/icons`.
+4. El componente `opo-icon` consume los símbolos mediante `<use>`.
 
 ---
 
-## Why Sprite-Based Rendering?
+### ¿Por qué usar sprites SVG?
 
-Aunque técnicamente sería posible renderizar cada SVG como un asset independiente, el modelo sprite aporta varias ventajas arquitectónicas importantes:
+Aunque técnicamente sería posible renderizar cada SVG como un asset independiente o inline, el modelo sprite aporta varias ventajas arquitectónicas:
 
-### Consistency
-
-Todos los iconos se renderizan mediante el mismo mecanismo.
-
-### Runtime Performance
-
-Reduce la necesidad de múltiples requests HTTP independientes.
-
-### Styling
-
-Facilita:
-
-- theming,
-- herencia mediante `currentColor`,
-- y estrategias de diseño consistentes.
-
-### Encapsulation
-
-El componente mantiene una API desacoplada de la estructura interna de cada SVG.
+- consistencia visual,
+- desacoplamiento runtime,
+- reducción de requests independientes,
+- herencia visual mediante CSS,
+- compatibilidad con distribución externa,
+- y una API de componente más estable.
 
 ---
 
-# Shadow DOM Considerations
+### Consideraciones sobre Shadow DOM
 
 El componente `opo-icon` utiliza:
 
@@ -156,15 +227,13 @@ El componente `opo-icon` utiliza:
 shadow: true;
 ```
 
-Por este motivo, el sistema no puede depender de:
+Por este motivo, el sistema no depende de símbolos inline dentro del documento principal:
 
 ```html
 <use href="#icon-id"></use>
 ```
 
-referenciando símbolos inline dentro del documento principal.
-
-En su lugar, el componente consume un sprite SVG externo mediante URL absoluta:
+En su lugar, consume un sprite SVG externo mediante URL absoluta:
 
 ```html
 <use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
@@ -175,183 +244,12 @@ Esto garantiza compatibilidad con:
 - Shadow DOM,
 - Storybook,
 - SSR,
-- apps consumidoras externas,
-- y futuros escenarios de distribución mediante CDN.
+- aplicaciones consumidoras externas,
+- y posibles escenarios de distribución mediante CDN.
 
 ---
 
-# SVG Normalization Strategy
-
-Los SVG originales proporcionados desde Figma presentaban varias inconsistencias habituales en flujos de exportación orientados únicamente a diseño visual.
-
-Algunos problemas detectados:
-
-- `viewBox` inconsistentes
-- tamaños arbitrarios
-- colores hardcodeados
-- estilos inline
-- transforms innecesarios
-- IDs redundantes
-- metadata generada automáticamente
-- diferencias estructurales entre assets
-
-Aunque estos problemas no impedían el renderizado, sí dificultaban:
-
-- consistencia visual,
-- theming,
-- integración segura en sprites,
-- reutilización,
-- y mantenibilidad del sistema.
-
-Por este motivo se implementó una pipeline de normalización orientada a Design Systems reutilizables.
-
----
-
-# SVG Validation Rules
-
-Durante la build se validan automáticamente distintos aspectos de los SVG.
-
-Entre ellos:
-
-- nombres duplicados,
-- `viewBox` inconsistentes,
-- estilos inline,
-- colores hardcodeados,
-- IDs duplicados,
-- iconos vacíos,
-- y colisiones de nombres públicos.
-
-La pipeline sigue una estrategia:
-
-```txt
-fail-fast
-```
-
-Si un asset incumple las reglas definidas, el build falla explícitamente.
-
----
-
-# Public vs Internal Naming
-
-El sistema distingue entre:
-
-## Public API
-
-```html
-<opo-icon name="check"></opo-icon>
-```
-
-## Internal Symbol IDs
-
-```txt
-opo-icon-check
-```
-
-Los prefijos internos (`ui-`, `brand-`, `opo-icon-`) nunca forman parte de la API pública.
-
----
-
-## Legacy Compatibility
-
-El componente mantiene compatibilidad temporal con nombres legacy:
-
-```txt
-ui-check
-opo-icon-check
-```
-
-pero normalizándolos automáticamente a:
-
-```txt
-check
-```
-
-y mostrando warnings únicamente en desarrollo.
-
----
-
-# Manifest & Typings
-
-Durante `icons:build` se generan automáticamente:
-
-## Manifest
-
-```txt
-dist/icons/icons.manifest.json
-```
-
-Usado por:
-
-- Storybook,
-- galerías de iconos,
-- tooling,
-- y validación runtime.
-
----
-
-## TypeScript Typings
-
-```txt
-dist/icons/icon-name.d.ts
-```
-
-Generado automáticamente desde el mismo catálogo de iconos.
-
-Esto permite:
-
-- autocompletado,
-- reducción de errores,
-- sincronización entre sprite y API,
-- y mejor DX para consumers TypeScript.
-
-Actualmente los typings se consideran tooling interno y todavía no forman parte de una API pública estable documentada.
-
----
-
-# Storybook Integration
-
-Storybook consume el manifest mediante:
-
-```txt
-fetch("/icons/icons.manifest.json")
-```
-
-en runtime.
-
-Se evitó deliberadamente el uso de imports estáticos desde `dist/icons` para evitar problemas derivados de:
-
-```txt
-stencil build --watch
-```
-
-limpiando `dist` durante el arranque.
-
----
-
-# Development Workflow
-
-El flujo de desarrollo recomendado es:
-
-```bash
-npm run dev
-```
-
-o:
-
-```bash
-npm run dev:fresh
-```
-
-El sistema garantiza:
-
-1. Build inicial completo
-2. Generación inicial de iconos
-3. Arranque de watchers
-4. Storybook sirviendo assets desde `/icons`
-
----
-
-# Runtime Asset Serving
+### Runtime Asset Serving
 
 Storybook expone:
 
@@ -373,17 +271,319 @@ Esto permite que:
 <use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
 ```
 
-funcione correctamente tanto en:
-
-- Storybook,
-- landing externa,
-- como futuras aplicaciones consumidoras.
+funcione correctamente tanto en Storybook como en aplicaciones consumidoras externas.
 
 ---
 
-# Component API
+## Optimización y normalización SVG
 
-## Basic Usage
+La estrategia de optimización diferencia explícitamente entre iconos de interfaz e iconos de marca.
+
+```txt
+UI icons → system assets
+Brand icons → identity assets
+```
+
+Esta distinción evita aplicar las mismas reglas de normalización a assets que cumplen funciones visuales distintas dentro del sistema.
+
+---
+
+### Arquitectura de configuración SVGO
+
+La optimización SVG se basa en una configuración parametrizable compartida:
+
+```txt
+svgo.config.base.js
+```
+
+que actúa como configuración base reutilizable para distintos tipos de iconos.
+
+A partir de esta configuración común se construyen:
+
+- `svgo.config.ui.js`
+- `svgo.config.brand.js`
+
+permitiendo aplicar reglas específicas según el tipo de asset sin duplicar toda la configuración de SVGO.
+
+Esto facilita mantener una estrategia coherente de optimización mientras se preservan diferencias importantes entre iconos UI y Brand.
+
+---
+
+### UI Icons: System Assets
+
+Los iconos UI forman parte de la gramática visual del sistema.
+
+Por este motivo siguen una estrategia de normalización más estricta orientada a:
+
+- consistencia visual,
+- `currentColor`,
+- previsibilidad,
+- theming,
+- reutilización,
+- y comportamiento homogéneo dentro de componentes.
+
+La intención es que los iconos UI se comporten como assets del sistema: limpios, predecibles y fácilmente integrables en cualquier contexto de interfaz.
+
+---
+
+### Brand Icons: Identity Assets
+
+Los iconos Brand representan logos, pictogramas o assets con identidad visual propia.
+
+Por este motivo siguen una estrategia de sanitización más conservadora orientada a:
+
+- preservar colores originales,
+- mantener proporciones y `viewBox`,
+- respetar detalles visuales específicos,
+- y evitar optimizaciones destructivas.
+
+En estos casos, la fidelidad visual del asset tiene prioridad frente a la normalización agresiva.
+
+---
+
+### Reglas compartidas de optimización
+
+Ambos tipos de iconos comparten ciertas optimizaciones seguras:
+
+- `removeDimensions`
+- safe `removeAttrs`
+- `removeScripts`
+- `removeComments`
+- `removeUselessDefs`
+- `sortAttrs`
+- `convertPathData`
+
+`removeDimensions` elimina `width` y `height` del `<svg>` raíz para permitir que el tamaño final se controle desde CSS, sin alterar necesariamente el `viewBox` ni la proporción interna del asset.
+
+---
+
+### Reglas de optimización para UI Icons
+
+Los iconos UI aplican una estrategia más estricta:
+
+- `removeDimensions`
+- safe `removeAttrs`
+- `removeStyleElement`
+- `removeScripts`
+- `removeComments`
+- `removeUselessDefs`
+- `sortAttrs`
+- `convertPathData`
+
+Además, los iconos UI deberían cumplir reglas como:
+
+- `viewBox` consistente, normalmente `0 0 24 24`,
+- uso de `currentColor`,
+- ausencia de colores hardcodeados,
+- ausencia de estilos inline,
+- y estructura SVG predecible.
+
+> [!NOTE]
+> La normalización de `viewBox` y `currentColor` no debería asumirse como una transformación automática destructiva. Es preferible validarla y fallar explícitamente si un icono UI no cumple las reglas esperadas.
+
+---
+
+### Reglas de optimización para Brand Icons
+
+Los iconos Brand aplican una estrategia conservadora:
+
+- `removeDimensions`
+- safe `removeAttrs`
+- `removeScripts`
+- `removeComments`
+- `removeUselessDefs`
+- `sortAttrs`
+- `convertPathData`
+- no `removeStyleElement`
+- no automatic `fill` / `stroke` removal
+- no automatic `viewBox` normalization
+
+La intención es optimizar sin destruir información visual propia del asset de marca.
+
+---
+
+### Reglas de validación
+
+Durante la build se validan automáticamente distintos aspectos del sistema SVG.
+
+Entre ellos:
+
+- nombres duplicados,
+- colisiones de IDs,
+- iconos vacíos,
+- estructuras SVG inválidas,
+- y reglas específicas según el tipo de icono (`ui` o `brand`).
+
+La pipeline sigue una estrategia:
+
+```txt
+fail-fast
+```
+
+Si un asset incumple las reglas definidas, el build falla explícitamente.
+
+En el caso de los iconos UI, algunas reglas se validan explícitamente durante la build.
+
+Por ejemplo:
+
+- el `viewBox` debe existir y utilizar la grid estándar del sistema:
+
+```svg
+viewBox="0 0 24 24"
+```
+
+- los atributos `fill` y `stroke` no deben contener colores hardcodeados y deberían utilizar valores compatibles con la estrategia visual del sistema, como:
+
+```svg
+stroke="currentColor"
+fill="none"
+```
+
+Actualmente esta validación se implementa mediante:
+
+```txt
+validateLineIcon()
+```
+
+dentro de:
+
+```txt
+generate-icon-sprite.js
+```
+
+> [!NOTE]
+> Algunas reglas, como `currentColor`, `viewBox` consistente o ausencia de colores hardcodeados, aplican principalmente a iconos UI. Los iconos Brand pueden conservar colores, proporciones o estructuras propias cuando forman parte de su identidad visual.
+
+---
+
+## API pública y nomenclatura
+
+### Public API vs Internal IDs
+
+El sistema distingue entre:
+
+#### Public API
+
+```html
+<opo-icon name="check"></opo-icon>
+```
+
+#### Internal Symbol IDs
+
+```txt
+opo-icon-check
+```
+
+Los prefijos internos (`ui-`, `brand-`, `opo-icon-`) no forman parte de la API pública.
+
+---
+
+### Compatibilidad legacy
+
+El componente mantiene compatibilidad temporal con nombres legacy:
+
+```txt
+ui-check
+opo-icon-check
+```
+
+normalizándolos automáticamente a:
+
+```txt
+check
+```
+
+y mostrando warnings únicamente en desarrollo.
+
+---
+
+## Manifest y typings
+
+Durante `icons:build` se generan automáticamente:
+
+- manifest JSON,
+- typings TypeScript,
+- y sprites SVG.
+
+---
+
+### Manifest
+
+```txt
+dist/icons/icons.manifest.json
+```
+
+Este archivo actúa como catálogo runtime de los iconos disponibles.
+
+Se utiliza en:
+
+- Storybook,
+- galerías de iconos,
+- tooling,
+- y validación runtime.
+
+Ejemplo de entrada:
+
+```json
+{
+  "name": "check",
+  "id": "opo-icon-check",
+  "category": "ui",
+  "keywords": ["confirmar", "ok", "aceptar"],
+  "viewBox": "0 0 24 24"
+}
+```
+
+- `name`: nombre público del icono usado por la API del componente.
+- `id`: ID interno usado dentro del sprite SVG.
+- `category`: categoría del icono (`ui` o `brand`).
+- `keywords`: palabras clave para búsqueda y tooling.
+- `viewBox`: caja de vista SVG del icono.
+
+---
+
+### TypeScript Typings
+
+```txt
+dist/icons/icon-name.d.ts
+```
+
+Generado automáticamente desde el mismo catálogo de iconos.
+
+Esto permite:
+
+- autocompletado,
+- reducción de errores,
+- sincronización entre sprite y API,
+- y mejor DX para consumers TypeScript.
+
+Actualmente los typings se consideran tooling interno y todavía no forman parte de una API pública estable documentada.
+
+---
+
+## Integración con Storybook
+
+Storybook consume el manifest mediante:
+
+```txt
+fetch("/icons/icons.manifest.json")
+```
+
+en runtime.
+
+Se evitó deliberadamente el uso de imports estáticos desde `dist/icons` para evitar problemas derivados de:
+
+```txt
+stencil build --watch
+```
+
+limpiando `dist` durante el arranque.
+
+---
+
+## API del componente
+
+### Uso básico
 
 ```html
 <opo-icon name="check"></opo-icon>
@@ -391,7 +591,7 @@ funcione correctamente tanto en:
 
 ---
 
-## Semantic Colors
+### Colores semánticos
 
 ```html
 <opo-icon name="warning" color="danger"></opo-icon>
@@ -399,7 +599,7 @@ funcione correctamente tanto en:
 
 Los colores semánticos son opcionales.
 
-Por defecto, el icono hereda:
+Por defecto, los iconos UI heredan:
 
 ```css
 currentColor
@@ -409,7 +609,7 @@ desde el contexto padre.
 
 ---
 
-## Decorative Icons
+### Iconos decorativos
 
 Cuando no se proporciona:
 
@@ -421,7 +621,7 @@ el icono se considera decorativo y se oculta de tecnologías asistivas.
 
 ---
 
-## Custom SVG
+### SVG personalizado
 
 El componente también soporta iconos personalizados mediante slot:
 
@@ -431,11 +631,11 @@ El componente también soporta iconos personalizados mediante slot:
 </opo-icon>
 ```
 
-Este soporte está pensado principalmente para contenido estático.
+Este soporte está pensado principalmente para contenido estático o casos puntuales que no pertenecen al catálogo principal.
 
 ---
 
-# CurrentColor Strategy
+## Estrategia currentColor
 
 El sistema prioriza herencia mediante:
 
@@ -443,37 +643,13 @@ El sistema prioriza herencia mediante:
 currentColor
 ```
 
-como comportamiento principal.
+principalmente para iconos UI.
 
 Esto permite que los iconos:
 
 - hereden automáticamente el color del contexto,
 - funcionen correctamente dentro de botones y componentes compuestos,
-- y reduzcan la necesidad de props visuales explícitas.
+- reduzcan la necesidad de props visuales explícitas,
+- y se integren mejor con theming.
 
-Ejemplo:
-
-```css
-.opo-button {
-  color: var(--sys-color-on-action-primary);
-}
-```
-
-```html
-<opo-button>
-  <opo-icon name="check"></opo-icon>
-</opo-button>
-```
-
----
-
-# Future Improvements
-
-Algunas posibles evoluciones futuras:
-
-- aliases y deprecations automáticas,
-- categorías y metadata de iconos,
-- visual regression testing,
-- hashing/versionado del sprite,
-- CDN asset serving,
-- y tooling adicional de validación SVG.
+Para iconos Brand, `current

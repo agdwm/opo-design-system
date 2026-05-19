@@ -1,5 +1,7 @@
 # Typography
 
+---
+
 ## Overview
 
 La estrategia tipográfica del sistema se ha planteado como una capa reutilizable dentro de la arquitectura de Design Tokens.
@@ -20,145 +22,80 @@ component styles
 
 ## Font Family
 
-El sistema utiliza `IBM Plex Sans` como tipografía principal, acompañada de una fallback stack más robusta:
+El archivo de tokens original definía una familia tipográfica de seguridad `(sans-serif)`. Con el objetivo de mejorar el comportamiento de carga de fuentes y ofrecer una experiencia visual más consistente entre plataformas, he decidido ampliar la fallback font stack incorporando `system-ui`.
+
+De este modo, si IBM Plex Sans no está disponible o todavía no ha terminado de cargar, el navegador utilizará automáticamente la **tipografía nativa del sistema operativo** (SF Pro en macOS/iOS, Segoe UI en Windows, Roboto en Android, etc.), proporcionando una _experiencia visual más consistente y natural_ que la ofrecida por una familia genérica `sans-serif`.
+
+Además, la nomenclatura original ha sido actualizada hacia una convención más neutral y alineada con la arquitectura general del sistema de tokens.
 
 ```css
+/* Before */
+--font-family-main: "IBM Plex Sans", sans-serif;
+
+/* After */
 --ref-font-family-sans: "IBM Plex Sans", system-ui, sans-serif;
 ```
 
-La inclusión de `system-ui` permite que, si la fuente principal no está disponible o todavía no ha terminado de cargar, el navegador utilice automáticamente la tipografía nativa del sistema operativo.
-
-Esto mejora:
-
-- el comportamiento de carga,
-- la coherencia visual entre plataformas,
-- y la experiencia percibida por el usuario.
-
-Ejemplos de fuentes utilizadas por `system-ui`:
-
-- SF Pro en macOS/iOS,
-- Segoe UI en Windows,
-- Roboto en Android.
-
 ---
 
-## Font Size Strategy
+## Estrategia de Font Size
 
-La escala tipográfica original estaba acoplada a contexto visual y viewport, con nombres como:
-
-```css
---font-size-desktop-xs
-```
-
-Para hacerla más reutilizable, se ha refactorizado hacia una escala neutral de reference tokens:
+La escala tipográfica original utilizaba tokens con un naming acoplado tanto al viewport `(desktop, mobile)` como al contexto visual `(xs, xl, xxl)`.
+Con el objetivo de desacoplar la tipografía del contexto de uso y mejorar la escalabilidad del sistema, he refactorizado la nomenclatura hacia un sistema de _reference typography tokens_ neutral y reutilizable.
 
 ```css
---ref-font-size-100
---ref-font-size-200
---ref-font-size-300
---ref-font-size-400
---ref-font-size-500
---ref-font-size-600
---ref-font-size-700
---ref-font-size-800
---ref-font-size-900
---ref-font-size-1000
+/* Before */
+--font-size-desktop-xs: 0.75rem;
+
+/* After */
+--ref-font-size-100: 0.75rem;
 ```
 
-Ejemplo:
-
-```css
---ref-font-size-300: 1rem; /* 16px */
---ref-font-size-700: 1.5rem; /* 24px */
-```
-
-Esta nomenclatura:
+La nueva nomenclatura:
 
 - elimina referencias directas a dispositivos,
 - evita acoplar valores a un contexto visual concreto,
 - facilita la reutilización,
 - y permite evolucionar la escala sin renombrar tokens constantemente.
+- sigue una aproximación similar a la utilizada por sistemas modernos como _Tailwind CSS, Material Design o Spectrum._
 
 Los reference font-size tokens representan únicamente valores tipográficos reutilizables. No deberían expresar intención final de uso.
 
----
-
-## System Typography Tokens
-
-Sobre los reference tokens puede construirse una capa semántica de system tokens.
-
-Ejemplo:
+En su lugar, las decisiones tipográficas reutilizables del sistema se encapsulan mediante system tokens (`--sys-`), que posteriormente son adaptados a través de component tokens específicos (`--cmp-`) consumidos finalmente por los componentes.
 
 ```css
---sys-typography-body-size: var(--ref-font-size-300);
---sys-typography-heading-size: var(--ref-font-size-700);
+/* Example */
+--sys-typography-body-md-size: var(--ref-font-size-300);
 ```
 
-Esta capa expresa decisiones reutilizables del sistema.
-
-Por ejemplo:
-
-```css
---sys-typography-body-size
-```
-
-representa una decisión de uso tipográfico más clara que:
-
-```css
---ref-font-size-300
-```
-
-En un sistema más maduro, esta capa podría evolucionar hacia una escala tipográfica más completa:
-
-```css
---sys-typography-body-sm-size
---sys-typography-body-md-size
---sys-typography-heading-sm-size
---sys-typography-heading-md-size
---sys-typography-heading-lg-size
-```
-
-En esta iteración, la semántica tipográfica se mantiene deliberadamente contenida para evitar una abstracción prematura.
+Esta separación entre **reference tokens** y **system tokens** mejora la reutilización, mantenibilidad y escalabilidad del sistema, además de facilitar futuras refactorizaciones y la introducción de responsive o fluid typography mediante `clamp()`.
 
 ---
 
 ## Line Height
 
-Los tokens de `line-height` se han definido como valores unitless.
+Tras analizar los valores de `line-height` definidos en los diseños de Figma, he podido identificar y abstraer una **escala tipográfica consistente** en un conjunto más reducido de tokens reutilizables de interlineado.
 
-Ejemplo:
+En lugar de asociar los tokens a viewports específicos (`desktop`,`mobile`) o a contextos de uso tipográfico (`heading`,`body`), he adoptado una estrategia de nomenclatura más neutral basada en la densidad visual y reutilización transversal.
 
 ```css
+/* Before */
+--font-line-height-desktop-m: 1.5rem;
+
+/* After */
 --ref-line-height-base: 1.5;
 ```
 
-Esto significa que el `line-height` se calcula proporcionalmente respecto al `font-size` actual del elemento.
+He definido los tokens intencionadamente como **valores unitless** (sin unidad) en lugar de utilizar medidas absolutas en `px` o `rem`, ya que los valores unitless proporcionan un comportamiento tipográfico más flexible y resiliente al escalar proporcionalmente respecto al tamaño de fuente calculado de cada elemento, en lugar de depender del `font-size` raíz del documento (`html`).
 
-Por ejemplo:
+Por ejemplo, un valor de `1.5` significa que el line-height calculado será equivalente al `150%` del tamaño de fuente actual del elemento.
+
+Esto resulta especialmente útil en escenarios de **tipografía fluida** como:
 
 ```css
-font-size: 16px;
-line-height: 1.5;
+font-size: clamp(2rem, 5vw, 4rem);
+line-height: 1.2;
 ```
-
-equivale a:
-
-```txt
-24px
-```
-
-La ventaja de usar valores unitless es que escalan mejor con el tamaño de fuente del propio elemento, en lugar de depender de una medida absoluta en `px` o `rem`.
-
-Esto mejora:
-
-- flexibilidad,
-- herencia tipográfica,
-- compatibilidad con fluid typography,
-- y mantenibilidad en componentes reutilizables.
-
----
-
-## Line Height Scale
 
 La escala propuesta representa diferentes densidades tipográficas:
 
@@ -186,42 +123,31 @@ Cada valor responde a una intención visual distinta:
 
 ## Font Weights
 
-La escala de pesos tipográficos se mantiene deliberadamente reducida:
+Aunque [**_IBM Plex Sans_**](https://www.ibm.com/plex/specs/) dispone oficialmente de una gama de pesos tipográficos más amplia, he decidido mantener deliberadamente la escala original de `font-weight` (`400`, `500`, `600` y `700`), ya que un conjunto reducido y controlado contribuye a mantener una jerarquía tipográfica más coherente y mantenible dentro de la interfaz.
+
+Esta decisión reduce la complejidad visual del sistema y evita un uso excesivamente granular de pesos tipográficos que raramente aporta valor real en contextos UI.
+
+La única modificación realizada fue la **actualización de la nomenclatura de los tokens** para alinearla con la convención utilizada en el resto de reference tokens del sistema.
 
 ```css
+/* Before */
+--font-weight-text: 400;
+
+/* After */
 --ref-font-weight-regular: 400;
---ref-font-weight-medium: 500;
---ref-font-weight-semibold: 600;
---ref-font-weight-bold: 700;
 ```
-
-Aunque `IBM Plex Sans` dispone de una gama más amplia de pesos, limitar la escala ayuda a mantener:
-
-- jerarquía visual más clara,
-- menor complejidad,
-- consistencia entre componentes,
-- y una interfaz menos fragmentada.
-
-Una escala demasiado granular de pesos puede añadir ruido visual sin aportar necesariamente más claridad.
 
 ---
 
 ## Letter Spacing
 
-El sistema incorpora una pequeña escala de `letter-spacing`:
+El sistema original no incluía tokens específicos para `letter-spacing`. Aunque el tracking suele tener un impacto más sutil que otras propiedades tipográficas como `font-size` o `line-height`, también contribuye a la consistencia del sistema tipográfico.
 
-```css
---ref-letter-spacing-tighter: -0.04em;
---ref-letter-spacing-tight: -0.02em;
---ref-letter-spacing-normal: 0;
---ref-letter-spacing-wide: 0.02em;
---ref-letter-spacing-wider: 0.04em;
---ref-letter-spacing-widest: 0.06em;
-```
+Por este motivo, he optado por incorporar una pequeña escala de **reference letter-spacing tokens** reutilizables.
 
-Los valores se definen en `em` para que escalen proporcionalmente con el tamaño de fuente actual.
+Estos valores se han definido en unidades relativas `em` para garantizar que el espaciado escale proporcionalmente junto al tamaño tipográfico, mejorando así la consistencia visual entre distintos tamaños de fuente.
 
-Esto permite que el tracking mantenga una relación más natural con la escala tipográfica.
+De nuevo, estos tokens no representan estilos tipográficos finales, sino valores tipográficos reutilizables del sistema.
 
 ---
 
@@ -247,7 +173,7 @@ Por este motivo, la estrategia propuesta es híbrida: usar fluid typography solo
 
 ---
 
-## Clamp Strategy
+## Estrategia clamp()
 
 `clamp()` permite definir tamaños fluidos con límites mínimo y máximo.
 
@@ -285,7 +211,7 @@ El objetivo no es que todo sea fluido, sino que la tipografía responda mejor cu
 
 ---
 
-## Current Scope
+## Alcance actual
 
 En esta iteración, la estrategia tipográfica se centra en:
 
@@ -301,7 +227,7 @@ En un entorno real, esta capa debería evolucionar junto con diseño, producto y
 
 ---
 
-## Future Improvements
+## Posibles evoluciones futuras
 
 Posibles mejoras futuras:
 

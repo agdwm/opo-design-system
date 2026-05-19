@@ -1,34 +1,47 @@
 # Accessibility
 
+---
+
 ## Overview
 
-La accesibilidad se ha considerado desde el inicio como parte de la arquitectura del sistema, no como una capa añadida al final.
+Aunque el alcance de la prueba no permitía desarrollar una auditoría completa de accesibilidad, muchas de las decisiones arquitectónicas del sistema se han planteado teniendo en cuenta principios básicos de accesibilidad y progressive enhancement desde el inicio.
 
-Aunque el alcance de esta iteración no incluye una auditoría completa, varias decisiones de componentes, tokens, HTML y CSS se han planteado siguiendo principios básicos de accesibilidad y progressive enhancement.
+Esto incluye aspectos como:
 
-El objetivo es construir componentes reutilizables que sean:
+- uso de HTML semántico,
+- jerarquía tipográfica consistente,
+- focus states visibles,
+- estrategias responsive compatibles con zoom y aumento de tamaño del texto,
+- compatibilidad con `prefers-reduced-motion`,
+- contraste suficiente,
+- relaciones semánticas claras entre elementos interactivos y contenido accesible,
+- y uso de atributos `aria-*` cuando resultaban necesarios para mejorar semántica o interacción.
 
-- semánticamente claros,
-- robustos en distintos contextos,
-- compatibles con tecnologías asistivas,
-- y respetuosos con las preferencias del usuario.
+Varias decisiones relacionadas con spacing, fluid typography, line-height unitless o container queries también se han planteado considerando su impacto sobre legibilidad, mantenibilidad y experiencia de uso.
+
+Además, algunas de estas decisiones —como HTML semántico, estructura clara, responsive y performance— también pueden contribuir indirectamente a una mejor interpretación técnica del contenido.
 
 ---
 
-# Semantic HTML
+## HTML semántico
 
 Siempre que sea posible, la interfaz debe apoyarse primero en HTML semántico nativo.
 
 Esto implica priorizar elementos como:
 
 ```html
-<button>
-  <a>
-    <nav>
-      <header>main> section> label> input></header>
-    </nav></a
-  >
-</button>
+<button>Guardar</button>
+
+<a href="/about">Sobre nosotros</a>
+
+<nav aria-label="Main navigation">...</nav>
+
+<main>...</main>
+
+<section>...</section>
+
+<label for="email">Email</label>
+<input id="email" name="email" />
 ```
 
 antes de recurrir a roles personalizados o atributos ARIA.
@@ -44,16 +57,14 @@ ARIA puede mejorar la accesibilidad cuando se usa correctamente, pero también p
 
 ---
 
-# Icon Accessibility
+## Accesibilidad de iconos
 
 El componente `opo-icon` distingue entre dos casos principales:
 
 - iconos decorativos,
-- iconos con significado propio.
+- e iconos con significado propio.
 
----
-
-## Decorative Icons
+### Iconos decorativos
 
 Por defecto, si no se proporciona una etiqueta accesible, el icono se considera decorativo.
 
@@ -76,9 +87,7 @@ Ejemplo:
 
 En este caso, el texto visible `Guardar` ya comunica la acción. El icono no necesita ser anunciado.
 
----
-
-## Meaningful Icons
+### Iconos con significado
 
 Cuando el icono transmite significado por sí mismo, debe proporcionarse una etiqueta accesible mediante `ariaLabel`.
 
@@ -88,17 +97,15 @@ Ejemplo:
 <opo-icon name="trash-2" aria-label="Eliminar elemento"></opo-icon>
 ```
 
-En este caso, el componente renderiza el icono con:
+En este caso, el componente renderiza:
 
 ```html
 role="img" aria-label="Eliminar elemento"
 ```
 
-De esta forma, el icono puede ser anunciado correctamente por tecnologías asistivas.
+permitiendo que el icono pueda anunciarse correctamente mediante tecnologías asistivas.
 
----
-
-# ariaLabel Strategy
+### Estrategia ariaLabel
 
 La prop `ariaLabel` se utiliza para diferenciar entre:
 
@@ -107,9 +114,7 @@ decorative icon → aria-hidden="true"
 meaningful icon → role="img" + aria-label
 ```
 
-Esta estrategia evita exponer iconos decorativos al árbol accesible, pero permite etiquetar aquellos que sí transmiten información.
-
-La intención es mantener una API explícita y sencilla:
+La intención es mantener una API sencilla y explícita:
 
 ```html
 <!-- Decorative -->
@@ -119,13 +124,11 @@ La intención es mantener una API explícita y sencilla:
 <opo-icon name="warning" aria-label="Advertencia"></opo-icon>
 ```
 
----
-
-# Avoiding Redundant Labels
+### Evitando labels redundantes
 
 No todos los iconos necesitan `aria-label`.
 
-Si un icono aparece junto a texto visible que ya comunica su significado, normalmente debe tratarse como decorativo.
+Si un icono aparece junto a texto visible que ya comunica el significado, normalmente debe tratarse como decorativo.
 
 Ejemplo:
 
@@ -136,13 +139,11 @@ Ejemplo:
 </button>
 ```
 
-Aquí el texto `Buscar` ya proporciona el nombre accesible del botón.
+Aquí el texto visible ya proporciona el nombre accesible del botón.
 
-Añadir `aria-label="Buscar"` al icono podría generar una experiencia redundante para lectores de pantalla.
+Añadir `aria-label="Buscar"` al icono podría generar redundancia para lectores de pantalla.
 
----
-
-# Icon-Only Controls
+### Controles solo con icono
 
 Cuando un icono se utiliza dentro de un control sin texto visible, el nombre accesible debe vivir en el control interactivo, no necesariamente en el icono.
 
@@ -160,9 +161,31 @@ En este caso:
 - el icono sigue siendo decorativo,
 - y la interacción queda correctamente descrita.
 
+> [!NOTE]
+> `opo-icon` no debe utilizarse como elemento interactivo por sí mismo. Si el icono dispara una acción, debería vivir dentro de un botón, link u otro control semántico.
+
+### SVG personalizado mediante slot
+
+`opo-icon` permite proporcionar un SVG personalizado mediante slot:
+
+```html
+<opo-icon aria-label="Icono personalizado">
+  <svg slot="icon" viewBox="0 0 24 24">...</svg>
+</opo-icon>
+```
+
+Este patrón está pensado principalmente para contenido estático.
+
+Cuando se utiliza un SVG custom, se mantienen las mismas reglas generales:
+
+- si es decorativo, no necesita etiqueta accesible,
+- si comunica significado, debe proporcionarse `aria-label`,
+- el SVG debería estar correctamente dimensionado,
+- y debería respetar `currentColor` si forma parte de la interfaz.
+
 ---
 
-# currentColor Inheritance
+## Color, contraste y currentColor
 
 Los iconos heredan color mediante:
 
@@ -187,8 +210,6 @@ Ejemplo:
 </opo-button>
 ```
 
-El icono hereda automáticamente el color del botón.
-
 Esta estrategia aporta varias ventajas:
 
 - reduce props visuales innecesarias,
@@ -196,25 +217,27 @@ Esta estrategia aporta varias ventajas:
 - favorece theming,
 - y evita valores hardcodeados como `white` o `#fff`.
 
----
+### Contraste de color
 
-# Color and Contrast
+Aunque los iconos puedan heredar color del contexto, el contraste final debe validarse en la composición donde se utilizan.
 
-Aunque los iconos puedan heredar color del contexto, el contraste final debe validarse en el componente o superficie donde se usan.
-
-La responsabilidad del contraste no recae únicamente en `opo-icon`, sino en la composición final:
+La responsabilidad del contraste no recae únicamente en `opo-icon`, sino en la combinación final:
 
 ```txt
 icon color + background color + context
 ```
 
-Por ejemplo, un icono `warning` puede ser correcto en un fondo claro, pero necesitar otro tratamiento si se usa sobre una superficie oscura.
-
 ---
 
-# Motion Accessibility
+## Motion Accessibility
 
-El sistema contempla `prefers-reduced-motion` para reducir animaciones no esenciales cuando el usuario así lo solicita desde el sistema operativo.
+El sistema contempla compatibilidad con:
+
+```css
+prefers-reduced-motion
+```
+
+para reducir animaciones no esenciales cuando el usuario así lo solicita desde el sistema operativo.
 
 Ejemplo:
 
@@ -226,8 +249,6 @@ Ejemplo:
 }
 ```
 
-Esto es especialmente importante en animaciones continuas como spinners, loaders o transiciones decorativas.
-
 La regla general es:
 
 ```txt
@@ -238,11 +259,11 @@ Motion decorativa, reducible.
 
 ---
 
-# Focus and Keyboard Interaction
+## Focus y navegación mediante teclado
 
 Los componentes interactivos deben ser accesibles mediante teclado y mostrar estados de foco visibles.
 
-Aunque `opo-icon` no es interactivo por sí mismo, suele utilizarse dentro de componentes que sí lo son, como:
+Aunque `opo-icon` no es interactivo por sí mismo, suele utilizarse dentro de componentes que sí lo son:
 
 - botones,
 - links,
@@ -251,9 +272,9 @@ Aunque `opo-icon` no es interactivo por sí mismo, suele utilizarse dentro de co
 - tabs,
 - toolbars.
 
-La responsabilidad del foco debe vivir en el elemento interactivo, no en el icono decorativo.
+La responsabilidad del foco debe vivir en el elemento interactivo, no en el icono.
 
-Por ejemplo:
+Ejemplo:
 
 ```html
 <button>
@@ -266,7 +287,7 @@ El foco debe recaer sobre el botón, no sobre el icono.
 
 ---
 
-# SVG Focus Behavior
+## Comportamiento de foco en SVG
 
 Los SVG internos del componente se renderizan con:
 
@@ -274,32 +295,9 @@ Los SVG internos del componente se renderizan con:
 focusable="false"
 ```
 
-Esto ayuda a evitar que el SVG pueda recibir foco accidentalmente en ciertos navegadores o entornos, especialmente cuando se usa dentro de controles interactivos.
+Esto ayuda a evitar que el SVG pueda recibir foco accidentalmente en ciertos navegadores o entornos, especialmente cuando se utiliza dentro de controles interactivos.
 
----
-
-# Custom SVG Slot
-
-`opo-icon` permite proporcionar un SVG personalizado mediante slot:
-
-```html
-<opo-icon aria-label="Icono personalizado">
-  <svg slot="icon" viewBox="0 0 24 24">...</svg>
-</opo-icon>
-```
-
-Este patrón está pensado principalmente para contenido estático.
-
-Cuando se usa un SVG custom, se mantienen las mismas reglas generales:
-
-- si es decorativo, no necesita etiqueta accesible,
-- si comunica significado, debe proporcionarse `aria-label`,
-- el SVG debería estar correctamente dimensionado,
-- y debería respetar `currentColor` si forma parte de la interfaz.
-
----
-
-# Progressive Enhancement
+## Progressive Enhancement
 
 Varias decisiones del sistema se han planteado como mejoras progresivas:
 
@@ -310,13 +308,13 @@ Varias decisiones del sistema se han planteado como mejoras progresivas:
 - line-height unitless,
 - y tokens reutilizables para estados visuales.
 
-La idea es que la interfaz funcione de forma robusta incluso si ciertas mejoras visuales o de motion no están disponibles.
+La intención es que la interfaz siga funcionando de forma robusta incluso si ciertas mejoras visuales o de motion no están disponibles.
 
 ---
 
-# Current Scope
+## Alcance actual
 
-En esta iteración, la accesibilidad se ha abordado a nivel de foundations y componentes básicos.
+En esta iteración, la accesibilidad se ha abordado principalmente a nivel de foundations y componentes básicos.
 
 Se han priorizado:
 
@@ -327,11 +325,11 @@ Se han priorizado:
 - reducción de motion no esencial,
 - y buenas prácticas básicas de HTML.
 
-No se ha realizado una auditoría completa de accesibilidad automatizada o manual.
+No se ha realizado todavía una auditoría completa de accesibilidad automatizada o manual.
 
 ---
 
-# Future Improvements
+## Posibles mejoras futuras
 
 Posibles mejoras futuras:
 

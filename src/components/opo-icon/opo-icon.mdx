@@ -1,0 +1,201 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as IconStories from "./opo-icon.stories";
+
+<Meta of={IconStories} />
+
+# Icon
+
+`opo-icon` renderiza los iconos del `Design System OPO` mediante un **sprite SVG** externo.
+
+---
+
+## Overview
+
+El componente está pensado para iconos de interfaz reutilizables, con soporte para:
+
+- catálogo de iconos por nombre (`name`),
+- tamaños controlados (`size`),
+- colores semánticos opcionales (`color`),
+- herencia de color mediante `currentColor`,
+- accesibilidad para iconos decorativos o significativos (`aria-label`),
+- SVG personalizado mediante slot (`slot="icon"`),
+- y animación de rotación opcional (`spin`).
+
+El sistema utiliza un sprite SVG externo servido como asset runtime. Esto permite **mantener el componente ligero y desacoplado de los assets SVG originales**, aunque requiere que la aplicación consumidora sirva el sprite desde una ruta pública accesible.
+
+---
+
+## Usage
+
+### Basic usage
+
+```html
+<opo-icon name="check"></opo-icon>
+```
+
+### Semantic color
+
+```html
+<opo-icon name="warning" color="warning" aria-label="Advertencia"></opo-icon>
+```
+
+---
+
+### Runtime sprite serving
+
+El componente no contiene los SVG inline.
+`opo-icon` renderiza referencias a símbolos dentro de un sprite SVG externo mediante:
+
+```html
+<use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
+```
+
+Por defecto, el componente espera encontrar el sprite en:
+
+```text
+/icons/opo-sprite-ui.svg
+```
+
+Esto significa que la aplicación consumidora debe servir el sprite como un asset público accesible desde el navegador.
+
+Por ejemplo, en una aplicación Vite:
+
+```text
+public/icons/opo-sprite-ui.svg
+```
+
+En Storybook, el sprite se expone mediante `staticDirs`:
+
+```js
+staticDirs: [
+  {
+    from: "../dist/icons",
+    to: "/icons",
+  },
+];
+```
+
+La ruta puede personalizarse mediante la prop `spriteUrl`.
+
+---
+
+## Accessibility
+
+Por defecto, si no se proporciona `aria-label`, el icono se considera decorativo y se oculta a tecnologías asistivas.
+
+```html
+<opo-icon name="check"></opo-icon>
+```
+
+Cuando el icono comunica significado por sí mismo, debe proporcionarse una etiqueta accesible:
+
+```html
+<opo-icon name="trash-2" aria-label="Eliminar elemento"></opo-icon>
+```
+
+En botones solo con icono, el nombre accesible debe vivir normalmente en el elemento interactivo padre:
+
+```html
+<opo-button variant="ghost" size="icon" aria-label="Buscar">
+  <opo-icon name="search"></opo-icon>
+</opo-button>
+```
+
+---
+
+## Theming
+
+Por defecto, el icono hereda `currentColor` del contexto padre.
+
+```css
+.my-button {
+  color: var(--sys-color-on-action-primary);
+}
+```
+
+```html
+<button class="my-button">
+  <opo-icon name="check"></opo-icon>
+  Guardar
+</button>
+```
+
+Usa la prop `color` solo cuando el icono necesite un color semántico independiente:
+
+```html
+<opo-icon name="info-circle" color="danger"></opo-icon>
+```
+
+---
+
+## Custom SVG
+
+Para casos puntuales, el componente permite usar un SVG personalizado mediante slot:
+
+```html
+<opo-icon aria-label="Icono personalizado">
+  <svg slot="icon" viewBox="0 0 24 24">...</svg>
+</opo-icon>
+```
+
+Este patrón está pensado para contenido estático o casos que no pertenecen al catálogo principal.
+
+---
+
+## Do / Don’t
+
+### Do
+
+- Usa `name` para iconos del catálogo.
+- Deja que el icono herede color del contexto cuando forme parte de un botón, link o navegación.
+- Usa `aria-label` solo cuando el icono tenga significado propio.
+
+### Don’t
+
+- No uses iconos como sustituto único de texto si el significado no es accesible.
+- No pases nombres internos como `opo-icon-check` o `ui-check`.
+- No uses el slot custom para recrear el catálogo principal.
+
+---
+
+## Examples
+
+### Default
+
+<Canvas of={IconStories.Default} />
+
+### Sizes
+
+<Canvas of={IconStories.Sizes} />
+
+### Inherits Color
+
+<Canvas of={IconStories.InheritsColor} />
+
+### Decorative
+
+<Canvas of={IconStories.Decorative} />
+
+### With Aria Label
+
+<Canvas of={IconStories.WithAriaLabel} />
+
+### Custom SVG
+
+<Canvas of={IconStories.CustomSVG} />
+
+### In Buttons
+
+<Canvas of={IconStories.InButtons} />
+
+---
+
+## API
+
+<Controls of={IconStories.Default} />
+
+---
+
+## All Icons
+
+<Canvas of={IconStories.AllIcons} />

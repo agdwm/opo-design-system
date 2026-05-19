@@ -1,6 +1,8 @@
 # Layering & Motion
 
-## Overview
+---
+
+## Estrategia de Layering
 
 La estrategia de layering y motion del sistema se ha planteado con el objetivo de:
 
@@ -10,9 +12,7 @@ La estrategia de layering y motion del sistema se ha planteado con el objetivo d
 
 Aunque el alcance de esta iteración no requería una arquitectura avanzada de overlays o motion, se han definido algunas foundations reutilizables para facilitar una evolución más consistente del sistema.
 
----
-
-# Z-Index Strategy
+### Tokens de z-index
 
 En lugar de utilizar valores arbitrarios directamente dentro de los componentes:
 
@@ -32,10 +32,6 @@ system tokens
 component styles
 ```
 
----
-
-## Reference Z-Index Tokens
-
 Los reference tokens contienen únicamente valores numéricos reutilizables:
 
 ```css
@@ -51,10 +47,6 @@ Los reference tokens contienen únicamente valores numéricos reutilizables:
 
 Estos valores no expresan todavía intención visual.
 
----
-
-## System Z-Index Tokens
-
 Los system tokens representan decisiones reales de layering dentro de la interfaz:
 
 ```css
@@ -69,7 +61,17 @@ Los system tokens representan decisiones reales de layering dentro de la interfa
 Ejemplo:
 
 ```css
---sys-z-index-modal: var(--ref-z-index-500);
+/* reference-tokens.css */
+:root {
+  --ref-z-index-200: 200;
+}
+```
+
+```css
+/* system-tokens.css */
+:root {
+  --sys-z-index-header: var(--ref-z-index-200);
+}
 ```
 
 Esto permite desacoplar:
@@ -77,9 +79,7 @@ Esto permite desacoplar:
 - el valor numérico,
 - de la intención visual del sistema.
 
----
-
-# Why Tokenized Layering?
+### ¿Por qué tokenizar el layering?
 
 La estrategia busca evitar la clásica “inflación de z-index”:
 
@@ -98,63 +98,31 @@ Centralizar el layering mediante tokens favorece:
 - previsibilidad,
 - y mejor escalabilidad del sistema.
 
----
+### Stacking Contexts
 
-# Stacking Contexts
+Por otro lado, en arquitecturas frontend contemporáneas orientadas a componentes, muchos problemas relacionados con `z-index` no provienen únicamente del valor numérico utilizado, sino de la **interacción entre distintos stacking contexts** generados dentro de la aplicación.
 
-Muchos problemas relacionados con `z-index` no provienen realmente del valor numérico utilizado, sino de la creación accidental de nuevos stacking contexts.
+> [!WARNING]
+> Algunos stacking contexts pueden generarse de forma implícita mediante propiedades como `transform`, `opacity`, `filter` o determinados contextos de posicionamiento `position + z-index`, alterando el comportamiento esperado de `z-index` dentro de la interfaz.
 
-Algunas propiedades que generan stacking contexts automáticamente:
+### isolation:isolate
 
-```css
-transform
-opacity
-filter
-position + z-index
-mix-blend-mode
-isolation
-```
-
-Esto puede provocar que un elemento con:
+Por este motivo, para ayudar a encapsular la jerarquía visual de la aplicación, además de la escala de layering tokens, el sistema incorpora `isolation: isolate` sobre los contenedores raíz habituales en aplicaciones React y Next.js (`#root`, `#\_\_next`) siguiendo la aproximación propuesta por Josh Comeau:
 
 ```css
-z-index: 9999;
-```
-
-siga apareciendo visualmente por debajo de otro componente si ambos pertenecen a stacking contexts distintos.
-
----
-
-# isolation:isolate
-
-Para ayudar a encapsular la jerarquía visual de la aplicación, el sistema incorpora:
-
-```css
+/* reset.css */
 #root,
 #__next {
   isolation: isolate;
 }
 ```
 
-siguiendo una aproximación inspirada en Josh Comeau.
+Esta propiedad permite crear un **_root stacking context_** para la aplicación, ayudando a encapsular el comportamiento de layering dentro del árbol principal de la UI y reduciendo posibles conflictos entre componentes reutilizados en distintos contextos de composición o layout.
 
----
+Desde esta perspectiva, `isolation: isolate` no sustituye a la estrategia de `z-index` tokens, sino que la complementa:
 
-## Why isolation:isolate?
-
-`isolation: isolate` crea un root stacking context para la aplicación.
-
-Esto ayuda a:
-
-- encapsular overlays y capas dentro del árbol principal,
-- reducir conflictos entre componentes reutilizados,
-- y hacer más predecible el comportamiento del layering.
-
----
-
-## Relationship with Z-Index Tokens
-
-`isolation: isolate` no sustituye la estrategia de z-index.
+- Los tokens definen la jerarquía global de capas del sistema.
+- `isolation: isolate` ayuda a encapsular y hacer más predecible el comportamiento interno de stacking entre componentes.
 
 Ambas capas se complementan:
 
@@ -166,11 +134,13 @@ isolation:isolate
 → encapsula stacking contexts
 ```
 
-La combinación de ambas favorece una arquitectura de layering más robusta.
+Esta combinación favorece arquitecturas de layering más robustas, desacopladas y escalables a largo plazo.
 
 ---
 
-# Motion Philosophy
+## Estrategia de Motion
+
+### Filosofía de motion
 
 Aunque el alcance de esta iteración no requería una estrategia avanzada de motion, las animaciones y transiciones se han planteado desde una perspectiva funcional y discreta.
 
@@ -183,42 +153,25 @@ La intención principal es mejorar:
 
 No se busca utilizar motion como elemento puramente decorativo.
 
----
+### Escala de motion
 
-# Motion Scale
-
-El sistema incorpora una pequeña escala de motion durations reutilizables:
+El sistema incorpora una pequeña escala de durations reutilizables orientada a cubrir distintos tipos de interacción y feedback visual dentro de la interfaz.
 
 ```css
---ref-motion-duration-fast
---ref-motion-duration-base
---ref-motion-duration-slow
---ref-motion-duration-slower
+--ref-motion-duration-fast: 150ms; /* hover, focus, subtle feedback */
+--ref-motion-duration-base: 250ms; /* standard UI transitions */
+--ref-motion-duration-slow: 400ms; /* expressive or large-surface transitions */
+--ref-motion-duration-slower: 1000ms; /* continuous or looping motion, such as spinners or loading indicators */
 ```
 
-Ejemplo:
-
-```css
---ref-motion-duration-fast: 150ms;
---ref-motion-duration-base: 250ms;
---ref-motion-duration-slow: 400ms;
---ref-motion-duration-slower: 1000ms;
-```
-
-La escala cubre:
+La intención es proporcionar una base suficientemente flexible para cubrir:
 
 - feedback rápido,
 - transiciones estándar,
-- transiciones más expresivas,
-- y motion continua o en loop.
+- motion más expresiva,
+- y animaciones continuas o en loop.
 
----
-
-# Motion Tokens
-
-En esta iteración, las motion durations se mantienen principalmente como foundation tokens reutilizables.
-
-Se ha evitado introducir demasiados system motion tokens específicos prematuramente:
+En esta iteración se evita crear demasiados aliases semánticos adicionales (`--sys-motion-\*`) hasta que aparezcan patrones de uso más consistentes dentro del sistema.
 
 ```css
 --sys-motion-duration-spinner
@@ -228,9 +181,7 @@ salvo cuando exista una necesidad semántica realmente consolidada.
 
 La intención es evitar sobre-abstracción innecesaria.
 
----
-
-# Continuous Motion
+#### Continuous Motion
 
 Animaciones continuas como spinners utilizan duraciones más lentas:
 
@@ -240,9 +191,7 @@ animation: icon-spin var(--ref-motion-duration-slower) linear infinite;
 
 Este tipo de motion pertenece a una categoría distinta de las transiciones rápidas de UI y suele requerir tiempos más largos para resultar visualmente cómodos.
 
----
-
-# prefers-reduced-motion
+### Reduced Motion & Accessibility
 
 El sistema contempla compatibilidad con:
 
@@ -266,24 +215,7 @@ La intención es reducir motion no esencial cuando el usuario así lo solicita d
 
 ---
 
-# Motion Principles
-
-La estrategia general intenta mantener:
-
-- transiciones ligeras,
-- duraciones contenidas,
-- easing predecible,
-- y motion funcional.
-
-En general, se evita:
-
-- animación excesivamente compleja,
-- motion puramente decorativa,
-- y transiciones demasiado agresivas o distractoras.
-
----
-
-# Current Scope
+## Alcance actual
 
 En esta iteración, la estrategia de layering y motion se mantiene deliberadamente contenida.
 
@@ -294,11 +226,9 @@ El objetivo principal es:
 - introducir una escala básica de motion,
 - y mantener una experiencia visual coherente.
 
-No se ha intentado construir todavía una arquitectura completa de overlays, portals o motion choreography.
-
 ---
 
-# Future Improvements
+## Posibles evoluciones futuras
 
 Posibles evoluciones futuras:
 
