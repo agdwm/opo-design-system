@@ -88,7 +88,7 @@ const meta: Meta = {
       description:
         "Texto accesible (recomendado cuando el icono tiene significado)",
     },
-    spin: {
+    spinning: {
       control: "boolean",
       description: "Activa animación de rotación continua",
     },
@@ -157,11 +157,11 @@ export const Colors: Story = {
   `,
 };
 
-export const Spin: Story = {
+export const Spinning: Story = {
   args: {
     name: spinIcon,
     size: "lg",
-    spin: true,
+    spinning: true,
   },
 };
 

@@ -64,7 +64,7 @@
 }
 
 /* ==================== ANIMACIONES ==================== */
-.opo-icon--spin {
+.is-spinning {
   animation: icon-spin var(--ref-motion-duration-slower) linear infinite;
   transform-origin: center;
 }
@@ -76,7 +76,7 @@
 }
 
 /* ==================== SOPORTE PARA SVG CUSTOM (slot) ==================== */
-.opo-icon ::slotted(svg) {
+:host ::slotted(svg) {
   display: block;
   inline-size: 100%;
   block-size: 100%;

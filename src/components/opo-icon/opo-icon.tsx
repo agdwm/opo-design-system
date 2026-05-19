@@ -25,7 +25,7 @@ export class OpoIcon {
   @Prop() ariaLabel?: string;
 
   /** Activa una animación continua de rotación. */
-  @Prop() spin = false;
+  @Prop() spinning = false;
 
   /** URL pública del sprite SVG. Permite que una app consumidora sirva los iconos desde otra ruta. */
   @Prop() spriteUrl = "/icons/opo-sprite-ui.svg";
@@ -68,7 +68,7 @@ export class OpoIcon {
 
     const classes = clsx("opo-icon", `opo-icon--${this.size}`, {
       [`opo-icon--color-${this.color}`]: this.color,
-      "opo-icon--spin": this.spin,
+      "is-spinning": this.spinning,
     });
 
     return (
