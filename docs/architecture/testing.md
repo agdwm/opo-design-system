@@ -4,55 +4,158 @@
 
 ## Overview
 
-La estrategia de testing del sistema se ha planteado principalmente desde la perspectiva del comportamiento observable del componente y no desde detalles internos de implementación.
+La estrategia de testing del sistema se plantea desde el comportamiento observable de los componentes, evitando validar detalles internos de implementación siempre que sea posible.
 
-La intención es favorecer tests más resilientes a refactors internos y más cercanos al comportamiento real percibido por usuarios y tecnologías asistivas.
+El objetivo es crear tests resilientes a refactors internos y cercanos al comportamiento real percibido por usuarios, navegadores y tecnologías asistivas.
+
+Actualmente el proyecto utiliza Vitest como framework principal de testing, con soporte específico para Stencil, Browser Mode mediante Playwright y una integración inicial con Storybook.
+
+El uso de Browser Mode permite validar componentes en un entorno más cercano al navegador real que los entornos puramente simulados mediante JSDOM.
 
 ---
 
-## Filosofía de testing
+## Testing stack
 
-En lugar de validar detalles internos de implementación, los tests deberían priorizar:
+Las principales herramientas instaladas son:
 
-- comportamiento observable,
-- accesibilidad,
+- `vitest`: framework principal de testing.
+- `@stencil/vitest`: integración de Stencil con Vitest.
+- `@vitest/browser-playwright`: ejecución de component tests en navegador real mediante Playwright.
+- `@vitest/ui`: interfaz visual de Vitest.
+- `@storybook/addon-vitest`: integración entre Storybook y Vitest.
+- `@storybook/addon-a11y`: soporte de revisión de accesibilidad en Storybook.
+- `jsdom`: entorno DOM para determinados tests.
+- `@storybook/web-components-vite`: soporte de Storybook para Web Components con Vite.
+
+---
+
+## Scripts de testing disponibles
+
+Los scripts principales de testing son:
+
+```bash
+npm test
+```
+
+Ejecuta Vitest.
+
+```bash
+npm run test:watch
+```
+
+Ejecuta Vitest en modo watch.
+
+```bash
+npm run test:ui
+```
+
+Abre la interfaz visual de Vitest.
+
+---
+
+## Comandos recomendados
+
+Para ejecutar todos los tests:
+
+```bash
+npm test
+```
+
+Para ejecutar solo los component tests de navegador:
+
+```bash
+npx vitest --project browser
+```
+
+Para ejecutar solo un test concreto de componente:
+
+```bash
+npx vitest --project browser src/components/opo-icon/opo-icon.cmp.test.tsx
+```
+
+Para abrir la UI de Vitest solo con los browser tests:
+
+```bash
+npx vitest --ui --project browser
+```
+
+Para abrir la UI de Vitest con un único archivo:
+
+```bash
+npx vitest --ui --project browser src/components/opo-icon/opo-icon.cmp.test.tsx
+```
+
+---
+
+## Convenciones de nomenclatura de archivos
+
+El proyecto utiliza actualmente las siguientes convenciones:
+
+| Tipo de test            | Patrón            |
+| ----------------------- | ----------------- |
+| Unit tests              | `*.unit.test.tsx` |
+| Browser component tests | `*.cmp.test.tsx`  |
+| Storybook stories       | `*.stories.ts`    |
+
+La separación permite diferenciar claramente:
+
+- tests de lógica aislada,
+- tests de componentes renderizados en navegador,
+- y documentación interactiva mediante Storybook.
+
+---
+
+## Proyectos de testing
+
+La configuración actual separa los tests en tres proyectos:
+
+### Test de Storybook
+
+Ejecuta archivos `.stories.\*` dentro de `src`.
+
+Estos tests forman parte de la integración entre Storybook y Vitest para validar stories y documentación interactiva.
+
+### Test unitarios
+
+Pensados para lógica aislada, helpers o funciones puras.
+
+Patrón de archivos:
+
+`src/**/*.unit.test.{ts,tsx}`
+
+### Browser component tests
+
+Pensados para validar componentes renderizados en navegador real mediante Playwright.
+
+Patrón de archivos:
+
+`src/**/*.cmp.test.{ts,tsx}`
+
+---
+
+## Filosofía de component testing
+
+Los component tests deberían validar principalmente:
+
 - renderizado esperado,
-- interacción real,
-- y estados relevantes del componente.
+- contrato público de props,
+- accesibilidad básica,
+- clases y estados públicos,
+- slots,
+- shadow parts públicos,
+- edge cases relevantes.
 
-Por este motivo, resulta preferible utilizar queries accesibles como:
+No deberían centrarse en detalles internos como:
 
-```js
-getByRole();
-getByLabelText();
-getByText();
-```
+- métodos privados,
+- estructura interna excesivamente específica,
+- snapshots grandes,
+- valores exactos de CSS,
+- implementación concreta de helpers internos.
 
-frente a estrategias más acopladas a implementación interna como:
+Muchos componentes utilizan Shadow DOM mediante Stencil.
 
-```jsx
-querySelector(".button");
-```
-
-o snapshots excesivamente grandes y poco expresivos.
-
----
-
-## Component Testing
-
-La estrategia actual se orienta principalmente a:
-
-- component testing,
-- validación básica de accesibilidad,
-- y renderizado de variantes y estados.
-
-Ejemplos típicos:
-
-- renderizado correcto según props,
-- comportamiento visual esperado,
-- estados disabled/loading,
-- iconos decorativos vs accesibles,
-- y nombres accesibles correctos.
+Por este motivo, algunos tests interactúan explícitamente con `shadowRoot` para validar renderizado interno, slots, accessibility semantics y shadow parts expuestos públicamente.
 
 ---
 
@@ -60,34 +163,53 @@ Ejemplos típicos:
 
 La accesibilidad se considera parte del comportamiento esperado del componente.
 
-Por este motivo, los tests deberían validar aspectos como:
+Los tests deberían cubrir, cuando aplique:
 
 - roles accesibles,
-- labels,
+- `aria-label`,
+- `aria-hidden`,
 - nombres accesibles,
+- estados interactivos,
+- foco,
 - navegación mediante teclado,
-- y presencia correcta de atributos ARIA cuando resulten necesarios.
+- atributos ARIA necesarios.
 
 ---
 
-## Alcance actual
+## Notas sobre Browser Mode y Playwright
 
-En esta iteración no se ha implementado todavía una estrategia completa de testing automatizado para todos los componentes.
+Los browser component tests utilizan actualmente Playwright con Chromium como navegador de referencia durante desarrollo.
 
-El objetivo principal ha sido establecer:
+La arquitectura de componentes está pensada para funcionar correctamente en navegadores modernos compatibles con Web Components y Shadow DOM.
 
-- una arquitectura reutilizable,
-- foundations consistentes,
-- y una dirección clara para futuras validaciones automatizadas.
+Si Chromium no está instalado localmente:
+
+```bash
+npx playwright install chromium
+```
 
 ---
 
-## Posibles evoluciones futuras
+## Screenshots and artifacts (archivos auxiliares)
 
-- integración progresiva con `Vitest` (ya configurado, cobertura en expansión),
-- component testing más completo,
-- testing de accesibilidad mediante `axe-core`,
-- visual regression testing (`Chromatic`),
-- end-to-end testing (`Playwright`),
-- testing responsive,
-- y coverage más formalizado.
+Vitest Browser / Playwright puede generar artifacts locales como:
+
+```txt
+.vitest-attachments/
+__screenshots__/
+```
+
+Mientras no exista una estrategia formal de visual regression testing, estos archivos deben tratarse como artifacts temporales y no versionarse.
+
+---
+
+## Posibles mejoras futuras
+
+Posibles evoluciones futuras:
+
+- integrar `axe-core` para validación automatizada de accesibilidad,
+- ampliar component tests en más componentes,
+- añadir tests de interacción para componentes interactivos,
+- formalizar coverage,
+- valorar visual regression testing con Chromatic, Percy, Playwright o Vitest snapshots,
+- definir convenciones comunes para nombres de tests y estructura de archivos.
