@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import SVGSpriter from "svg-sprite";
 import { optimize } from "svgo";
-import svgoConfigLine from "./svgo.config.js";
+import svgoConfigLine from "./svgo.config.ui.js";
 import svgoConfigBrand from "./svgo.config.brand.js";
 
 const rootDir = process.cwd();

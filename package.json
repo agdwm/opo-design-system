@@ -24,7 +24,7 @@
     "landing:dev": "npm run icons:build && vite --config landing/vite.config.ts --host 0.0.0.0 --port 3333",
     "landing:build": "npm run icons:build && vite build --config landing/vite.config.ts",
     "dev": "npm run dev:ordered",
-    "dev:ordered": "npm run build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
+    "dev:ordered": "npm run build && npm run icons:build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
     "dev:reset": "pkill -f storybook || true && pkill -f concurrently || true && pkill -f \"stencil build --watch\" || true && lsof -ti:6006 | xargs kill -9 2>/dev/null || true",
     "dev:fresh": "npm run dev:reset && npm run dev:ordered",
     "clean": "rimraf dist www loader",

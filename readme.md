@@ -8,7 +8,7 @@ La base está preparada para que la persona candidata clone el repo, instale dep
 
 Construir una landing page usando `Stencil` y documentar los componentes en `Storybook`.
 
-La idea es que la pagina viva fuera de la librería de componentes, como ocurriría en una web consumidora del paquete.
+La idea es que la página viva fuera de la librería de componentes, como ocurriría en una web consumidora del paquete.
 
 ## Lo que ya viene hecho
 
@@ -19,7 +19,7 @@ La idea es que la pagina viva fuera de la librería de componentes, como ocurrir
 
 El resto de componentes debe decidirlo y construirlo la persona candidata.
 
-## Como consume la landing la librería
+## Cómo consume la landing la librería
 
 La landing no importa componentes uno a uno ni requiere tocar `package.json` cada vez que se añade uno nuevo.
 
@@ -36,7 +36,7 @@ Ese bundle registra automáticamente los Web Components compilados por la librer
 - Documentar en Storybook los componentes.
 - Organizar la solución con una jerarquía de componentes clara.
 
-## Se valorara especialmente
+## Se valorará especialmente
 
 - Reutilización real de componentes.
 - Jerarquía de componentes bien pensada.
@@ -201,7 +201,7 @@ Ese flujo era adecuado para el alcance inicial del proyecto, pero a medida que e
 
 ```json
 "dev": "npm run dev:ordered",
-"dev:ordered": "npm run build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
+"dev:ordered": "npm run build && npm run icons:build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
 "dev:fresh": "npm run dev:reset && npm run dev:ordered",
 "landing:dev": "npm run icons:build && vite --config landing/vite.config.ts --host 0.0.0.0 --port 3333",
 "storybook:dev": "storybook dev -p 6006 --no-open"
@@ -374,6 +374,14 @@ mediante runtime assets generados en:
 ```txt
 dist/icons/
 ```
+
+## Calidad y Tooling
+
+- **Storybook** como entorno de documentación y desarrollo aislado de componentes.
+- Browser component testing mediante **Vitest** + **Playwright**.
+- APIs de componentes orientadas a **accesibilidad**.
+- Pipeline SVG con generación automática de **sprites**, manifest y typings.
+- Arquitectura semántica de **Design Tokens**.
 
 Más detalles sobre foundations y decisiones arquitectónicas:
 
