@@ -157,7 +157,8 @@ Ese flujo era adecuado para el alcance inicial del proyecto, pero a medida que e
 ### Necesidades que surgieron durante la evolución del sistema
 
 - **Sincronización de assets:**  
-  Stencil limpia `dist` al arrancar, lo que hacía necesario garantizar que Storybook y la landing dispusieran siempre de los assets SVG generados.
+  Inicialmente, Stencil limpiaba `dist` durante determinados ciclos de build y watch, lo que generaba inconsistencias al servir los sprites SVG runtime desde esa misma carpeta.  
+  Por este motivo, los assets de iconos se desacoplaron posteriormente del output de build de Stencil y pasaron a generarse y servirse desde `public/icons/`.
 
 - **Pipeline de iconos:**  
   El sistema incorporó generación automática de:
@@ -172,8 +173,7 @@ Ese flujo era adecuado para el alcance inicial del proyecto, pero a medida que e
   Todo esto requería una pipeline explícita y ordenada basada en:
 
   ```txt
-  raw-icons → build pipeline → dist/icons → runtime serving
-
+  raw-icons → build pipeline → public/icons → runtime serving
   ```
 
 - **Separación de flujos de desarrollo:**
@@ -201,7 +201,7 @@ Ese flujo era adecuado para el alcance inicial del proyecto, pero a medida que e
 
 ```json
 "dev": "npm run dev:ordered",
-"dev:ordered": "npm run build && npm run icons:build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
+"dev:ordered": "npm run build && concurrently -k -n STENCIL,ICONS,SB \"npm run dev:lib\" \"npm run icons:watch\" \"npm run storybook:dev\"",
 "dev:fresh": "npm run dev:reset && npm run dev:ordered",
 "landing:dev": "npm run icons:build && vite --config landing/vite.config.ts --host 0.0.0.0 --port 3333",
 "storybook:dev": "storybook dev -p 6006 --no-open"
@@ -254,7 +254,7 @@ landing/
 
 .storybook/
 
-dist/
+public/
 └── icons/
 
 docs/
@@ -347,7 +347,7 @@ El sistema de iconos utiliza:
 Arquitectura general:
 
 ```txt
-raw-icons → dist/icons → runtime serving
+raw-icons → public/icons → runtime serving
 ```
 
 Más detalles:
@@ -372,7 +372,7 @@ El sistema de iconos y los assets SVG se sirven desde:
 mediante runtime assets generados en:
 
 ```txt
-dist/icons/
+public/icons/
 ```
 
 ## Calidad y Tooling

@@ -9,7 +9,7 @@ El sistema de iconos se ha planteado como una arquitectura reutilizable orientad
 La estrategia general se basa en:
 
 ```txt
-raw-icons → build pipeline → dist/icons → runtime serving
+raw-icons → build pipeline → public/icons → runtime serving
 ```
 
 Esto permite:
@@ -104,7 +104,7 @@ Reconstruye automáticamente los artefactos de iconos cada vez que se detectan c
 Durante `icons:build` se generan automáticamente:
 
 ```txt
-dist/icons/
+public/icons/
 ├── opo-sprite-ui.svg
 ├── opo-sprite-brand.svg
 ├── icons.manifest.json
@@ -113,7 +113,7 @@ dist/icons/
 
 Estos archivos representan los artefactos runtime consumidos por el sistema.
 
-Los archivos dentro de `dist/icons` no deben editarse manualmente.
+Los archivos dentro de `public/icons` no deben editarse manualmente.
 
 ---
 
@@ -125,7 +125,7 @@ src/components/opo-icon/
 │   ├── ui/                ← Iconos de interfaz (outline)
 │   └── brand/             ← Logos, redes sociales y pictogramas
 │
-dist/icons/
+public/icons/
 ├── opo-sprite-ui.svg
 ├── opo-sprite-brand.svg
 ├── icons.manifest.json
@@ -152,7 +152,7 @@ Los archivos dentro de `raw-icons` nunca se sirven directamente al navegador.
 ### Build Artifacts
 
 ```txt
-dist/icons/
+public/icons/
 ```
 
 Se generan automáticamente durante `icons:build`.
@@ -201,7 +201,7 @@ Durante la build:
 
 1. Los SVG originales se transforman en símbolos SVG (`<symbol>`).
 2. Cada símbolo recibe un ID único.
-3. Los sprites finales se generan dentro de `dist/icons`.
+3. Los sprites finales se generan dentro de `public/icons`.
 4. El componente `opo-icon` consume los símbolos mediante `<use>`.
 
 ---
@@ -254,7 +254,7 @@ Esto garantiza compatibilidad con:
 Storybook expone:
 
 ```txt
-dist/icons
+public/icons
 ```
 
 como:
@@ -510,7 +510,7 @@ Durante `icons:build` se generan automáticamente:
 ### Manifest
 
 ```txt
-dist/icons/icons.manifest.json
+public/icons/icons.manifest.json
 ```
 
 Este archivo actúa como catálogo runtime de los iconos disponibles.
@@ -526,11 +526,7 @@ Ejemplo de entrada:
 
 ```json
 {
-  "name": "check",
-  "id": "opo-icon-check",
-  "category": "ui",
-  "keywords": ["confirmar", "ok", "aceptar"],
-  "viewBox": "0 0 24 24"
+  "icons": [{ "name": "check" }]
 }
 ```
 
@@ -545,7 +541,7 @@ Ejemplo de entrada:
 ### TypeScript Typings
 
 ```txt
-dist/icons/icon-name.d.ts
+public/icons/icon-name.d.ts
 ```
 
 Generado automáticamente desde el mismo catálogo de iconos.
@@ -571,7 +567,7 @@ fetch("/icons/icons.manifest.json")
 
 en runtime.
 
-Se evitó deliberadamente el uso de imports estáticos desde `dist/icons` para evitar problemas derivados de:
+Se evitó deliberadamente el uso de imports estáticos desde el output de build de Stencil. Los sprites se sirven como assets públicos desde `public/icons/`, evitando que `stencil build --watch` pueda eliminarlos al limpiar `dist`.
 
 ```txt
 stencil build --watch
@@ -653,3 +649,62 @@ Esto permite que los iconos:
 - y se integren mejor con theming.
 
 Para iconos Brand, `current
+
+---
+
+## Alcance actual
+
+El objetivo principal en esta iteración es establecer una arquitectura de iconos:
+
+- reutilizable,
+- desacoplada del runtime de Stencil,
+- compatible con Storybook y aplicaciones consumidoras externas,
+- y preparada para evolucionar progresivamente hacia un sistema de iconografía más robusto y escalable.
+
+Actualmente el sistema prioriza:
+
+- generación automática de sprites SVG,
+- validación y optimización diferenciada entre iconos UI y Brand,
+- runtime serving desacoplado,
+- manifest y typings generados automáticamente,
+- y una API pública simple mediante `opo-icon`.
+
+No se ha intentado construir todavía una plataforma completa de gestión de iconografía ni resolver todos los posibles escenarios avanzados de distribución, theming o tooling.
+
+Algunas decisiones se han mantenido deliberadamente simples para evitar introducir complejidad prematura mientras el sistema y sus necesidades reales todavía están evolucionando.
+
+---
+
+## Posibles evoluciones futuras
+
+Posibles evoluciones futuras del sistema de iconos:
+
+- Evolucionar `icons:watch` hacia un watcher dedicado basado en herramientas como `chokidar`, permitiendo reaccionar de forma más granular a iconos añadidos, modificados o eliminados.
+
+- Incorporar generación automática de documentación visual y galerías de iconos directamente desde `icons.manifest.json`.
+
+- Ampliar el manifest generado para incluir metadata adicional:
+  - categorías,
+  - keywords,
+  - tags de búsqueda,
+  - aliases,
+  - tamaño base,
+  - o información semántica.
+
+- Incorporar pipelines automáticas de validación visual para detectar inconsistencias de grid, tamaño óptico o alineación entre iconos UI.
+
+- Explorar estrategias de distribución mediante CDN y versionado independiente de assets SVG.
+
+- Añadir soporte más avanzado para theming y variaciones visuales:
+  - filled / outline,
+  - duotone,
+  - animated icons,
+  - o variantes por tema.
+
+- Formalizar una estrategia de deprecación y migración de nombres públicos de iconos.
+
+- Integrar tooling de sincronización entre Figma y el sistema de iconografía para reducir divergencias entre diseño y desarrollo.
+
+- Explorar generación automática de React/Vue wrappers o exports tipados para consumers framework-specific.
+
+- Incorporar validaciones más avanzadas de accesibilidad y consistencia visual durante la pipeline de build.

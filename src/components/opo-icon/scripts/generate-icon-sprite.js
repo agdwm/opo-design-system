@@ -15,8 +15,7 @@ const brandBrokenInputDir = path.join(
   rootDir,
   "src/components/opo-icon/raw-icons/brand-broken",
 );
-const outputDir = path.join(rootDir, "dist/icons");
-const typesOutputDir = path.join(outputDir, "icons");
+const outputDir = path.join(rootDir, "public/icons");
 
 const allowedColorValues = new Set([
   "currentColor",
@@ -217,10 +216,6 @@ function writeIconsManifest({ iconNames, outputDir }) {
 function writeIconNameTypes({ iconNames, outputDir }) {
   assertPublicIconNames(iconNames, "writeIconNameTypes");
 
-  if (!fs.existsSync(typesOutputDir)) {
-    fs.mkdirSync(typesOutputDir, { recursive: true });
-  }
-
   const typePath = path.join(outputDir, "icon-name.d.ts");
   const unionLines =
     iconNames.length > 0
@@ -243,7 +238,7 @@ function validateIcons(iconFiles, globalNameRegistry) {
   const errors = [];
   const seenNames = new Set();
   const seenIds = new Set();
-  // Para colisiones globales, guardamos todas las rutas implicadas
+  // For global collisions, store all involved paths
   const globalCollisions = new Map();
 
   iconFiles.forEach((filePath) => {
@@ -274,7 +269,7 @@ function validateIcons(iconFiles, globalNameRegistry) {
 
     // Check for duplicate names across folders (ui/brand)
     if (globalNameRegistry.has(publicName)) {
-      // Guardar todas las rutas implicadas
+      // Store all involved paths
       if (!globalCollisions.has(publicName)) {
         globalCollisions.set(publicName, [globalNameRegistry.get(publicName)]);
       }
@@ -304,7 +299,7 @@ function validateIcons(iconFiles, globalNameRegistry) {
     }
   });
 
-  // Si hay colisiones globales, mostrar error multi-línea y abortar
+  // If there are global collisions, show a multiline error and abort.
   if (globalCollisions.size > 0) {
     const msg = Array.from(globalCollisions.entries())
       .map(

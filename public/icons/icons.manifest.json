@@ -1,0 +1,124 @@
+{
+  "icons": [
+    {
+      "name": "arrow-down"
+    },
+    {
+      "name": "arrow-left"
+    },
+    {
+      "name": "arrow-right"
+    },
+    {
+      "name": "arrow-up"
+    },
+    {
+      "name": "bell"
+    },
+    {
+      "name": "calendar"
+    },
+    {
+      "name": "check"
+    },
+    {
+      "name": "chevron-down"
+    },
+    {
+      "name": "chevron-left"
+    },
+    {
+      "name": "chevron-right"
+    },
+    {
+      "name": "chevron-up"
+    },
+    {
+      "name": "clock"
+    },
+    {
+      "name": "copy"
+    },
+    {
+      "name": "download"
+    },
+    {
+      "name": "edit"
+    },
+    {
+      "name": "ellipsis-vertical"
+    },
+    {
+      "name": "external-link"
+    },
+    {
+      "name": "eye"
+    },
+    {
+      "name": "eye-off"
+    },
+    {
+      "name": "heart"
+    },
+    {
+      "name": "info"
+    },
+    {
+      "name": "info-circle"
+    },
+    {
+      "name": "link"
+    },
+    {
+      "name": "log-out"
+    },
+    {
+      "name": "mail"
+    },
+    {
+      "name": "map-pin"
+    },
+    {
+      "name": "menu"
+    },
+    {
+      "name": "minus"
+    },
+    {
+      "name": "phone"
+    },
+    {
+      "name": "plus"
+    },
+    {
+      "name": "refresh-cw"
+    },
+    {
+      "name": "search"
+    },
+    {
+      "name": "settings"
+    },
+    {
+      "name": "share-2"
+    },
+    {
+      "name": "sliders"
+    },
+    {
+      "name": "star"
+    },
+    {
+      "name": "trash-2"
+    },
+    {
+      "name": "upload"
+    },
+    {
+      "name": "user"
+    },
+    {
+      "name": "x"
+    }
+  ]
+}
