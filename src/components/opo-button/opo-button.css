@@ -3,122 +3,199 @@
   width: fit-content;
 }
 
+:host([full-width]) {
+  display: block;
+  width: 100%;
+}
+
 .opo-button {
-  --opo-button-height: 40px;
-  --opo-button-font-size: var(--sys-typography-action-md-size);
-  --opo-button-padding-block: var(--sys-space-xs);
+  --opo-button-height: 48px;
+  --opo-button-font-size: var(--sys-typography-action-md-size); /* 1rem */
+  --opo-button-padding-block: var(--sys-space-xs); /* 12px */
+  --opo-button-background: var(--sys-color-action-primary); /* #ffb142 */
+  --opo-button-color: var(--sys-color-on-action-primary); /* #ffffff */
+  --opo-button-border-color: transparent;
 
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--sys-space-2xs);
-  min-height: var(--opo-button-height);
-  padding-block: var(--opo-button-padding-block);
-  padding-inline: 24px;
-  border: none;
-  border-radius: var(--ref-radius-xs);
-  font-family: var(--sys-typography-action-font-family);
-  font-size: var(--opo-button-font-size);
-  font-weight: var(--sys-typography-action-weight);
-  line-height: var(--sys-typography-action-line-height);
+  gap: var(--sys-space-2xs); /* 8px */
+  inline-size: auto;
+  block-size: var(--opo-button-height); /* 48px */
+  min-block-size: var(--opo-button-height); /* 48px */
+  padding-block: var(--opo-button-padding-block); /* 12px */
+  padding-inline: var(--sys-space-md); /* 24px */
+  border: 1px solid var(--opo-button-border-color); /* transparent */
+  border-radius: var(--ref-radius-xs); /* 6px */
+  background-color: var(--opo-button-background); /* #ffb142 */
+  color: var(--opo-button-color); /* #ffffff */
+  font-family: var(--sys-typography-action-font-family); /* "IBM Plex Sans", system-ui... */
+  font-size: var(--opo-button-font-size); /* 1rem */
+  font-weight: var(--sys-typography-action-weight); /* 600 */
+  line-height: var(--sys-typography-action-line-height); /* 1.5 */
   white-space: nowrap;
   cursor: pointer;
-  transition: all var(--sys-motion-duration-fast) ease;
+  transition:
+    background-color var(--ref-motion-duration-faster) ease, /* 100ms */
+    border-color var(--ref-motion-duration-faster) ease, /* 100ms */
+    color var(--ref-motion-duration-faster) ease, /* 100ms */
+    opacity var(--ref-motion-duration-faster) ease, /* 100ms */
+    transform var(--ref-motion-duration-faster) ease; /* 100ms */
 }
 
 /* Sizes */
 .opo-button--sm {
   --opo-button-height: 40px;
-  --opo-button-font-size: var(--sys-typography-action-sm-size);
-  --opo-button-padding-block: var(--sys-space-2xs);
+  --opo-button-font-size: var(--sys-typography-action-sm-size); /* 14px */
+  --opo-button-padding-block: var(--sys-space-2xs); /* 8px */
 }
 
 .opo-button--md {
   --opo-button-height: 48px;
-  --opo-button-font-size: var(--sys-typography-action-md-size);
-  --opo-button-padding-block: var(--sys-space-xs);
+  --opo-button-font-size: var(--sys-typography-action-md-size); /* 16px */
+  --opo-button-padding-block: var(--sys-space-xs); /* 12px */
 }
 
-.opo-button--icon {
+.opo-button--lg {
+  --opo-button-height: 56px;
+  --opo-button-font-size: var(--sys-typography-action-lg-size); /* 18px */
+  --opo-button-padding-block: var(--sys-space-sm); /* 16px */
+}
+
+.opo-button--icon-only {
   --opo-button-height: 40px;
 
-  width: 40px;
+  gap: 0;
+  inline-size: var(--opo-button-height);
+  block-size: var(--opo-button-height);
+  min-block-size: var(--opo-button-height);
   padding: 0;
 }
 
 /* Variants */
 .opo-button--primary {
-  background-color: var(--sys-color-action-primary);
-  color: var(--sys-color-on-action-primary);
+  --opo-button-background: var(--sys-color-action-primary); /* #ffb142 */
+  --opo-button-color: var(--sys-color-on-action-primary); /* #ffffff */
+}
+
+.opo-button--primary:hover:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-background: var(--sys-color-action-primary-hover); /* #ffc470 */
+}
+
+.opo-button--primary:active:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-background: var(--sys-color-action-primary-pressed); /* #ffd599 */
 }
 
 .opo-button--secondary {
-  background-color: var(--sys-color-action-secondary);
-  color: var(--sys-color-on-action-secondary);
+  --opo-button-background: var(--sys-color-action-secondary); /* #ffffff */
+  --opo-button-color: var(--sys-color-on-action-secondary); /* #383641 */
+  --opo-button-border-color: var(--sys-color-border-soft); /* #ebeaec */
+
+  box-shadow: var(--ref-shadow-xs); /* 0 2px 8px 0 #38364108 */
 }
 
-.opo-button--outline {
-  border: 1px solid var(--opo-color-border, #e2e8f0);
-  background: transparent;
-  color: var(--opo-color-primary, #3b82f6);
+.opo-button--secondary:hover:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-color: var(--sys-color-on-action-secondary-hover); /* #88868d */
+}
+
+.opo-button--secondary:active:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-color: var(--sys-color-on-action-secondary-pressed); /* #605e67 */
 }
 
 .opo-button--ghost {
-  background: transparent;
-  color: var(--opo-color-foreground, #0f172a);
+  --opo-button-background: transparent;
+  --opo-button-color: var(--sys-color-text-tertiary); /* #88868d */
+}
+
+.opo-button--ghost:hover:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-color: var(--sys-color-on-action-ghost-hover); /* #383641 */
+}
+
+.opo-button--ghost:active:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-color: var(--sys-color-on-action-ghost-pressed); /* #1f1f21 */
 }
 
 .opo-button--destructive {
-  background: var(--opo-color-destructive, #ef4444);
-  color: white;
+  --opo-button-background: var(--sys-color-action-destructive);
+  --opo-button-color: var(--sys-color-on-action-destructive);
+  --opo-button-border-color: var(--sys-color-border-destructive);
 }
 
-.opo-button--link {
-  height: auto;
-  min-height: auto;
-  padding: 0;
-  background: transparent;
-  color: var(--opo-color-primary, #3b82f6);
+.opo-button--destructive:hover:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-background: var(
+    --sys-color-action-destructive-hover
+  );
+}
+
+.opo-button--destructive:active:not(:disabled, .is-disabled, .is-loading) {
+  --opo-button-background: var(
+    --sys-color-action-destructive-pressed
+  );
 }
 
 /* States */
-.opo-button:hover:not(:disabled, .opo-button--loading) {
-  filter: brightness(1.08);
+.opo-button:focus-visible {
+  outline: 2px solid var(--sys-color-focus-ring); /* #ff793f */
+  outline-offset: 2px;
+}
+
+.opo-button:disabled:not(.is-loading),
+.opo-button.is-disabled {
+  --opo-button-background: var(--sys-color-action-disabled);
+  --opo-button-color: var(--sys-color-on-action-disabled);
+  --opo-button-border-color: transparent;
+
+  cursor: not-allowed;
+  transform: none;
+}
+
+.opo-button:hover:not(:disabled, .is-disabled, .is-loading) {
   transform: translateY(-1px);
 }
 
-.opo-button:active:not(:disabled, .opo-button--loading) {
+.opo-button:active:not(:disabled, .is-disabled, .is-loading) {
   transform: translateY(1px);
 }
 
 .opo-button--full-width {
-  width: 100%;
+  inline-size: 100%;
 }
 
-.opo-button--loading {
+/* Optical alignment */
+.opo-button :where(
+  .opo-button__icon-start,
+  .opo-button__icon-end
+) {
+  transform: translateY(-1px);
+}
+
+/* Content transitions */
+.opo-button :where(
+  .opo-button__label,
+  .opo-button__icon-start,
+  .opo-button__icon-end
+) {
+  transition: opacity var(--ref-motion-duration-faster) ease; /* 100ms */
+}
+
+/* Loading state */
+.opo-button.is-loading {
   opacity: 0.85;
-  cursor: wait;
-  pointer-events: none;
 }
 
-.opo-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.opo-button.is-loading .opo-button__label,
+.opo-button.is-loading .opo-button__icon-start,
+.opo-button.is-loading .opo-button__icon-end {
+  opacity: 0;
 }
 
 /* Loader */
 .opo-button__loader {
+  position: absolute; /* avoid layout shift */
+  inset: 0; /* loader occupies the entire button */
   display: inline-flex;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }

@@ -158,10 +158,11 @@ No se busca utilizar motion como elemento puramente decorativo.
 El sistema incorpora una pequeña escala de durations reutilizables orientada a cubrir distintos tipos de interacción y feedback visual dentro de la interfaz.
 
 ```css
---ref-motion-duration-fast: 150ms; /* hover, focus, subtle feedback */
---ref-motion-duration-base: 250ms; /* standard UI transitions */
---ref-motion-duration-slow: 400ms; /* expressive or large-surface transitions */
---ref-motion-duration-slower: 1000ms; /* continuous or looping motion, such as spinners or loading indicators */
+/* Motion durations */
+--ref-motion-duration-faster: 100ms; /* hover, focus, press feedback, microinteractions */
+--ref-motion-duration-fast: 150ms; /* small fades, loaders, lightweight UI transitions */
+--ref-motion-duration-normal: 250ms; /* dropdowns, accordions, medium transitions */
+--ref-motion-duration-slow: 350ms; /* modals, drawers, larger motion sequences */
 ```
 
 La intención es proporcionar una base suficientemente flexible para cubrir:

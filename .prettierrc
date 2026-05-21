@@ -22,6 +22,12 @@
         "printWidth": 120,
         "proseWrap": "preserve"
       }
+    },
+    {
+      "files": "src/global/tokens/**/*.css",
+      "options": {
+        "printWidth": 999
+      }
     }
   ]
 }

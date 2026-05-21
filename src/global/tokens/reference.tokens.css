@@ -41,7 +41,17 @@
     --ref-color-indigo-500: oklch(0.6077 0.1733 275.54); /* #6874e8 */
     --ref-color-indigo-700: oklch(0.4424 0.1816 272); /* #3541b5 */
 
-    --ref-color-red-500: oklch(0.62 0.22 25); /* #D92D20 */
+    /* Soft destructive surfaces */
+    --ref-color-red-50: oklch(0.97 0.02 25); /* #fef2f2 */
+    --ref-color-red-100: oklch(0.93 0.04 25); /* #fee2e2 */
+    --ref-color-red-200: oklch(0.88 0.06 25); /* #fecaca */
+
+    /* Borders */
+    --ref-color-red-300: oklch(0.80 0.10 25); /* #fca5a5 */
+
+    /* Text / foreground */
+    --ref-color-red-700: oklch(0.50 0.18 25); /* #b91c1c */
+
     --ref-color-green-500: oklch(0.62 0.17 145); /* #15803D */
     --ref-color-mustard-500: oklch(0.67 0.16 70); /* #B45309 */
 
@@ -118,8 +128,9 @@
     --ref-radius-full: 9999px;
 
     /* Shadows */
-    --ref-shadow-sm: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a */
-    --ref-shadow-md: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.2); /* #38364133 */
+    --ref-shadow-xs: 0 2px 8px 0 oklch(0.3393 0.0192 293.69 / 0.03); /* #38364108 buttons */
+    --ref-shadow-sm: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a cards */
+    --ref-shadow-md: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.2); /* #38364133 popovers, overlays.. */
 
     /* Layout width constraints */
     --ref-container-sm: 680px;

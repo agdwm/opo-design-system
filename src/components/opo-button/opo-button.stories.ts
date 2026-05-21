@@ -1,121 +1,269 @@
-// src/components/opo-button/opo-button.stories.ts
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from "@storybook/web-components";
+import { html } from "lit";
 
 const meta: Meta = {
-  title: 'Components/Atoms/Button',
-  component: 'opo-button',
-  tags: ['autodocs'],
+  title: "Components/Atoms/Button",
+  component: "opo-button",
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
-      page: null, // Usamos el archivo .mdx como página principal
+      page: null,
       description: {
-        component: 'Botón principal del Design System OPO. Soporta variantes, tamaños, estados de carga y modo polymorphic.',
+        component:
+          "Botón de acción del Design System OPO. Soporta variantes visuales, tamaños, estado disabled, estado loading, ancho completo e iconos mediante slots.",
       },
     },
   },
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['primary', 'secondary', 'outline', 'ghost', 'destructive', 'link'],
-      description: 'Estilo visual del botón',
-      table: { defaultValue: { summary: 'primary' } },
+      control: "select",
+      options: ["primary", "secondary", "ghost", "destructive"],
+      description: "Estilo visual del botón.",
+      table: { defaultValue: { summary: "primary" } },
     },
     size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'icon'],
-      description: 'Tamaño del botón',
-      table: { defaultValue: { summary: 'md' } },
+      control: "select",
+      options: ["sm", "md", "lg"],
+      description: "Tamaño visual del botón.",
+      table: { defaultValue: { summary: "md" } },
     },
-    loading: { control: 'boolean', description: 'Muestra estado de carga' },
-    fullWidth: { control: 'boolean', description: 'Ocupa el 100% del ancho' },
-    disabled: { control: 'boolean' },
-    as: {
-      control: 'select',
-      options: ['button', 'a'],
-      description: 'Elemento a renderizar (polymorphic)',
+    iconOnly: {
+      control: "boolean",
+      description: "Renders the button as an icon-only button.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    fullWidth: {
+      control: "boolean",
+      description: "Hace que el botón ocupe todo el ancho disponible.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    loading: {
+      control: "boolean",
+      description: "Muestra estado de carga y bloquea la interacción.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    disabled: {
+      control: "boolean",
+      description: "Deshabilita el botón.",
+      table: { defaultValue: { summary: "false" } },
+    },
+    type: {
+      control: "select",
+      options: ["button", "submit", "reset"],
+      description: "Tipo nativo del botón.",
+      table: { defaultValue: { summary: "button" } },
+    },
+    ariaLabel: {
+      control: "text",
+      description:
+        "Etiqueta accesible. Necesaria cuando el botón no tiene texto visible, por ejemplo en botones icon-only.",
+    },
+    onClick: {
+      action: "click",
+      description: "Native click event emitted by the button.",
+      table: {
+        category: "Events",
+      },
     },
   },
 };
 
 export default meta;
 
-type Story = StoryObj;
+type ButtonArgs = {
+  variant?: "primary" | "secondary" | "ghost" | "destructive";
+  size?: "sm" | "md" | "lg";
+  iconOnly?: boolean;
+  fullWidth?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  ariaLabel?: string;
+  onClick?: (event: MouseEvent) => void;
+};
 
-function renderButton(args: Record<string, unknown>, label = 'Boton Principal') {
-  const variant = (args.variant as string) ?? 'primary';
-  const size = (args.size as string) ?? 'md';
-  const as = (args.as as string) ?? 'button';
-  const href = typeof args.href === 'string' ? args.href : '';
-  const loading = args.loading ? ' loading' : '';
-  const fullWidth = args.fullWidth ? ' full-width' : '';
-  const disabled = args.disabled ? ' disabled' : '';
-  const hrefAttr = href ? ` href="${href}"` : '';
-
-  return `<opo-button variant="${variant}" size="${size}" as="${as}"${hrefAttr}${loading}${fullWidth}${disabled}>${label}</opo-button>`;
+function renderButton(args: ButtonArgs, label = "Botón") {
+  return html`
+    <opo-button
+      variant=${args.variant ?? "primary"}
+      size=${args.size ?? "md"}
+      type=${args.type ?? "button"}
+      aria-label=${args.ariaLabel ?? ""}
+      ?icon-only=${args.iconOnly}
+      ?full-width=${args.fullWidth}
+      ?loading=${args.loading}
+      ?disabled=${args.disabled}
+      @click=${args.onClick}
+    >
+      ${label}
+    </opo-button>
+  `;
 }
 
 // ==================== VARIANTS ====================
-export const Primary: Story = {
-  args: { variant: 'primary' },
-  render: args => renderButton(args, 'Boton Principal'),
+
+export const Primary: StoryObj<ButtonArgs> = {
+  args: { variant: "primary" },
+  render: (args) => renderButton(args, "Botón principal"),
 };
 
-export const Secondary: Story = {
-  args: { variant: 'secondary' },
-  render: args => renderButton(args, 'Secundario'),
+export const Secondary: StoryObj<ButtonArgs> = {
+  args: { variant: "secondary" },
+  render: (args) => renderButton(args, "Botón secundario"),
 };
 
-export const Outline: Story = {
-  args: { variant: 'outline' },
-  render: args => renderButton(args, 'Outline'),
+export const Ghost: StoryObj<ButtonArgs> = {
+  args: { variant: "ghost" },
+  render: (args) => renderButton(args, "Botón ghost"),
 };
 
-export const Ghost: Story = {
-  args: { variant: 'ghost' },
-  render: args => renderButton(args, 'Ghost'),
+export const Destructive: StoryObj<ButtonArgs> = {
+  args: { variant: "destructive" },
+  render: (args) => renderButton(args, "Eliminar"),
 };
 
-export const Destructive: Story = {
-  args: { variant: 'destructive' },
-  render: args => renderButton(args, 'Eliminar'),
+// ==================== SIZES ====================
+
+export const Small: StoryObj<ButtonArgs> = {
+  args: { size: "sm" },
+  render: (args) => renderButton(args, "Small"),
 };
 
-export const Link: Story = {
-  args: { variant: 'link', as: 'a', href: '#' },
-  render: args => renderButton(args, 'Enlace como boton'),
+export const Medium: StoryObj<ButtonArgs> = {
+  args: { size: "md" },
+  render: (args) => renderButton(args, "Medium"),
 };
 
-// ==================== ESTADOS ====================
-export const Loading: Story = {
-  args: { variant: 'primary', loading: true },
-  render: args => renderButton(args, 'Procesando...'),
+export const Large: StoryObj<ButtonArgs> = {
+  args: { size: "lg" },
+  render: (args) => renderButton(args, "Large"),
 };
 
-export const WithIcons: Story = {
-  render: () => `
-    <opo-button variant="primary">
-      <span slot="icon-start">🔍</span>
+// ==================== STATES ====================
+
+export const Loading: StoryObj<ButtonArgs> = {
+  args: {
+    variant: "primary",
+    loading: true,
+  },
+  render: (args) => html`
+    <opo-button
+      variant=${args.variant ?? "primary"}
+      size=${args.size ?? "md"}
+      type=${args.type ?? "button"}
+      loading
+    >
+      Procesando
+    </opo-button>
+  `,
+};
+
+export const Disabled: StoryObj<ButtonArgs> = {
+  args: {
+    variant: "primary",
+    disabled: true,
+  },
+  render: (args) => html`
+    <opo-button
+      variant=${args.variant ?? "primary"}
+      size=${args.size ?? "md"}
+      type=${args.type ?? "button"}
+      disabled
+    >
+      Deshabilitado
+    </opo-button>
+  `,
+};
+
+// ==================== COMPOSITION ====================
+
+export const WithIcons: StoryObj<ButtonArgs> = {
+  args: {
+    variant: "primary",
+    size: "md",
+  },
+  render: (args) => html`
+    <opo-button
+      variant=${args.variant ?? "primary"}
+      size=${args.size ?? "md"}
+      type=${args.type ?? "button"}
+      ?loading=${args.loading}
+      ?disabled=${args.disabled}
+      @click=${args.onClick}
+    >
+      <opo-icon slot="icon-start" name="search" size="md"></opo-icon>
       Buscar
-      <span slot="icon-end">→</span>
+      <opo-icon slot="icon-end" name="arrow-right" size="md"></opo-icon>
     </opo-button>
   `,
 };
 
-export const IconOnly: Story = {
-  render: () => `
-    <opo-button size="icon" aria-label="Buscar" variant="primary">
-      <span slot="icon-start">🔍</span>
+export const IconButton: StoryObj<ButtonArgs> = {
+  args: {
+    variant: "ghost",
+    size: "md",
+    iconOnly: true,
+    ariaLabel: "Buscar",
+    fullWidth: false,
+  },
+  argTypes: {
+    fullWidth: {
+      control: false,
+    },
+  },
+  render: (args) => html`
+    <opo-button
+      variant="ghost"
+      size=${args.size ?? "md"}
+      ?icon-only=${args.iconOnly}
+      aria-label=${args.ariaLabel ?? "Buscar"}
+      ?loading=${args.loading}
+      ?disabled=${args.disabled}
+      @click=${args.onClick}
+    >
+      <opo-icon slot="icon-start" name="search" size="md"></opo-icon>
     </opo-button>
   `,
 };
 
-export const FullWidth: Story = {
-  args: { variant: 'primary', fullWidth: true },
-  render: args => `
-    <div style="width: 320px;">
-      ${renderButton(args, 'Boton de ancho completo')}
+export const CustomLoader: StoryObj<ButtonArgs> = {
+  args: {
+    variant: "primary",
+    loading: true,
+  },
+  argTypes: {
+    onClick: {
+      table: {
+        disable: true,
+      },
+    },
+  },
+  render: (args) => html`
+    <opo-button
+      variant=${args.variant ?? "primary"}
+      size=${args.size ?? "md"}
+      type=${args.type ?? "button"}
+      loading
+    >
+      Guardar
+      <opo-icon slot="loader" name="refresh-cw" size="sm" spinning></opo-icon>
+    </opo-button>
+  `,
+};
+
+// ==================== LAYOUT ====================
+
+export const FullWidth: StoryObj<ButtonArgs> = {
+  args: {
+    variant: "primary",
+    fullWidth: true,
+  },
+  render: (args) => html`
+    <div
+      style="width: 500px; border: 1px dashed #afafb3; padding: 16px; display: flex; margin: 0 auto;"
+    >
+      ${renderButton(args, "Botón de ancho completo")}
     </div>
   `,
-  parameters: { layout: 'padded' },
 };
