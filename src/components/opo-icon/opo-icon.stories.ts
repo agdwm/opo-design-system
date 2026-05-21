@@ -248,13 +248,13 @@ export const InButtons: Story = {
         Oposiciones
       </opo-button>
 
-      <opo-button variant="outline" size="md">
+      <opo-button variant="secondary" size="md">
         <opo-icon name="${copyIcon}" slot="icon-start"></opo-icon>
         Esquemas
       </opo-button>
 
-      <opo-button variant="ghost" size="icon" aria-label="Buscar">
-        <opo-icon name="${searchIcon}"></opo-icon>
+      <opo-button variant="ghost" size="md" icon-only aria-label="Buscar">
+        <opo-icon name="${searchIcon}" slot="icon-start"></opo-icon>
       </opo-button>
     </div>
   `,

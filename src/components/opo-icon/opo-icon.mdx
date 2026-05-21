@@ -69,7 +69,7 @@ En Storybook, el sprite se expone mediante `staticDirs`:
 ```js
 staticDirs: [
   {
-    from: "../dist/icons",
+    from: "../public/icons",
     to: "/icons",
   },
 ];
@@ -96,8 +96,8 @@ Cuando el icono comunica significado por sí mismo, debe proporcionarse una etiq
 En botones solo con icono, el nombre accesible debe vivir normalmente en el elemento interactivo padre:
 
 ```html
-<opo-button variant="ghost" size="icon" aria-label="Buscar">
-  <opo-icon name="search"></opo-icon>
+<opo-button variant="ghost" size="md" icon-only aria-label="Buscar">
+  <opo-icon slot="icon-start" name="search"></opo-icon>
 </opo-button>
 ```
 

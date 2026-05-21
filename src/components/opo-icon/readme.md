@@ -5,14 +5,14 @@
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                                   | Type                                                             | Default                      |
-| ----------- | ------------ | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------- |
-| `ariaLabel` | `aria-label` | Texto accesible para iconos con significado. Si se omite, el icono se trata como decorativo.  | `string`                                                         | `undefined`                  |
-| `color`     | `color`      | Color semántico opcional. Si no se define, el icono hereda currentColor.                      | `"danger" \| "primary" \| "secondary" \| "success" \| "warning"` | `undefined`                  |
-| `name`      | `name`       | Nombre público del icono dentro del catálogo. Requerido si no se usa slot="icon".             | `string`                                                         | `undefined`                  |
-| `size`      | `size`       | Tamaño visual del icono.                                                                      | `"lg" \| "md" \| "sm"`                                           | `"md"`                       |
-| `spinning`  | `spinning`   | Activa una animación continua de rotación.                                                    | `boolean`                                                        | `false`                      |
-| `spriteUrl` | `sprite-url` | URL pública del sprite SVG. Permite que una app consumidora sirva los iconos desde otra ruta. | `string`                                                         | `"/icons/opo-sprite-ui.svg"` |
+| Property    | Attribute    | Description                              | Type                                                             | Default                      |
+| ----------- | ------------ | ---------------------------------------- | ---------------------------------------------------------------- | ---------------------------- |
+| `ariaLabel` | `aria-label` | Accessible label for meaningful icons.   | `string`                                                         | `undefined`                  |
+| `color`     | `color`      | Semantic color of the icon.              | `"danger" \| "primary" \| "secondary" \| "success" \| "warning"` | `undefined`                  |
+| `name`      | `name`       | Icon name from the SVG sprite.           | `string`                                                         | `undefined`                  |
+| `size`      | `size`       | Visual size of the icon.                 | `"lg" \| "md" \| "sm"`                                           | `"md"`                       |
+| `spinning`  | `spinning`   | Applies a continuous spinning animation. | `boolean`                                                        | `false`                      |
+| `spriteUrl` | `sprite-url` | Custom path to the SVG sprite file.      | `string`                                                         | `"/icons/opo-sprite-ui.svg"` |
 
 
 ## Shadow Parts

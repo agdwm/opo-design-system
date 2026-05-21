@@ -1,4 +1,4 @@
-import { Build, Component, Prop, h, Element } from "@stencil/core";
+import { Build, Component, Element, Prop, h } from "@stencil/core";
 import clsx from "clsx";
 
 @Component({
@@ -12,22 +12,22 @@ export class OpoIcon {
   private hasWarnedInternalName = false;
   private hasWarnedMissingIcon = false;
 
-  /** Nombre público del icono dentro del catálogo. Requerido si no se usa slot="icon". */
+  /** Icon name from the SVG sprite. */
   @Prop() name?: string;
 
-  /** Tamaño visual del icono. */
+  /** Visual size of the icon. */
   @Prop() size: "sm" | "md" | "lg" = "md";
 
-  /** Color semántico opcional. Si no se define, el icono hereda currentColor. */
-  @Prop() color?: "primary" | "secondary" | "danger" | "success" | "warning";
+  /** Semantic color of the icon. */
+  @Prop() color?: "primary" | "secondary" | "success" | "danger" | "warning";
 
-  /** Texto accesible para iconos con significado. Si se omite, el icono se trata como decorativo. */
-  @Prop() ariaLabel?: string;
-
-  /** Activa una animación continua de rotación. */
+  /** Applies a continuous spinning animation. */
   @Prop() spinning = false;
 
-  /** URL pública del sprite SVG. Permite que una app consumidora sirva los iconos desde otra ruta. */
+  /** Accessible label for meaningful icons. */
+  @Prop() ariaLabel?: string;
+
+  /** Custom path to the SVG sprite file. */
   @Prop() spriteUrl = "/icons/opo-sprite-ui.svg";
 
   private get hasCustomIcon() {
@@ -42,12 +42,10 @@ export class OpoIcon {
       .replace(/^opo-icon-/, "")
       .replace(/^(ui|brand)-/, "");
 
-    if (Build.isDev && !this.hasWarnedInternalName && normalized !== trimmed) {
-      this.hasWarnedInternalName = true;
-      console.warn(
-        `[opo-icon] Internal prefix detected in name="${trimmed}". Use public names like "check" instead.`,
-      );
+    if (normalized !== trimmed) {
+      this.warnInternalName(trimmed);
     }
+
     return normalized;
   }
 
@@ -55,21 +53,53 @@ export class OpoIcon {
     return `${this.spriteUrl}#opo-icon-${this.normalizedName}`;
   }
 
-  render() {
+  private warnInternalName(name: string) {
+    if (!Build.isDev || this.hasWarnedInternalName) return;
+
+    this.hasWarnedInternalName = true;
+    console.warn(
+      `[opo-icon] Internal prefix detected in name="${name}". Use public names like "check" instead.`,
+    );
+  }
+
+  private warnMissingIcon() {
+    if (!Build.isDev || this.hasWarnedMissingIcon) return;
+
+    this.hasWarnedMissingIcon = true;
+    console.warn('[opo-icon] The "name" prop or a slot="icon" is required.');
+  }
+
+  private validateIconSource() {
     if (!this.normalizedName && !this.hasCustomIcon) {
-      if (Build.isDev && !this.hasWarnedMissingIcon) {
-        this.hasWarnedMissingIcon = true;
-        console.warn(
-          '[opo-icon] The "name" prop or a slot="icon" is required.',
-        );
-      }
+      this.warnMissingIcon();
+      return false;
+    }
+
+    return true;
+  }
+
+  render() {
+    if (!this.validateIconSource()) {
       return null;
     }
 
-    const classes = clsx("opo-icon", `opo-icon--${this.size}`, {
-      [`opo-icon--color-${this.color}`]: this.color,
-      "is-spinning": this.spinning,
-    });
+    const classes = clsx(
+      // Base
+      "opo-icon",
+
+      // Variants
+      `opo-icon--${this.size}`,
+
+      // Modifiers
+      {
+        [`opo-icon--color-${this.color}`]: this.color,
+      },
+
+      // States
+      {
+        "is-spinning": this.spinning,
+      },
+    );
 
     return (
       <span

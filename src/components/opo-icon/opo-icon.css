@@ -20,7 +20,7 @@
   inline-size: var(--opo-icon-size);
   block-size: var(--opo-icon-size);
   color: currentcolor;
-  transition: color var(--ref-motion-duration-fast) ease;
+  transition: color var(--ref-motion-duration-faster) ease;
 }
 
 /* ==================== SIZES ==================== */

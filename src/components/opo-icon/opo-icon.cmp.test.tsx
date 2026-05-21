@@ -6,7 +6,7 @@ describe("opo-icon", () => {
   // RENDERING
   // =========================================================
   // Verifies the visual rendering contract of the component:
-  // sprite usage, slot rendering and empty states.
+  // sprite usage, slot rendering, and empty states.
   describe("rendering", () => {
     it("renders an SVG icon from the sprite when name is provided", async () => {
       const { root } = await render(<opo-icon name="check"></opo-icon>);
@@ -57,11 +57,13 @@ describe("opo-icon", () => {
       );
 
       const slot = root.shadowRoot?.querySelector('slot[name="icon"]');
-      const internalUse = root.shadowRoot?.querySelector("use");
       const slottedSvg = root.querySelector('svg[slot="icon"]');
+      const internalSvg = root.shadowRoot?.querySelector("svg:not([slot])");
+      const internalUse = root.shadowRoot?.querySelector("use");
 
       expect(slot).toBeTruthy(); // the named slot should exist in the shadow DOM
       expect(slottedSvg).toBeTruthy(); // custom SVG should be rendered through the slot
+      expect(internalSvg).toBeNull();
       expect(internalUse).toBeNull(); // sprite-based icon should not render when a slotted icon is provided
     });
 
@@ -86,7 +88,10 @@ describe("opo-icon", () => {
       const base = root.shadowRoot?.querySelector('[part="base"]');
 
       expect(base?.getAttribute("aria-hidden")).toBe("true");
+
       expect(base?.getAttribute("role")).toBeNull();
+      expect(base?.hasAttribute("role")).toBe(false);
+
       expect(base?.getAttribute("aria-label")).toBeNull(); // if the icon is decorative, we don't want it to have an accessible name.
     });
 
@@ -98,11 +103,12 @@ describe("opo-icon", () => {
       const base = root.shadowRoot?.querySelector('[part="base"]');
       const svg = root.shadowRoot?.querySelector("svg");
 
-      expect(base?.getAttribute("role")).toBe("img"); // este elemento funciona como una imagen
+      expect(base?.getAttribute("role")).toBe("img"); // this element acts as an image
       expect(base?.getAttribute("aria-label")).toBe("Warning");
-      expect(base?.getAttribute("aria-hidden")).toBeNull(); // si el icono es informativo, no debe ser oculto para los lectores de pantalla
+      expect(base?.getAttribute("aria-hidden")).toBeNull(); //  if the icon is informative, it should not be hidden from screen readers
+      expect(base?.hasAttribute("aria-hidden")).toBe(false);
 
-      expect(svg?.getAttribute("aria-hidden")).toBe("true"); //El SVG interno se oculta para que el lector de pantalla no lea contenido duplicado
+      expect(svg?.getAttribute("aria-hidden")).toBe("true"); // The internal SVG is hidden so the screen reader does not read duplicate content
       expect(svg?.getAttribute("focusable")).toBe("false");
     });
   });
@@ -111,7 +117,7 @@ describe("opo-icon", () => {
   // STYLING API
   // =========================================================
   // Verifies the public styling contract exposed through:
-  // classes, modifiers and shadow parts.
+  // classes, modifiers, and shadow parts.
   describe("styling API", () => {
     it("applies the default size class", async () => {
       const { root } = await render(<opo-icon name="check"></opo-icon>);
