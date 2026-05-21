@@ -65,7 +65,7 @@ Ese bundle registra automáticamente los Web Components compilados por la librer
 La estructura actual está pensada para que la landing y la librería convivan en el mismo repo, pero separadas:
 
 - `npm start` levanta una landing externa en Vite y recompila la librería de Stencil en paralelo.
-- `npm run storybook` levanta Storybook y recompila Stencil en paralelo para reflejar cambios en componentes.
+- `npm run storybook` levanta Storybook y el entorno de desarrollo asociado para reflejar automáticamente cambios en componentes y estilos Shadow DOM.
 
 ---
 
@@ -84,7 +84,7 @@ La arquitectura separa:
 - sistema de iconos,
 - librería de componentes,
 - landing consumidora,
-- y documentación arquitectónica,
+- y documentación arquitectónica.
 
 ---
 
@@ -115,16 +115,18 @@ npm install
 
 #### Flujos de desarrollo disponibles y equivalencia comandos antiguos y actuales
 
-- `npm start` → `npm run landing:dev`
+- Starter original: `npm start`
+- Flujo actual equivalente: `npm run landing:dev`
   - **Landing only**
   - Ejecuta la landing externa.
   - Disponible en:
     - [localhost:3333](http://localhost:3333)
 
-- `npm run storybook` → `npm run storybook:dev`
+- Starter original: `npm run storybook`
+- Flujo actual equivalente: `npm run storybook:dev`
   - **Storybook only**
   - Ejecuta únicamente Storybook.
-  - Útil para revisar documentación o stories cuando la librería y los assets ya están generados.
+  - Pensado principalmente para revisar documentación y stories cuando la librería ya está compilada o el entorno principal de desarrollo está activo.
   - Disponible en:
     - [localhost:6006](http://localhost:6006)
 
@@ -375,13 +377,22 @@ mediante runtime assets generados en:
 public/icons/
 ```
 
+---
+
 ## Calidad y Tooling
 
 - **Storybook** como entorno de documentación y desarrollo aislado de componentes.
-- Browser component testing mediante **Vitest** + **Playwright**.
+- Browser component testing en navegador real mediante **Playwright** + **Vitest Browser Mode**.
 - APIs de componentes orientadas a **accesibilidad**.
 - Pipeline SVG con generación automática de **sprites**, manifest y typings.
 - Arquitectura semántica de **Design Tokens**.
+
+> [!NOTE]
+> Durante desarrollo, Storybook incorpora invalidación automática de módulos relacionados con el loader y los bundles generados por Stencil para mejorar el reload de componentes Web Components y estilos Shadow DOM.
+>
+> Esto evita problemas de caché habituales entre Storybook, Vite y Stencil durante workflows basados en `stencil build --watch`.
+
+---
 
 Más detalles sobre foundations y decisiones arquitectónicas:
 
@@ -431,7 +442,7 @@ Por ejemplo:
 En un contexto real de evolución del sistema, algunos aspectos que podrían desarrollarse más adelante serían:
 
 - Estrategia completa de theming (`light/dark mode`).
-- Multi-brand support `brand themes`
+- Multi-brand support mediante `brand themes`.
 - Estrategias de internacionalización (`i18n`).
 - Mayor adopción progresiva de `container queries`.
 - Estrategias avanzadas de motion.

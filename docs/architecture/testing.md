@@ -8,7 +8,7 @@ La estrategia de testing del sistema se plantea desde el comportamiento observab
 
 El objetivo es crear tests resilientes a refactors internos y cercanos al comportamiento real percibido por usuarios, navegadores y tecnologías asistivas.
 
-Actualmente el proyecto utiliza Vitest como framework principal de testing, con soporte específico para Stencil, Browser Mode mediante Playwright y una integración inicial con Storybook.
+Actualmente el proyecto utiliza Vitest como framework principal de testing, con soporte específico para Stencil, Browser Mode mediante Playwright y una integración inicial con Storybook principalmente orientada a documentación, accesibilidad manual/asistida y playground visual.
 
 El uso de Browser Mode permite validar componentes en un entorno más cercano al navegador real que los entornos puramente simulados mediante JSDOM.
 
@@ -107,15 +107,9 @@ La separación permite diferenciar claramente:
 
 ## Proyectos de testing
 
-La configuración actual separa los tests en tres proyectos:
+La configuración actual separa los tests en dos proyectos activos:
 
-### Test de Storybook
-
-Ejecuta archivos `.stories.\*` dentro de `src`.
-
-Estos tests forman parte de la integración entre Storybook y Vitest para validar stories y documentación interactiva.
-
-### Test unitarios
+### Tests unitarios
 
 Pensados para lógica aislada, helpers o funciones puras.
 
@@ -130,6 +124,11 @@ Pensados para validar componentes renderizados en navegador real mediante Playwr
 Patrón de archivos:
 
 `src/**/*.cmp.test.{ts,tsx}`
+
+> [!NOTE]
+> Las stories de Storybook (\*.stories.ts) se utilizan actualmente como documentación interactiva y playground visual, no como suites de test ejecutadas por Vitest.
+
+> Aunque el proyecto tiene instalada la integración @storybook/addon-vitest, los tests basados en stories quedan fuera del flujo principal por ahora. Podrían incorporarse más adelante mediante play() functions e interaction testing.
 
 ---
 
@@ -190,11 +189,34 @@ npx playwright install chromium
 
 ---
 
+## Storybook + Stencil Hot Reload considerations
+
+Durante el desarrollo se detectó que, aunque Stencil recompila correctamente componentes y estilos encapsulados (`Shadow DOM`) mediante:
+
+```bash
+stencil build --watch
+```
+
+Storybook/Vite puede mantener en caché módulos relacionados con el loader y los bundles generados por Stencil.
+
+Esto puede provocar que cambios en archivos `.tsx` o `.css` no se reflejen automáticamente en Storybook, incluso cuando Stencil ya ha recompilado correctamente el componente.
+
+Para mejorar la experiencia de desarrollo, la configuración de Storybook incorpora actualmente:
+
+- invalidación explícita de módulos relacionados con `loader/` y `dist/`,
+- y un full reload automático cuando cambian archivos dentro de `src/components`.
+
+Esta estrategia permite reflejar correctamente cambios en componentes Web Components y estilos Shadow DOM durante desarrollo sin necesidad de reiniciar manualmente Storybook.
+
+Esta lógica se implementa actualmente mediante un plugin Vite definido dentro de `.storybook/main.ts`.
+
+---
+
 ## Screenshots and artifacts (archivos auxiliares)
 
 Vitest Browser / Playwright puede generar artifacts locales como:
 
-```txt
+```text
 .vitest-attachments/
 __screenshots__/
 ```
@@ -212,4 +234,5 @@ Posibles evoluciones futuras:
 - añadir tests de interacción para componentes interactivos,
 - formalizar coverage,
 - valorar visual regression testing con Chromatic, Percy, Playwright o Vitest snapshots,
+- incorporar progresivamente interaction testing basado en Storybook mediante `play()` functions,
 - definir convenciones comunes para nombres de tests y estructura de archivos.
