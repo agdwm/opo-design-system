@@ -29,6 +29,14 @@
     --sys-color-on-action-secondary-hover: var(--ref-color-zinc-600); /* #88868d */
     --sys-color-on-action-secondary-pressed: var(--ref-color-zinc-700); /* #605e67 */
 
+    --sys-color-link-primary: var(--sys-color-brand-primary); /* #ffb142 */
+    --sys-color-link-primary-hover: var(--sys-color-brand-primary-hover); /* #ffc470 */
+    --sys-color-link-primary-pressed: var(--sys-color-brand-primary-pressed); /* #ffd599 */
+
+    --sys-color-link-secondary: var(--sys-color-text-tertiary); /* #88868d */
+    --sys-color-link-secondary-hover: var(--ref-color-zinc-900); /* #383641 */
+    --sys-color-link-secondary-pressed: var(--sys-color-text-primary); /* #1f1f21 */
+
     --sys-color-action-ghost: transparent;
     --sys-color-on-action-ghost: var(--ref-color-zinc-600); /* #88868d */
     --sys-color-on-action-ghost-hover: var(--ref-color-zinc-900); /* #383641 */

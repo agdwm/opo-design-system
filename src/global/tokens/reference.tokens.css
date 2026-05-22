@@ -120,6 +120,7 @@
 
     /* Radius */
     --ref-radius-none: 0;
+    --ref-radius-2xs: 4px;
     --ref-radius-xs: 6px;
     --ref-radius-sm: 8px;
     --ref-radius-md: 16px;
@@ -131,6 +132,7 @@
     --ref-shadow-xs: 0 2px 8px 0 oklch(0.3393 0.0192 293.69 / 0.03); /* #38364108 buttons */
     --ref-shadow-sm: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a cards */
     --ref-shadow-md: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.2); /* #38364133 popovers, overlays.. */
+    --ref-shadow-lg: 0 8px 24px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a accordions */
 
     /* Layout width constraints */
     --ref-container-sm: 680px;
@@ -157,9 +159,9 @@
     --ref-z-index-700: 700;
 
     /* Motion */
-    --ref-motion-duration-fast: 150ms; /* hover, focus, subtle feedback */
-    --ref-motion-duration-base: 250ms; /* standard UI transitions */
-    --ref-motion-duration-slow: 400ms; /* expressive or large-surface transitions */
-    --ref-motion-duration-slower: 1000ms; /* continuous or looping motion, such as spinners or loading indicators */
+  --ref-motion-duration-faster: 100ms; /* hover, focus, press feedback, microinteractions */
+  --ref-motion-duration-fast: 150ms; /* small fades, loaders, lightweight UI transitions */
+  --ref-motion-duration-normal: 250ms; /* dropdowns, accordions, medium transitions */
+  --ref-motion-duration-slow: 350ms; /* modals, drawers, larger motion sequences */
   }
 }
