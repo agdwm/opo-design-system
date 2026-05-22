@@ -5,7 +5,7 @@ import * as ButtonStories from "./opo-button.stories";
 
 # opo-button
 
-Botón de acción reutilizable del Design System OPO.
+Botón de acción reutilizable del **Design System OPO**.
 
 El componente está construido con `Stencil` y `Shadow DOM`, ofreciendo:
 
@@ -29,7 +29,7 @@ import "@opo/components/opo-button";
 ## Basic usage
 
 ```html
-<opo-button> Guardar </opo-button>
+<opo-button>Guardar</opo-button>
 ```
 
 ---
@@ -46,25 +46,25 @@ El componente soporta distintas variantes visuales:
 ### Primary
 
 ```html
-<opo-button variant="primary"> Guardar </opo-button>
+<opo-button variant="primary">Guardar</opo-button>
 ```
 
 ### Secondary
 
 ```html
-<opo-button variant="secondary"> Cancelar </opo-button>
+<opo-button variant="secondary">Cancelar</opo-button>
 ```
 
 ### Ghost
 
 ```html
-<opo-button variant="ghost"> Más información </opo-button>
+<opo-button variant="ghost">Más información</opo-button>
 ```
 
 ### Destructive
 
 ```html
-<opo-button variant="destructive"> Eliminar </opo-button>
+<opo-button variant="destructive">Eliminar</opo-button>
 ```
 
 ---
@@ -72,12 +72,6 @@ El componente soporta distintas variantes visuales:
 ## Sizes
 
 El tamaño visual se controla mediante la prop `size`.
-
-Valores disponibles:
-
-- `sm`
-- `md`
-- `lg`
 
 ```html
 <opo-button size="sm">Small</opo-button>
@@ -89,7 +83,7 @@ Valores disponibles:
 
 ## Icon buttons
 
-El componente soporta botones icon-only mediante la prop `iconOnly`.
+El componente soporta botones solo-icono mediante la prop `iconOnly`.
 
 En este modo:
 
@@ -104,7 +98,7 @@ En este modo:
 ```
 
 > [!IMPORTANT]
-> Los botones icon-only deberían proporcionar siempre `ariaLabel` para mantener un nombre accesible.
+> Los botones solo-icono deberían proporcionar siempre `ariaLabel` para mantener un nombre accesible.
 
 > [!NOTE]
 > En HTML se usa como atributo kebab-case (`icon-only`), mientras que en JSX/TSX se consume como prop camelCase (`iconOnly`).
@@ -153,14 +147,16 @@ Los iconos se insertan mediante slots:
 La prop `loading`:
 
 - muestra un loader,
-- deshabilita interacción,
+- bloquea la interacción,
 - y aplica `aria-busy` automáticamente.
 
 ```html
-<opo-button loading> Procesando </opo-button>
+<opo-button loading>Procesando</opo-button>
 ```
 
 ### Custom loader
+
+El slot `loader` permite sustituir el loader interno por cualquier contenido compatible.
 
 ```html
 <opo-button loading>
@@ -174,7 +170,7 @@ La prop `loading`:
 ## Disabled state
 
 ```html
-<opo-button disabled> Deshabilitado </opo-button>
+<opo-button disabled>Deshabilitado</opo-button>
 ```
 
 ---
@@ -184,7 +180,7 @@ La prop `loading`:
 La prop `fullWidth` hace que el botón ocupe todo el ancho disponible del contenedor.
 
 ```html
-<opo-button full-width> Continuar </opo-button>
+<opo-button full-width>Continuar</opo-button>
 ```
 
 ---
@@ -193,16 +189,18 @@ La prop `fullWidth` hace que el botón ocupe todo el ancho disponible del conten
 
 El componente incorpora:
 
-- soporte para `aria-label`,
-- `aria-busy` automático durante loading,
 - botón nativo HTML,
 - soporte de teclado nativo,
+- soporte para `aria-label`,
+- `aria-busy` automático durante loading,
 - y focus management mediante `:focus-visible`.
 
-Los icon-only buttons deberían proporcionar siempre:
+Los botones solo-icono deberían proporcionar siempre un nombre accesible:
 
 ```html
-aria-label="Descripción"
+<opo-button icon-only aria-label="Buscar">
+  <opo-icon slot="icon-start" name="search"></opo-icon>
+</opo-button>
 ```
 
 ---
@@ -211,46 +209,231 @@ aria-label="Descripción"
 
 ### Shadow parts
 
-| Part         | Description           |
-| ------------ | --------------------- |
-| `base`       | Native button element |
-| `label`      | Button label wrapper  |
-| `icon-start` | Start icon wrapper    |
-| `icon-end`   | End icon wrapper      |
-| `loader`     | Loader wrapper        |
+<table>
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>base</code>
+      </td>
+      <td>Native button element</td>
+    </tr>
+    <tr>
+      <td>
+        <code>label</code>
+      </td>
+      <td>Button label wrapper</td>
+    </tr>
+    <tr>
+      <td>
+        <code>icon-start</code>
+      </td>
+      <td>Start icon wrapper</td>
+    </tr>
+    <tr>
+      <td>
+        <code>icon-end</code>
+      </td>
+      <td>End icon wrapper</td>
+    </tr>
+    <tr>
+      <td>
+        <code>loader</code>
+      </td>
+      <td>Loader wrapper</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Props
 
-| Prop        | Type                                                   | Default     | Description                                  |
-| ----------- | ------------------------------------------------------ | ----------- | -------------------------------------------- |
-| `variant`   | `"primary" \| "secondary" \| "ghost" \| "destructive"` | `"primary"` | Visual variant                               |
-| `size`      | `"sm" \| "md" \| "lg"`                                 | `"md"`      | Visual size                                  |
-| `iconOnly`  | `boolean`                                              | `false`     | Renders the button as icon-only              |
-| `fullWidth` | `boolean`                                              | `false`     | Expands button width to the container        |
-| `loading`   | `boolean`                                              | `false`     | Shows loading state and disables interaction |
-| `disabled`  | `boolean`                                              | `false`     | Disables the button                          |
-| `ariaLabel` | `string`                                               | `undefined` | Accessible label                             |
-| `type`      | `"button" \| "submit" \| "reset"`                      | `"button"`  | Native button type                           |
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>variant</code>
+      </td>
+      <td>
+        <code>"primary" | "secondary" | "ghost" | "destructive"</code>
+      </td>
+      <td>
+        <code>"primary"</code>
+      </td>
+      <td>Visual variant</td>
+    </tr>
+    <tr>
+      <td>
+        <code>size</code>
+      </td>
+      <td>
+        <code>"sm" | "md" | "lg"</code>
+      </td>
+      <td>
+        <code>"md"</code>
+      </td>
+      <td>Visual size</td>
+    </tr>
+    <tr>
+      <td>
+        <code>iconOnly</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Renders the button as icon-only</td>
+    </tr>
+    <tr>
+      <td>
+        <code>fullWidth</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Expands button width to the container</td>
+    </tr>
+    <tr>
+      <td>
+        <code>loading</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Shows loading state and disables interaction</td>
+    </tr>
+    <tr>
+      <td>
+        <code>disabled</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Disables the button</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ariaLabel</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>undefined</code>
+      </td>
+      <td>Accessible label</td>
+    </tr>
+    <tr>
+      <td>
+        <code>type</code>
+      </td>
+      <td>
+        <code>"button" | "submit" | "reset"</code>
+      </td>
+      <td>
+        <code>"button"</code>
+      </td>
+      <td>Native button type</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Slots
 
-| Slot         | Description          |
-| ------------ | -------------------- |
-| default      | Button label/content |
-| `icon-start` | Start icon           |
-| `icon-end`   | End icon             |
-| `loader`     | Custom loader        |
+<table>
+  <thead>
+    <tr>
+      <th>Slot</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>default</code>
+      </td>
+      <td>Button label/content</td>
+    </tr>
+    <tr>
+      <td>
+        <code>icon-start</code>
+      </td>
+      <td>Start icon</td>
+    </tr>
+    <tr>
+      <td>
+        <code>icon-end</code>
+      </td>
+      <td>End icon</td>
+    </tr>
+    <tr>
+      <td>
+        <code>loader</code>
+      </td>
+      <td>Custom loader</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Do / Don’t
+
+### Do
+
+- Usa `iconOnly` únicamente cuando el botón represente una acción claramente reconocible.
+  Los botones solo-icono eliminan el texto visible, por lo que deberían reservarse para acciones comunes y fácilmente identificables.
+
+- Proporciona siempre `ariaLabel` en botones solo-icono.
+  El icono visual no genera automáticamente un nombre accesible; sin una etiqueta, el botón puede ser incomprensible para lectores de pantalla.
+
+- Usa `destructive` solo para acciones destructivas, irreversibles o potencialmente peligrosas.
+  Esto mantiene la jerarquía visual del sistema y evita que el estilo destructivo pierda significado.
+
+### Don’t
+
+- No uses botones para navegación entre páginas o vistas.
+  Para navegación utiliza `opo-link`, porque mantiene semántica nativa de enlace y comportamiento esperado del navegador.
+
+- No dependas únicamente del color para transmitir significado.
+  Los estados críticos deberían apoyarse también en texto, contexto o estructura accesible.
+
+- No coloques múltiples botones primarios juntos sin una jerarquía clara.
+  La interfaz debería guiar hacia una acción principal y usar variantes secundarias para acciones de apoyo.
 
 ---
 
 ## Notes
 
-- El componente utiliza `Shadow DOM`.
+- `opo-button` usa un `<button>` nativo dentro de Shadow DOM.
 - Los estilos internos están desacoplados mediante Design Tokens.
 - Las transiciones utilizan motion tokens compartidos del sistema.
-- Los icon buttons utilizan un pequeño optical alignment para mejorar centrado visual de iconos.
-- El componente utiliza `button` nativo para mantener comportamiento y accesibilidad estándar.
+- Los icon buttons utilizan un pequeño optical alignment para mejorar el centrado visual de iconos.
+- Usa `opo-link` cuando la intención principal sea navegar.
