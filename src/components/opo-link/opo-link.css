@@ -1,0 +1,89 @@
+:host {
+  display: inline-block;
+}
+
+/* Prevents the host display value from overriding the native hidden behavior. */
+:host([hidden]) {
+  display: none;
+}
+
+.opo-link {
+  --opo-link-color: var(--sys-color-link-primary); /* #ffb142 */
+  --opo-link-hover-color: var(--sys-color-link-primary-hover);
+  --opo-link-pressed-color: var(--sys-color-link-primary-pressed);
+
+  color: var(--opo-link-color);
+  font: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+  transition:
+    color var(--ref-motion-duration-faster) ease,
+    text-decoration-color var(--ref-motion-duration-faster) ease;
+}
+
+/* ==================== VARIANTS ==================== */
+
+.opo-link--primary {
+  --opo-link-color: var(--sys-color-link-primary); /* #ffb142 */
+  --opo-link-hover-color: var(--sys-color-link-primary-hover);
+  --opo-link-pressed-color: var(--sys-color-link-primary-pressed);
+}
+
+.opo-link--secondary {
+  --opo-link-color: var(--sys-color-link-secondary); /* #88868d */
+  --opo-link-hover-color: var(--sys-color-link-secondary-hover);
+  --opo-link-pressed-color: var(--sys-color-link-secondary-pressed);
+}
+
+/* ==================== QUIET ==================== */
+
+.opo-link--quiet,
+.opo-link--quiet:hover:not(.is-disabled),
+.opo-link--quiet:active:not(.is-disabled) {
+  text-decoration-line: none;
+}
+
+/* ==================== STATIC COLORS ==================== */
+
+.opo-link--static-white {
+  --opo-link-color: var(--sys-color-text-inverse);
+}
+
+.opo-link--static-black {
+  --opo-link-color: var(--sys-color-text-primary);
+}
+
+.opo-link--static-white,
+.opo-link--static-black {
+  --opo-link-hover-color: var(--opo-link-color);
+  --opo-link-pressed-color: var(--opo-link-color);
+}
+
+/* ==================== STATES ==================== */
+
+.opo-link:focus-visible {
+  outline: 2px solid var(--sys-color-focus-ring); /* #ff793f */
+  outline-offset: 2px;
+}
+
+.opo-link:hover:not(.is-disabled) {
+  color: var(
+    --opo-link-hover-color,
+    var(--opo-link-color)
+  );
+}
+
+.opo-link:active:not(.is-disabled) {
+  color: var(
+    --opo-link-pressed-color,
+    var(--opo-link-hover-color, var(--opo-link-color))
+  );
+}
+
+.opo-link.is-disabled {
+  color: var(--sys-color-on-action-disabled);
+  text-decoration-line: none;
+  cursor: not-allowed;
+}
