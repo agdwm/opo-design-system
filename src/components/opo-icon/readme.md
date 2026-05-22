@@ -23,6 +23,19 @@
 | `"svg"`  |             |
 
 
+## Dependencies
+
+### Used by
+
+ - [opo-avatar](../opo-avatar)
+
+### Graph
+```mermaid
+graph TD;
+  opo-avatar --> opo-icon
+  style opo-icon fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

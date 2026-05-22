@@ -1,144 +1,315 @@
-import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import { Meta } from "@storybook/addon-docs/blocks";
 import * as IconStories from "./opo-icon.stories";
 
 <Meta of={IconStories} />
 
-# Icon
+# opo-icon
 
-`opo-icon` renderiza los iconos del `Design System OPO` mediante un **sprite SVG** externo.
+Componente de iconografía del **Design System OPO**.
 
----
+El componente está construido con `Stencil` y `Shadow DOM`. Está pensado para renderizar iconos SVG desde un sprite compartido, con soporte adicional para iconos personalizados mediante slots.
 
-## Overview
+Está diseñado para:
 
-El componente está pensado para iconos de interfaz reutilizables, con soporte para:
-
-- catálogo de iconos por nombre (`name`),
-- tamaños controlados (`size`),
-- colores semánticos opcionales (`color`),
-- herencia de color mediante `currentColor`,
-- accesibilidad para iconos decorativos o significativos (`aria-label`),
-- SVG personalizado mediante slot (`slot="icon"`),
-- y animación de rotación opcional (`spinning`).
-
-El sistema utiliza un sprite SVG externo servido como asset runtime. Esto permite **mantener el componente ligero y desacoplado de los assets SVG originales**, aunque requiere que la aplicación consumidora sirva el sprite desde una ruta pública accesible.
+- iconos decorativos,
+- iconos con significado propio,
+- integración con botones y acciones,
+- herencia de color contextual,
+- y composición dentro de otros componentes del sistema.
 
 ---
 
-## Usage
+## Import
 
-### Basic usage
+```tsx
+import "@opo/components/opo-icon";
+```
+
+---
+
+## Basic usage
 
 ```html
 <opo-icon name="check"></opo-icon>
 ```
 
-### Semantic color
+---
+
+## Sizes
+
+La prop `size` controla el tamaño visual del icono.
 
 ```html
-<opo-icon name="warning" color="warning" aria-label="Advertencia"></opo-icon>
+<opo-icon name="calendar" size="sm"></opo-icon>
+<opo-icon name="calendar" size="md"></opo-icon>
+<opo-icon name="calendar" size="lg"></opo-icon>
 ```
 
 ---
 
-### Runtime sprite serving
+## Semantic colors
 
-El componente no contiene los SVG inline.
-`opo-icon` renderiza referencias a símbolos dentro de un sprite SVG externo mediante:
+El componente soporta colores semánticos opcionales.
 
-```html
-<use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
-```
-
-Por defecto, el componente espera encontrar el sprite en:
-
-```text
-/icons/opo-sprite-ui.svg
-```
-
-Esto significa que la aplicación consumidora debe servir el sprite como un asset público accesible desde el navegador.
-
-Por ejemplo, en una aplicación Vite:
-
-```text
-public/icons/opo-sprite-ui.svg
-```
-
-En Storybook, el sprite se expone mediante `staticDirs`:
-
-```js
-staticDirs: [
-  {
-    from: "../public/icons",
-    to: "/icons",
-  },
-];
-```
-
-La ruta puede personalizarse mediante la prop `spriteUrl`.
-
----
-
-## Accessibility
-
-Por defecto, si no se proporciona `aria-label`, el icono se considera decorativo y se oculta a tecnologías asistivas.
+Cuando no se proporciona `color`, el icono hereda `currentColor` de su contexto padre.
 
 ```html
-<opo-icon name="check"></opo-icon>
-```
-
-Cuando el icono comunica significado por sí mismo, debe proporcionarse una etiqueta accesible:
-
-```html
-<opo-icon name="trash-2" aria-label="Eliminar elemento"></opo-icon>
-```
-
-En botones solo con icono, el nombre accesible debe vivir normalmente en el elemento interactivo padre:
-
-```html
-<opo-button variant="ghost" size="md" icon-only aria-label="Buscar">
-  <opo-icon slot="icon-start" name="search"></opo-icon>
-</opo-button>
-```
-
----
-
-## Theming
-
-Por defecto, el icono hereda `currentColor` del contexto padre.
-
-```css
-.my-button {
-  color: var(--sys-color-on-action-primary);
-}
-```
-
-```html
-<button class="my-button">
-  <opo-icon name="check"></opo-icon>
-  Guardar
-</button>
-```
-
-Usa la prop `color` solo cuando el icono necesite un color semántico independiente:
-
-```html
+<opo-icon name="check" color="success"></opo-icon>
 <opo-icon name="info-circle" color="danger"></opo-icon>
+<opo-icon name="settings" color="primary"></opo-icon>
 ```
 
 ---
 
-## Custom SVG
+## Inherits currentColor
 
-Para casos puntuales, el componente permite usar un SVG personalizado mediante slot:
+Cuando no se define `color`, el icono hereda automáticamente el color tipográfico del contexto.
+
+```html
+<div style="color: #383641;">
+  <opo-icon name="calendar"></opo-icon>
+</div>
+```
+
+Esto permite que el icono acompañe de forma natural los estados visuales de componentes como `opo-button` u `opo-link`.
+
+---
+
+## Spinning state
+
+`spinning` activa una animación de rotación continua.
+
+```html
+<opo-icon name="refresh-cw" spinning></opo-icon>
+```
+
+---
+
+## Decorative icons
+
+Cuando no se proporciona `ariaLabel`, el icono se considera decorativo.
+
+En ese caso:
+
+- el icono se oculta de tecnologías asistivas,
+- no expone `role="img"`,
+- y no genera nombre accesible.
+
+```html
+<opo-icon name="star"></opo-icon>
+```
+
+---
+
+## Informative icons
+
+Cuando el icono tiene significado propio, debería proporcionar `ariaLabel`.
+
+```html
+<opo-icon name="warning" aria-label="Advertencia"></opo-icon>
+```
+
+El componente:
+
+- expone `role="img"`,
+- aplica `aria-label`,
+- y evita contenido duplicado ocultando el SVG interno.
+
+---
+
+## Custom SVG icons
+
+Además del sprite principal, el componente soporta SVGs personalizados mediante el slot `icon`.
 
 ```html
 <opo-icon aria-label="Icono personalizado">
-  <svg slot="icon" viewBox="0 0 24 24">...</svg>
+  <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <circle cx="12" cy="12" r="10" />
+  </svg>
 </opo-icon>
 ```
 
-Este patrón está pensado para contenido estático o casos que no pertenecen al catálogo principal.
+El soporte mediante slot está pensado para:
+
+- contenido estático,
+- iconos puntuales,
+- o iconografía que no pertenece al catálogo principal.
+
+---
+
+## Custom sprite URL
+
+`spriteUrl` permite utilizar un sprite SVG distinto al sprite principal del sistema.
+
+```html
+<opo-icon name="check" sprite-url="/custom/icons.svg"></opo-icon>
+```
+
+Útil cuando:
+
+- una aplicación sirve sprites desde otra ruta,
+- o existe separación entre sprites por dominio/contexto.
+
+---
+
+## Composition examples
+
+### Inside buttons
+
+```html
+<opo-button variant="primary">
+  <opo-icon slot="icon-start" name="search"></opo-icon>
+  Buscar
+</opo-button>
+```
+
+### Inline with text
+
+```html
+<p>
+  Descargar
+  <opo-icon name="download" size="sm"></opo-icon>
+</p>
+```
+
+---
+
+## Public styling API
+
+### Shadow parts
+
+<table>
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>base</code>
+      </td>
+      <td>Root icon wrapper</td>
+    </tr>
+    <tr>
+      <td>
+        <code>svg</code>
+      </td>
+      <td>Internal SVG element</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Props
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>name</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>undefined</code>
+      </td>
+      <td>Icon name from the SVG sprite</td>
+    </tr>
+    <tr>
+      <td>
+        <code>size</code>
+      </td>
+      <td>
+        <code>"sm" | "md" | "lg"</code>
+      </td>
+      <td>
+        <code>"md"</code>
+      </td>
+      <td>Visual icon size</td>
+    </tr>
+    <tr>
+      <td>
+        <code>color</code>
+      </td>
+      <td>
+        <code>"primary" | "secondary" | "success" | "danger" | "warning"</code>
+      </td>
+      <td>
+        <code>undefined</code>
+      </td>
+      <td>Optional semantic color</td>
+    </tr>
+    <tr>
+      <td>
+        <code>spinning</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Applies continuous spinning animation</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ariaLabel</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>undefined</code>
+      </td>
+      <td>Accessible label for meaningful icons</td>
+    </tr>
+    <tr>
+      <td>
+        <code>spriteUrl</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>"/icons/opo-sprite-ui.svg"</code>
+      </td>
+      <td>Custom SVG sprite URL</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Slots
+
+<table>
+  <thead>
+    <tr>
+      <th>Slot</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>icon</code>
+      </td>
+      <td>Custom SVG icon</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -146,56 +317,34 @@ Este patrón está pensado para contenido estático o casos que no pertenecen al
 
 ### Do
 
-- Usa `name` para iconos del catálogo.
-- Deja que el icono herede color del contexto cuando forme parte de un botón, link o navegación.
-- Usa `aria-label` solo cuando el icono tenga significado propio.
+- Usa `name` para iconos del catálogo principal.
+  Esto mantiene la iconografía centralizada, evita duplicados y garantiza consistencia visual en todo el sistema.
+
+- Deja que el icono herede `currentColor` cuando forme parte de botones, links o navegación.
+  Así el icono acompaña correctamente los estados visuales del componente padre, como hover, pressed o disabled.
+
+- Usa `ariaLabel` solo cuando el icono tenga significado propio.
+  Si el icono es decorativo, ocultarlo evita ruido innecesario para lectores de pantalla.
 
 ### Don’t
 
 - No uses iconos como sustituto único de texto si el significado no es accesible.
-- No pases nombres internos como `opo-icon-check` o `ui-check`.
-- No uses el slot custom para recrear el catálogo principal.
+  Un icono aislado puede ser ambiguo; si no hay texto visible, proporciona un nombre accesible en el componente interactivo padre.
+
+- No pases nombres internos como `opo-icon-check`, `ui-check` o `brand-check`.
+  La API pública debe usar nombres simples como `check`, aunque el componente normalice prefijos por seguridad.
+
+- No uses el slot custom para recrear iconos existentes del catálogo principal.
+  El slot está pensado para casos puntuales o iconografía externa; el catálogo compartido debería vivir en el sprite principal.
 
 ---
 
-## Examples
+## Notes
 
-### Default
-
-<Canvas of={IconStories.Default} />
-
-### Sizes
-
-<Canvas of={IconStories.Sizes} />
-
-### Inherits Color
-
-<Canvas of={IconStories.InheritsColor} />
-
-### Decorative
-
-<Canvas of={IconStories.Decorative} />
-
-### With Aria Label
-
-<Canvas of={IconStories.WithAriaLabel} />
-
-### Custom SVG
-
-<Canvas of={IconStories.CustomSVG} />
-
-### In Buttons
-
-<Canvas of={IconStories.InButtons} />
-
----
-
-## API
-
-<Controls of={IconStories.Default} />
-
----
-
-## All Icons
-
-<Canvas of={IconStories.AllIcons} />
+- `opo-icon` usa SVG sprites por defecto.
+- El componente usa Shadow DOM.
+- Los iconos decorativos se ocultan automáticamente de tecnologías asistivas.
+- Los iconos con significado propio deberían proporcionar `ariaLabel`.
+- El componente soporta tanto iconos del sprite como SVGs personalizados mediante slot.
+- Los prefijos internos como `opo-icon-`, `ui-` o `brand-` se normalizan automáticamente.
+- El componente hereda `currentColor` salvo que se defina un color semántico explícito.
