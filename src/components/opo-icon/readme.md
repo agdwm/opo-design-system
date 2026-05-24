@@ -27,11 +27,13 @@
 
 ### Used by
 
+ - [opo-accordion-item](../opo-accordion)
  - [opo-avatar](../opo-avatar)
 
 ### Graph
 ```mermaid
 graph TD;
+  opo-accordion-item --> opo-icon
   opo-avatar --> opo-icon
   style opo-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
