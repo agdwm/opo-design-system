@@ -7,7 +7,7 @@ import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/600.css";
 import "@fontsource/ibm-plex-sans/700.css";
 
-import "../src/global/global.css";
+import "../src/stylesheets/global.css";
 import "../src/foundations/foundations.css";
 // Register Stencil custom elements so Storybook can render shadow DOM and component styles.
 defineCustomElements();

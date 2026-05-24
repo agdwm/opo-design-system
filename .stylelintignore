@@ -5,4 +5,4 @@ storybook-static/**
 loader/**
 
 # Token source files with custom structure
-src/global/tokens/**
+src/stylesheets/tokens/**

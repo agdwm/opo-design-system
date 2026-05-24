@@ -163,5 +163,6 @@
   --ref-motion-duration-fast: 150ms; /* small fades, loaders, lightweight UI transitions */
   --ref-motion-duration-normal: 250ms; /* dropdowns, accordions, medium transitions */
   --ref-motion-duration-slow: 350ms; /* modals, drawers, larger motion sequences */
+  --ref-motion-duration-slower: 900ms; /* spinners */
   }
 }

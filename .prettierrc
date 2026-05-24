@@ -24,7 +24,7 @@
       }
     },
     {
-      "files": "src/global/tokens/**/*.css",
+      "files": "src/stylesheets/tokens/**/*.css",
       "options": {
         "printWidth": 999
       }

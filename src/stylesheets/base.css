@@ -1,13 +1,15 @@
 @layer base {
   html {
     background: var(--sys-color-surface-page);
-    color: var(--sys-color-text-primary);
     font-family: var(--sys-typography-body-font-family);
   }
 
   body {
     min-height: 100vh;
     background: var(--sys-color-surface-page);
+    color: var(--sys-color-text-primary);
+    font-size: var(--sys-typography-body-font-size); /* 1rem */
+    line-height: var(--sys-typography-body-line-height); /* 1.5 */
   }
 
   a {

@@ -3,8 +3,16 @@
 /* Storybook docs layout */
 
 /* -------------------------------------------------------------------------- */
+
+
 .sbdocs-wrapper .sbdocs-content {
   max-width: 75rem;
+
+  p,
+  li {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 }
 
 .sbdocs-wrapper .style-guide-stories {
@@ -23,10 +31,7 @@
   color: var(--ref-color-zinc-950);
   font-family: var(--ref-font-family-sans);
 
-  a,
-  b {
-    font-weight: var(--ref-font-weight-medium);
-  }
+
 
   .code-inline {
     display: inline-block;
@@ -54,11 +59,11 @@
     list-style: none;
   }
 
-  p {
-    margin: 0 0 var(--ref-spacing-400);
-    font-size: var(--ref-font-size-300);
-    line-height: var(--ref-line-height-base);
+  a,
+  b {
+    font-weight: var(--ref-font-weight-medium);
   }
+
 
   > section:not(:last-child) {
     padding-bottom: var(--ref-spacing-400);

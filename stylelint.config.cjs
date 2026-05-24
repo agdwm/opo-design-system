@@ -340,8 +340,8 @@ module.exports = {
       true,
       {
         importFrom: [
-          "src/global/tokens/reference.tokens.css",
-          "src/global/tokens/system.tokens.css",
+          "src/stylesheets/tokens/reference.tokens.css",
+          "src/stylesheets/tokens/system.tokens.css",
         ],
         severity: "warning",
       },
