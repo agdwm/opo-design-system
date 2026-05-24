@@ -9,7 +9,7 @@
 }
 
 .opo-button {
-  --opo-button-height: 48px;
+  --opo-button-height: 3rem; /* 48px */
   --opo-button-font-size: var(--sys-typography-action-md-size); /* 1rem */
   --opo-button-padding-block: var(--sys-space-xs); /* 12px */
   --opo-button-background: var(--sys-color-action-primary); /* #ffb142 */
@@ -46,25 +46,25 @@
 
 /* Sizes */
 .opo-button--sm {
-  --opo-button-height: 40px;
+  --opo-button-height: 2.5rem; /* 40px */
   --opo-button-font-size: var(--sys-typography-action-sm-size); /* 14px */
   --opo-button-padding-block: var(--sys-space-2xs); /* 8px */
 }
 
 .opo-button--md {
-  --opo-button-height: 48px;
+  --opo-button-height: 3rem; /* 48px */
   --opo-button-font-size: var(--sys-typography-action-md-size); /* 16px */
   --opo-button-padding-block: var(--sys-space-xs); /* 12px */
 }
 
 .opo-button--lg {
-  --opo-button-height: 56px;
+  --opo-button-height: 3.5rem; /* 56px */
   --opo-button-font-size: var(--sys-typography-action-lg-size); /* 18px */
   --opo-button-padding-block: var(--sys-space-sm); /* 16px */
 }
 
 .opo-button--icon-only {
-  --opo-button-height: 40px;
+  --opo-button-height: 2.5rem; /* 40px */
 
   gap: 0;
   inline-size: var(--opo-button-height);
@@ -123,15 +123,11 @@
 }
 
 .opo-button--destructive:hover:not(:disabled, .is-disabled, .is-loading) {
-  --opo-button-background: var(
-    --sys-color-action-destructive-hover
-  );
+  --opo-button-background: var(--sys-color-action-destructive-hover);
 }
 
 .opo-button--destructive:active:not(:disabled, .is-disabled, .is-loading) {
-  --opo-button-background: var(
-    --sys-color-action-destructive-pressed
-  );
+  --opo-button-background: var(--sys-color-action-destructive-pressed);
 }
 
 /* States */

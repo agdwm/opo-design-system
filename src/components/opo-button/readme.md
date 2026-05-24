@@ -30,6 +30,19 @@
 | `"loader"`     |             |
 
 
+## Dependencies
+
+### Depends on
+
+- [opo-spinner](../opo-spinner)
+
+### Graph
+```mermaid
+graph TD;
+  opo-button --> opo-spinner
+  style opo-button fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

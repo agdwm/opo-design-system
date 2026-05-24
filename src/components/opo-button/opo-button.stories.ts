@@ -247,7 +247,7 @@ export const CustomLoader: StoryObj<ButtonArgs> = {
       loading
     >
       Guardar
-      <opo-icon slot="loader" name="refresh-cw" size="sm" spinning></opo-icon>
+      <opo-icon slot="loader" name="refresh-cw" size="md" spinning></opo-icon>
     </opo-button>
   `,
 };
