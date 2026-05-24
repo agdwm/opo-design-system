@@ -413,6 +413,65 @@ async function processFolderRaw(
   }
 
   await compileSpriter(spriter, path.join(outputDir, outputFileName), label);
+  // Validación mínima solo para evitar colisiones internas en la demo
+  const seen = new Set();
+  for (const file of files) {
+    const publicName = normalizePublicIconName(file);
+    if (seen.has(publicName)) {
+      console.error(`❌ Duplicate icon name '${publicName}' in brand-broken (demo only).`);
+      process.exit(1);
+    }
+    seen.add(publicName);
+    if (!/^brand-/.test(file)) {
+      console.error(`❌ Invalid prefix in brand-broken: ${file}`);
+      process.exit(1);
+    }
+  }
+  return files
+    .map((file) => normalizePublicIconName(file))
+    .sort((a, b) => a.localeCompare(b));
+}
+
+
+
+// Sprite combinado solo con ui + brand, con validación y optimización igual que los sprites individuales
+async function processCombinedSprite({ sources, outputFileName, label }) {
+  const spriter = buildSpriter(outputFileName);
+  const allNames = [];
+  const seen = new Set();
+
+  for (const { dir, expectedPrefix, validate, svgoConfig } of sources) {
+    if (!fs.existsSync(dir)) continue;
+    const files = fs
+      .readdirSync(dir)
+      .filter((file) => file.endsWith('.svg'))
+      .sort((a, b) => a.localeCompare(b));
+    for (const file of files) {
+      if (!file.startsWith(expectedPrefix + '-')) {
+        console.error(`❌ Invalid prefix in ${dir}: ${file}`);
+        process.exit(1);
+      }
+      const publicName = normalizePublicIconName(file);
+      if (seen.has(publicName)) {
+        console.error(`❌ Duplicate public icon name '${publicName}' in combined sprite (ui + brand).`);
+        process.exit(1);
+      }
+      seen.add(publicName);
+      const filePath = path.join(dir, file);
+      const svgContent = fs.readFileSync(filePath, 'utf8');
+      const validationErrors = validate(svgContent, filePath);
+      if (validationErrors.length > 0) {
+        console.error("\nValidation errors:\n", validationErrors.join("\n"));
+        process.exit(1);
+      }
+      const optimized = optimize(svgContent, { path: filePath, ...svgoConfig });
+      spriter.add(filePath, null, optimized.data);
+      allNames.push(publicName);
+    }
+  }
+
+  await compileSpriter(spriter, path.join(outputDir, outputFileName), label);
+  return allNames.sort((a, b) => a.localeCompare(b));
 }
 
 async function generateSprites() {
@@ -422,6 +481,7 @@ async function generateSprites() {
 
   const globalNameRegistry = new Map();
 
+  // UI: validación estricta
   const uiIconNames =
     (await processFolder(
       uiInputDir,
@@ -433,16 +493,19 @@ async function generateSprites() {
       globalNameRegistry,
     )) ?? [];
 
-  await processFolder(
-    brandInputDir,
-    validateBrandIcon,
-    svgoConfigBrand,
-    "opo-sprite-brand.svg",
-    "Brand icons",
-    "brand",
-    globalNameRegistry,
-  );
+  // Brand: validación flexible
+  const brandIconNames =
+    (await processFolder(
+      brandInputDir,
+      validateBrandIcon,
+      svgoConfigBrand,
+      "opo-sprite-brand.svg",
+      "Brand icons",
+      "brand",
+      globalNameRegistry,
+    )) ?? [];
 
+  // Brand-broken: solo demo/debug, validación mínima
   await processFolderRaw(
     brandBrokenInputDir,
     "opo-sprite-brand-broken.svg",
@@ -450,12 +513,41 @@ async function generateSprites() {
     "brand",
   );
 
+  // Sprite combinado y manifest/types solo con ui + brand
+  const allIconNames = [...uiIconNames, ...brandIconNames].sort((a, b) => a.localeCompare(b));
+  // Validación global de duplicados
+  const uniqueIconNames = [...new Set(allIconNames)];
+  if (uniqueIconNames.length !== allIconNames.length) {
+    console.error("❌ Duplicate public icon names found in combined icon set (ui + brand). Aborting.");
+    process.exit(1);
+  }
+
+
+  await processCombinedSprite({
+    sources: [
+      {
+        dir: uiInputDir,
+        expectedPrefix: "ui",
+        validate: validateLineIcon,
+        svgoConfig: svgoConfigLine,
+      },
+      {
+        dir: brandInputDir,
+        expectedPrefix: "brand",
+        validate: validateBrandIcon,
+        svgoConfig: svgoConfigBrand,
+      },
+    ],
+    outputFileName: "opo-sprite.svg",
+    label: "Combined sprite (ui + brand)",
+  });
+
   writeIconsManifest({
-    iconNames: uiIconNames,
+    iconNames: uniqueIconNames,
     outputDir,
   });
   writeIconNameTypes({
-    iconNames: uiIconNames,
+    iconNames: uniqueIconNames,
     outputDir,
   });
 }

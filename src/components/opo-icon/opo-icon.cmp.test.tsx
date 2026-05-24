@@ -19,7 +19,7 @@ describe("opo-icon", () => {
       expect(base).toBeTruthy();
       expect(svg).toBeTruthy();
       expect(use?.getAttribute("href")).toBe(
-        "/icons/opo-sprite-ui.svg#opo-icon-check",
+        "/icons/opo-sprite.svg#opo-icon-check",
       );
     });
 
@@ -43,7 +43,7 @@ describe("opo-icon", () => {
       const use = root.shadowRoot?.querySelector("use");
 
       expect(use?.getAttribute("href")).toBe(
-        "/icons/opo-sprite-ui.svg#opo-icon-check",
+        "/icons/opo-sprite.svg#opo-icon-check",
       );
     });
 

@@ -215,7 +215,7 @@ Ese flujo era adecuado para el alcance inicial del proyecto, pero a medida que e
 
 - El pipeline de iconos es más robusto y explícito.
 - El arranque deja de depender únicamente de procesos paralelos y pasa a ser más determinista y predecible.
-- Cada flujo tiene su comando específico, mejorando la DX y el onboarding.
+- Cada flujo tiene su comando específico, mejorando la Developer Experience y el onboarding.
 - Se reducen inconsistencias relacionadas con sincronización y serving de assets runtime.
 - El README y los scripts reflejan correctamente el contrato arquitectónico:
 
@@ -258,6 +258,12 @@ landing/
 
 public/
 └── icons/
+    ├── opo-sprite.svg
+    ├── opo-sprite-ui.svg
+    ├── opo-sprite-brand.svg
+    ├── opo-sprite-brand-broken.svg
+    ├── icons.manifest.json
+    └── icon-name.d.ts
 
 docs/
 └── architecture/
@@ -341,15 +347,22 @@ Más detalles:
 El sistema de iconos utiliza:
 
 - SVG sprites,
-- assets distribuibles,
 - manifest generado,
 - typings automáticos,
 - y runtime serving desacoplado.
 
+La pipeline de iconos separa deliberadamente los assets preparados para runtime (`ui`, `brand`) de los assets raw utilizados únicamente para demos y debugging (`brand-broken`).
+
+Solo los iconos validados de runtime se exponen mediante:
+
+- `opo-sprite.svg`
+- `icons.manifest.json`
+- `icon-name.d.ts`
+
 Arquitectura general:
 
 ```txt
-raw-icons → public/icons → runtime serving
+raw-icons → validation/optimization → public/icons → runtime serving
 ```
 
 Más detalles:
@@ -377,6 +390,8 @@ mediante runtime assets generados en:
 public/icons/
 ```
 
+La API runtime de iconos consume el sprite combinado `opo-sprite.svg`, mientras que los sprites adicionales (`opo-sprite-ui.svg`, `opo-sprite-brand.svg`, `opo-sprite-brand-broken.svg`) permanecen disponibles para debugging y documentación visual en Storybook.
+
 ---
 
 ## Calidad y Tooling
@@ -384,7 +399,7 @@ public/icons/
 - **Storybook** como entorno de documentación y desarrollo aislado de componentes.
 - Browser component testing en navegador real mediante **Playwright** + **Vitest Browser Mode**.
 - APIs de componentes orientadas a **accesibilidad**.
-- Pipeline SVG con generación automática de **sprites**, manifest y typings.
+- Pipeline SVG con validación, optimización y generación automática de **sprites**, manifest y typings.
 - Arquitectura semántica de **Design Tokens**.
 
 > [!NOTE]

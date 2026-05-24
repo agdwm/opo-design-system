@@ -105,13 +105,20 @@ Durante `icons:build` se generan automáticamente:
 
 ```txt
 public/icons/
+├── opo-sprite.svg
 ├── opo-sprite-ui.svg
 ├── opo-sprite-brand.svg
+├── opo-sprite-brand-broken.svg
 ├── icons.manifest.json
 └── icon-name.d.ts
 ```
 
-Estos archivos representan los artefactos runtime consumidos por el sistema.
+Estos archivos representan los artefactos generados por la pipeline de iconos.
+
+- `opo-sprite.svg` es el sprite combinado de runtime consumido por `opo-icon`.
+- `opo-sprite-ui.svg` y `opo-sprite-brand.svg` se mantienen como artefactos separados útiles para documentación, debugging o demos.
+- `opo-sprite-brand-broken.svg` se mantiene exclusivamente para demos/debug de assets raw no sanitizados.
+- `icons.manifest.json` e `icon-name.d.ts` exponen únicamente iconos válidos de runtime (`ui` + `brand`).
 
 Los archivos dentro de `public/icons` no deben editarse manualmente.
 
@@ -123,11 +130,14 @@ Los archivos dentro de `public/icons` no deben editarse manualmente.
 src/components/opo-icon/
 ├── raw-icons/
 │   ├── ui/                ← Iconos de interfaz (outline)
-│   └── brand/             ← Logos, redes sociales y pictogramas
+│   ├── brand/             ← Logos, redes sociales y pictogramas validados
+│   └── brand-broken/      ← Assets raw no sanitizados para demo/debug
 │
 public/icons/
+├── opo-sprite.svg
 ├── opo-sprite-ui.svg
 ├── opo-sprite-brand.svg
+├── opo-sprite-brand-broken.svg
 ├── icons.manifest.json
 └── icon-name.d.ts
 ```
@@ -143,7 +153,8 @@ raw-icons/
 Contiene los SVG originales y representa la única fuente editable del sistema.
 
 - `ui/` → iconos de interfaz reutilizables.
-- `brand/` → logos, pictogramas y assets de marca.
+- `brand/` → logos, pictogramas y assets de marca validados para runtime.
+- `brand-broken/` → assets raw no sanitizados usados únicamente para demos/debug.
 
 Los archivos dentro de `raw-icons` nunca se sirven directamente al navegador.
 
@@ -166,19 +177,52 @@ Estos artefactos incluyen:
 
 ---
 
+### Runtime vs Demo Assets
+
+La pipeline separa deliberadamente los assets preparados para producción de los assets raw usados únicamente para documentación, demos o debugging.
+
+#### Runtime assets
+
+Los iconos de `ui` y `brand` son los únicos que forman parte de la API pública de runtime.
+
+Estos iconos:
+
+- se validan según las reglas de su categoría,
+- se optimizan con la configuración SVGO correspondiente,
+- se incluyen en el sprite combinado `opo-sprite.svg`,
+- se exponen en `icons.manifest.json`,
+- y se incluyen en los typings generados `icon-name.d.ts`.
+
+#### Demo/debug assets
+
+Los iconos de `brand-broken` representan assets raw no sanitizados.
+
+Estos iconos:
+
+- no se incluyen en `opo-sprite.svg`,
+- no aparecen en `icons.manifest.json`,
+- no forman parte de `icon-name.d.ts`,
+- y no deberían consumirse desde `opo-icon` en runtime.
+
+Se mantienen únicamente en `opo-sprite-brand-broken.svg` para poder documentar o comparar visualmente assets problemáticos dentro de Storybook sin contaminar la API pública del sistema.
+
+---
+
 ### Runtime Layer
 
-El componente `opo-icon` consume únicamente assets públicos servidos desde:
+El componente `opo-icon` consume el sprite combinado de runtime servido desde:
 
 ```txt
-/icons/*
+/icons/opo-sprite.svg
 ```
 
 Ejemplo:
 
 ```html
-<use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
+<use href="/icons/opo-sprite.svg#opo-icon-check"></use>
 ```
+
+Esto permite que la API pública del componente pueda resolver iconos de `ui` y `brand` mediante un único sprite estable, sin exponer assets raw de demo/debug.
 
 Esto desacopla completamente el componente de:
 
@@ -236,7 +280,7 @@ Por este motivo, el sistema no depende de símbolos inline dentro del documento 
 En su lugar, consume un sprite SVG externo mediante URL absoluta:
 
 ```html
-<use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
+<use href="/icons/opo-sprite.svg#opo-icon-check"></use>
 ```
 
 Esto garantiza compatibilidad con:
@@ -268,10 +312,12 @@ mediante `staticDirs`.
 Esto permite que:
 
 ```html
-<use href="/icons/opo-sprite-ui.svg#opo-icon-check"></use>
+<use href="/icons/opo-sprite.svg#opo-icon-check"></use>
 ```
 
 funcione correctamente tanto en Storybook como en aplicaciones consumidoras externas.
+
+Los sprites separados (`opo-sprite-ui.svg`, `opo-sprite-brand.svg` y `opo-sprite-brand-broken.svg`) pueden seguir usándose para documentación, demos o inspección visual, pero el componente `opo-icon` debería consumir el sprite combinado `opo-sprite.svg` como fuente runtime principal.
 
 ---
 
@@ -282,6 +328,7 @@ La estrategia de optimización diferencia explícitamente entre iconos de interf
 ```txt
 UI icons → system assets
 Brand icons → identity assets
+Brand broken icons → raw demo/debug assets
 ```
 
 Esta distinción evita aplicar las mismas reglas de normalización a assets que cumplen funciones visuales distintas dentro del sistema.
@@ -338,6 +385,23 @@ Por este motivo siguen una estrategia de sanitización más conservadora orienta
 - y evitar optimizaciones destructivas.
 
 En estos casos, la fidelidad visual del asset tiene prioridad frente a la normalización agresiva.
+
+---
+
+### Brand Broken Icons: Demo / Debug Assets
+
+Los iconos `brand-broken` se mantienen como assets raw no sanitizados para documentación, comparación visual o demos internas.
+
+Esta categoría existe para poder mostrar iconos problemáticos sin incorporarlos al runtime real del sistema.
+
+Por este motivo:
+
+- no forman parte del sprite combinado `opo-sprite.svg`,
+- no se incluyen en `icons.manifest.json`,
+- no generan typings públicos,
+- y no deberían utilizarse como nombres válidos en `opo-icon`.
+
+Si un icono de `brand-broken` pasa a ser necesario en producción, debe migrarse a `raw-icons/brand`, adoptar el prefijo `brand-` y cumplir la validación mínima de iconos Brand.
 
 ---
 
@@ -515,6 +579,10 @@ public/icons/icons.manifest.json
 
 Este archivo actúa como catálogo runtime de los iconos disponibles.
 
+Actualmente representa únicamente los iconos válidos de runtime incluidos en `opo-sprite.svg`, es decir, iconos procedentes de `ui` y `brand`.
+
+Los assets de `brand-broken` quedan deliberadamente excluidos del manifest para evitar que iconos raw no sanitizados formen parte de la API pública.
+
 Se utiliza en:
 
 - Storybook,
@@ -531,10 +599,9 @@ Ejemplo de entrada:
 ```
 
 - `name`: nombre público del icono usado por la API del componente.
-- `id`: ID interno usado dentro del sprite SVG.
-- `category`: categoría del icono (`ui` o `brand`).
-- `keywords`: palabras clave para búsqueda y tooling.
-- `viewBox`: caja de vista SVG del icono.
+
+> [!NOTE]
+> El manifest actual se mantiene deliberadamente simple. Metadata adicional como categoría, keywords o `viewBox` puede añadirse en futuras iteraciones si Storybook, tooling o búsqueda visual lo requieren.
 
 ---
 
@@ -544,7 +611,7 @@ Ejemplo de entrada:
 public/icons/icon-name.d.ts
 ```
 
-Generado automáticamente desde el mismo catálogo de iconos.
+Generado automáticamente desde el mismo catálogo de iconos runtime (`ui` + `brand`).
 
 Esto permite:
 
@@ -648,7 +715,7 @@ Esto permite que los iconos:
 - reduzcan la necesidad de props visuales explícitas,
 - y se integren mejor con theming.
 
-Para iconos Brand, `current
+Para iconos Brand, `currentColor` no siempre es deseable, ya que algunos assets de marca necesitan preservar sus colores originales. Por eso la optimización de Brand es más conservadora y evita normalizaciones destructivas de color.
 
 ---
 
@@ -664,9 +731,11 @@ El objetivo principal en esta iteración es establecer una arquitectura de icono
 Actualmente el sistema prioriza:
 
 - generación automática de sprites SVG,
+- separación entre sprites de documentación/debug y sprite runtime,
 - validación y optimización diferenciada entre iconos UI y Brand,
-- runtime serving desacoplado,
-- manifest y typings generados automáticamente,
+- exclusión de assets `brand-broken` de la API pública,
+- runtime serving desacoplado mediante `opo-sprite.svg`,
+- manifest y typings generados automáticamente desde iconos runtime,
 - y una API pública simple mediante `opo-icon`.
 
 No se ha intentado construir todavía una plataforma completa de gestión de iconografía ni resolver todos los posibles escenarios avanzados de distribución, theming o tooling.

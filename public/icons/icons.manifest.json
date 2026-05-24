@@ -16,7 +16,16 @@
       "name": "bell"
     },
     {
+      "name": "blog"
+    },
+    {
       "name": "calendar"
+    },
+    {
+      "name": "cart"
+    },
+    {
+      "name": "challenge"
     },
     {
       "name": "check"
@@ -58,7 +67,16 @@
       "name": "eye-off"
     },
     {
+      "name": "facebook"
+    },
+    {
+      "name": "gift"
+    },
+    {
       "name": "heart"
+    },
+    {
+      "name": "home"
     },
     {
       "name": "info"
@@ -67,7 +85,13 @@
       "name": "info-circle"
     },
     {
+      "name": "instagram"
+    },
+    {
       "name": "link"
+    },
+    {
+      "name": "lock"
     },
     {
       "name": "log-out"
@@ -85,6 +109,9 @@
       "name": "minus"
     },
     {
+      "name": "oppositions"
+    },
+    {
       "name": "phone"
     },
     {
@@ -92,6 +119,9 @@
     },
     {
       "name": "refresh-cw"
+    },
+    {
+      "name": "schemes"
     },
     {
       "name": "search"
@@ -110,6 +140,9 @@
     },
     {
       "name": "trash-2"
+    },
+    {
+      "name": "twitter"
     },
     {
       "name": "upload"
