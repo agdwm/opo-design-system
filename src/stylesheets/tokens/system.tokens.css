@@ -80,16 +80,21 @@
     --sys-color-feedback-info: var(--ref-color-teal-500); /* #59b3b3 */
     --sys-color-feedback-info-strong: var(--ref-color-teal-700); /* #227093 */
 
+    /* Outline */
+    --sys-outline-focus: 2px solid var(--sys-color-focus-ring);
+
     /* Typography */
     --sys-typography-body-font-family: var(--ref-font-family-sans); /* IBM */
     --sys-typography-body-size: var(--ref-font-size-300); /* 16px */
     --sys-typography-body-line-height: var(--ref-line-height-base); /* 1.5 */
     --sys-typography-body-weight: var(--ref-font-weight-regular); /* 400 */
+    --sys-typography-body-color: var(--ref-color-zinc-900);  /* #383641 */
 
     --sys-typography-heading-font-family: var(--ref-font-family-sans); /* IBM */
     --sys-typography-heading-size: var(--ref-font-size-700); /* 24px */
     --sys-typography-heading-line-height: var(--ref-line-height-snug); /* 1.25 */
     --sys-typography-heading-weight: var(--ref-font-weight-bold); /* 700 */
+    --sys-typography-heading-color: var(--ref-color-zinc-900); /* #383641 */
 
     --sys-typography-action-font-family: var(--ref-font-family-sans); /* IBM */
     --sys-typography-action-size: var(--ref-font-size-300); /* 16px */

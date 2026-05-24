@@ -15,8 +15,12 @@
   color: var(--opo-link-color);
   font: inherit;
   text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+
+  /* Use underline thickness defined by the font for more balanced text decoration rendering */
+    text-decoration-thickness: from-font;
+
+  /* Improve underline readability by adding visual separation from the text baseline */
+  text-underline-offset: 0.15em;
   cursor: pointer;
   transition:
     color var(--ref-motion-duration-faster) ease,
@@ -64,7 +68,7 @@
 /* ==================== STATES ==================== */
 
 .opo-link:focus-visible {
-  outline: 2px solid var(--sys-color-focus-ring); /* #ff793f */
+  outline: var(--sys-outline-focus); /* #ff793f */
   outline-offset: 2px;
 }
 

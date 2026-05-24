@@ -132,7 +132,7 @@
 
 /* States */
 .opo-button:focus-visible {
-  outline: 2px solid var(--sys-color-focus-ring); /* #ff793f */
+  outline: var(--sys-outline-focus);/* #ff793f */
   outline-offset: 2px;
 }
 
