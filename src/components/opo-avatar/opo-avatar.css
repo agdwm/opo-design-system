@@ -10,7 +10,7 @@
 }
 
 .opo-avatar {
-  --opo-avatar-size: 40px; /* md base size, no size token available yet */
+  --opo-avatar-size: 2.5rem; /* 40px md base size, no size token available yet */
   --opo-avatar-background: var(--sys-color-surface-disabled);
   --opo-avatar-color: var(--sys-color-text-tertiary);
 
@@ -37,7 +37,7 @@
 }
 
 .opo-avatar--md {
-  --opo-avatar-size: 40px;
+  --opo-avatar-size: 2.5rem; /* 40px */
 
   font-size: var(--ref-font-size-300); /* 16px */
 }
