@@ -408,29 +408,6 @@ La API runtime de iconos consume el sprite combinado `opo-sprite.svg`, mientras 
 >
 > ## Recarga fiable de componentes Stencil en Storybook
 >
-> Durante el desarrollo de Web Components con `Stencil`, los cambios en componentes o estilos
-> Shadow DOM no siempre se reflejan correctamente en Storybook debido a la caché de módulos de `Vite` y la persistencia de custom elements ya definidos en runtime.
->
-> Para evitar estos problemas, Storybook incorpora un plugin custom de Vite (`stencil-components-full-reload`) que:
->
-> - invalida automáticamente los módulos generados por Stencil (loader y bundles compilados en `dist`),
-> - y fuerza un full reload del preview de Storybook cuando cambian componentes o estilos.
->
-> Esto evita problemas habituales de caché entre `Stencil`, `Vite` y `Storybook` durante workflows basados en:
->
-> ```txt
-> stencil build --watch
-> ```
->
-> especialmente al trabajar con:
->
-> - Web Components,
-> - estilos encapsulados mediante Shadow DOM,
-> - loaders generados por Stencil,
-> - y bundles runtime servidos desde `dist`.
-
----
-
 > Durante el desarrollo de Web Components con `Stencil`, los cambios en componentes o estilos Shadow DOM no siempre se reflejan correctamente en Storybook debido a la **caché de módulos de `Vite` y la persistencia de custom elements** ya definidos en runtime.
 
 > Para evitar estos problemas, se ha incorporado un plugin custom de Vite (`stencil-components-full-reload`) dentro de la configuración de Storybook.
