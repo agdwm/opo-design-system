@@ -418,7 +418,9 @@ async function processFolderRaw(
   for (const file of files) {
     const publicName = normalizePublicIconName(file);
     if (seen.has(publicName)) {
-      console.error(`❌ Duplicate icon name '${publicName}' in brand-broken (demo only).`);
+      console.error(
+        `❌ Duplicate icon name '${publicName}' in brand-broken (demo only).`,
+      );
       process.exit(1);
     }
     seen.add(publicName);
@@ -432,8 +434,6 @@ async function processFolderRaw(
     .sort((a, b) => a.localeCompare(b));
 }
 
-
-
 // Sprite combinado solo con ui + brand, con validación y optimización igual que los sprites individuales
 async function processCombinedSprite({ sources, outputFileName, label }) {
   const spriter = buildSpriter(outputFileName);
@@ -444,21 +444,23 @@ async function processCombinedSprite({ sources, outputFileName, label }) {
     if (!fs.existsSync(dir)) continue;
     const files = fs
       .readdirSync(dir)
-      .filter((file) => file.endsWith('.svg'))
+      .filter((file) => file.endsWith(".svg"))
       .sort((a, b) => a.localeCompare(b));
     for (const file of files) {
-      if (!file.startsWith(expectedPrefix + '-')) {
+      if (!file.startsWith(expectedPrefix + "-")) {
         console.error(`❌ Invalid prefix in ${dir}: ${file}`);
         process.exit(1);
       }
       const publicName = normalizePublicIconName(file);
       if (seen.has(publicName)) {
-        console.error(`❌ Duplicate public icon name '${publicName}' in combined sprite (ui + brand).`);
+        console.error(
+          `❌ Duplicate public icon name '${publicName}' in combined sprite (ui + brand).`,
+        );
         process.exit(1);
       }
       seen.add(publicName);
       const filePath = path.join(dir, file);
-      const svgContent = fs.readFileSync(filePath, 'utf8');
+      const svgContent = fs.readFileSync(filePath, "utf8");
       const validationErrors = validate(svgContent, filePath);
       if (validationErrors.length > 0) {
         console.error("\nValidation errors:\n", validationErrors.join("\n"));
@@ -514,14 +516,17 @@ async function generateSprites() {
   );
 
   // Sprite combinado y manifest/types solo con ui + brand
-  const allIconNames = [...uiIconNames, ...brandIconNames].sort((a, b) => a.localeCompare(b));
+  const allIconNames = [...uiIconNames, ...brandIconNames].sort((a, b) =>
+    a.localeCompare(b),
+  );
   // Validación global de duplicados
   const uniqueIconNames = [...new Set(allIconNames)];
   if (uniqueIconNames.length !== allIconNames.length) {
-    console.error("❌ Duplicate public icon names found in combined icon set (ui + brand). Aborting.");
+    console.error(
+      "❌ Duplicate public icon names found in combined icon set (ui + brand). Aborting.",
+    );
     process.exit(1);
   }
-
 
   await processCombinedSprite({
     sources: [
