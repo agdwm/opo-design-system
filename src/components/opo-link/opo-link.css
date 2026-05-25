@@ -1,5 +1,5 @@
 :host {
-  display: inline-block;
+  display: inline;
 }
 
 /* Prevents the host display value from overriding the native hidden behavior. */
@@ -11,16 +11,21 @@
   --opo-link-color: var(--sys-color-link-primary); /* #ffb142 */
   --opo-link-hover-color: var(--sys-color-link-primary-hover);
   --opo-link-pressed-color: var(--sys-color-link-primary-pressed);
+  --opo-link-icon-gap: var(--sys-space-2xs); /* 8px */
 
+
+  display: inline-flex;
+  align-items: center;
   color: var(--opo-link-color);
   font: inherit;
   text-decoration-line: underline;
 
   /* Use underline thickness defined by the font for more balanced text decoration rendering */
-    text-decoration-thickness: from-font;
+  text-decoration-thickness: from-font;
 
   /* Improve underline readability by adding visual separation from the text baseline */
   text-underline-offset: 0.15em;
+  vertical-align: baseline;
   cursor: pointer;
   transition:
     color var(--ref-motion-duration-faster) ease,
@@ -90,4 +95,37 @@
   color: var(--sys-color-on-action-disabled);
   text-decoration-line: none;
   cursor: not-allowed;
+}
+
+/* ==================== ICONS ==================== */
+.opo-link :where(
+  .opo-link__icon-start,
+  .opo-link__icon-end
+) {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: currentcolor;
+
+  /* optical alignment */
+  transform: translateY(0.03em);
+}
+
+.opo-link :where(
+  .opo-link__icon-start.is-empty,
+  .opo-link__icon-end.is-empty
+) {
+  display: none;
+}
+
+.opo-link__icon-start:not(.is-empty) {
+  margin-inline-end: var(--opo-link-icon-gap);
+}
+
+.opo-link__icon-end:not(.is-empty) {
+  margin-inline-start: var(--opo-link-icon-gap);
+}
+
+.opo-link__label {
+  min-inline-size: 0;
 }

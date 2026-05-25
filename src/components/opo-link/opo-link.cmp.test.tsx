@@ -11,11 +11,11 @@ describe("opo-link", () => {
       const { root } = await render(<opo-link href="/docs">Docs</opo-link>);
 
       const link = root.shadowRoot?.querySelector("a");
-      const fallback = root.shadowRoot?.querySelector("span");
+      const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
 
       expect(root).toHaveClass("hydrated");
       expect(link).toBeTruthy();
-      expect(fallback).toBeNull();
+      expect(iconStart).toHaveClass("is-empty");
 
       expect(link).toHaveClass("opo-link");
       expect(link).toHaveClass("opo-link--primary");
@@ -27,15 +27,52 @@ describe("opo-link", () => {
       const { root } = await render(<opo-link>Missing href</opo-link>);
 
       const link = root.shadowRoot?.querySelector("a");
-      const fallback = root.shadowRoot?.querySelector("span");
+      const fallback = root.shadowRoot?.querySelector('[part="base"]');
 
       expect(link).toBeNull();
       expect(fallback).toBeTruthy();
 
       expect(fallback).toHaveClass("opo-link");
       expect(fallback).toHaveClass("is-disabled");
+      expect(fallback?.tagName.toLowerCase()).toBe("span");
       expect(fallback?.getAttribute("part")).toBe("base");
       expect(fallback?.hasAttribute("aria-disabled")).toBe(false);
+    });
+
+    it("renders empty icon slot wrappers by default", async () => {
+      const { root } = await render(<opo-link href="/docs">Docs</opo-link>);
+
+      const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
+      const iconEnd = root.shadowRoot?.querySelector('[part="icon-end"]');
+      const label = root.shadowRoot?.querySelector('[part="label"]');
+
+      expect(iconStart).toBeTruthy();
+      expect(iconEnd).toBeTruthy();
+      expect(label).toBeTruthy();
+
+      expect(iconStart).toHaveClass("is-empty");
+      expect(iconEnd).toHaveClass("is-empty");
+    });
+
+    it("updates icon slot state when icons are provided", async () => {
+      const { root } = await render(
+        <opo-link href="/docs">
+          <span slot="icon-start">←</span>
+          Docs
+          <span slot="icon-end">→</span>
+        </opo-link>,
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
+      const iconEnd = root.shadowRoot?.querySelector('[part="icon-end"]');
+      const link = root.shadowRoot?.querySelector("a");
+
+      expect(iconStart).not.toHaveClass("is-empty");
+      expect(iconEnd).not.toHaveClass("is-empty");
+      expect(link).toHaveClass("has-icon-start");
+      expect(link).toHaveClass("has-icon-end");
     });
   });
 
@@ -81,12 +118,18 @@ describe("opo-link", () => {
       expect(link).toHaveClass("opo-link--static-white");
     });
 
-    it("exposes the expected shadow part", async () => {
+    it("exposes the expected shadow parts", async () => {
       const { root } = await render(<opo-link href="/docs">Docs</opo-link>);
 
       const base = root.shadowRoot?.querySelector('[part="base"]');
+      const label = root.shadowRoot?.querySelector('[part="label"]');
+      const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
+      const iconEnd = root.shadowRoot?.querySelector('[part="icon-end"]');
 
       expect(base).toBeTruthy();
+      expect(label).toBeTruthy();
+      expect(iconStart).toBeTruthy();
+      expect(iconEnd).toBeTruthy();
     });
   });
 
@@ -103,7 +146,7 @@ describe("opo-link", () => {
       );
 
       const link = root.shadowRoot?.querySelector("a");
-      const fallback = root.shadowRoot?.querySelector("span");
+      const fallback = root.shadowRoot?.querySelector('[part="base"]');
 
       expect(root.hasAttribute("disabled")).toBe(true);
 
@@ -111,6 +154,7 @@ describe("opo-link", () => {
       expect(fallback).toBeTruthy();
 
       expect(fallback).toHaveClass("is-disabled");
+      expect(fallback?.tagName.toLowerCase()).toBe("span");
       expect(fallback?.getAttribute("aria-disabled")).toBe("true");
       expect(fallback?.getAttribute("part")).toBe("base");
     });
@@ -122,7 +166,7 @@ describe("opo-link", () => {
         </opo-link>,
       );
 
-      const fallback = root.shadowRoot?.querySelector("span");
+      const fallback = root.shadowRoot?.querySelector('[part="base"]');
 
       expect(fallback?.hasAttribute("href")).toBe(false);
     });
@@ -229,7 +273,7 @@ describe("opo-link", () => {
         <opo-link ariaLabel="Unavailable documentation">Docs</opo-link>,
       );
 
-      const fallback = root.shadowRoot?.querySelector("span");
+      const fallback = root.shadowRoot?.querySelector('[part="base"]');
 
       expect(fallback?.getAttribute("aria-label")).toBe(
         "Unavailable documentation",

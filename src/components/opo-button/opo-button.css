@@ -166,6 +166,13 @@
   transform: translateY(-1px);
 }
 
+.opo-button :where(
+  .opo-button__icon-start.is-empty,
+  .opo-button__icon-end.is-empty
+) {
+  display: none;
+}
+
 /* Content transitions */
 .opo-button :where(
   .opo-button__label,

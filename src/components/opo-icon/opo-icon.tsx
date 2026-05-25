@@ -1,4 +1,4 @@
-import { Build, Component, Element, Prop, h } from "@stencil/core";
+import { Build, Component, Element, Prop, State, h } from "@stencil/core";
 import clsx from "clsx";
 
 @Component({
@@ -8,6 +8,8 @@ import clsx from "clsx";
 })
 export class OpoIcon {
   @Element() el!: HTMLElement;
+
+  @State() private hasCustomIcon = false;
 
   private hasWarnedInternalName = false;
   private hasWarnedMissingIcon = false;
@@ -28,11 +30,13 @@ export class OpoIcon {
   @Prop() ariaLabel?: string;
 
   /** Custom path to the SVG sprite file. */
-  @Prop() spriteUrl = "/icons/opo-sprite-ui.svg";
+  @Prop() spriteUrl = "/icons/opo-sprite.svg";
 
-  private get hasCustomIcon() {
-    return !!this.el.querySelector('[slot="icon"]');
-  }
+  private handleIconSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+
+    this.hasCustomIcon = slot.assignedElements().length > 0;
+  };
 
   private get normalizedName() {
     if (!this.name) return "";
@@ -93,6 +97,7 @@ export class OpoIcon {
       // Modifiers
       {
         [`opo-icon--color-${this.color}`]: this.color,
+        "has-custom-icon": this.hasCustomIcon,
       },
 
       // States
@@ -109,9 +114,17 @@ export class OpoIcon {
         aria-label={this.ariaLabel}
         role={this.ariaLabel ? "img" : undefined}
       >
-        {this.hasCustomIcon ? (
-          <slot name="icon" />
-        ) : (
+        <span
+          class={{
+            "opo-icon__custom": true,
+            "is-empty": !this.hasCustomIcon,
+          }}
+          part="custom"
+        >
+          <slot name="icon" onSlotchange={this.handleIconSlotChange} />
+        </span>
+
+        {!this.hasCustomIcon && (
           <svg
             part="svg"
             viewBox="0 0 24 24"

@@ -12,11 +12,13 @@ describe("opo-icon", () => {
       const { root } = await render(<opo-icon name="check"></opo-icon>);
 
       const base = root.shadowRoot?.querySelector('[part="base"]');
+      const custom = root.shadowRoot?.querySelector('[part="custom"]');
       const svg = root.shadowRoot?.querySelector("svg");
       const use = root.shadowRoot?.querySelector("use");
 
       expect(root).toHaveClass("hydrated");
       expect(base).toBeTruthy();
+      expect(custom).toHaveClass("is-empty");
       expect(svg).toBeTruthy();
       expect(use?.getAttribute("href")).toBe(
         "/icons/opo-sprite.svg#opo-icon-check",
@@ -56,15 +58,21 @@ describe("opo-icon", () => {
         </opo-icon>,
       );
 
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const custom = root.shadowRoot?.querySelector('[part="custom"]');
       const slot = root.shadowRoot?.querySelector('slot[name="icon"]');
       const slottedSvg = root.querySelector('svg[slot="icon"]');
-      const internalSvg = root.shadowRoot?.querySelector("svg:not([slot])");
+      const internalSvg = root.shadowRoot?.querySelector('[part="svg"]');
       const internalUse = root.shadowRoot?.querySelector("use");
+      const base = root.shadowRoot?.querySelector('[part="base"]');
 
-      expect(slot).toBeTruthy(); // the named slot should exist in the shadow DOM
-      expect(slottedSvg).toBeTruthy(); // custom SVG should be rendered through the slot
+      expect(slot).toBeTruthy();
+      expect(custom).not.toHaveClass("is-empty");
+      expect(slottedSvg).toBeTruthy();
       expect(internalSvg).toBeNull();
-      expect(internalUse).toBeNull(); // sprite-based icon should not render when a slotted icon is provided
+      expect(internalUse).toBeNull();
+      expect(base).toHaveClass("has-custom-icon");
     });
 
     it("does not render the icon wrapper when neither name nor custom slot is provided", async () => {
@@ -79,8 +87,6 @@ describe("opo-icon", () => {
   // =========================================================
   // ACCESSIBILITY
   // =========================================================
-  // Ensures the component exposes the correct accessible
-  // semantics for decorative and informative icons.
   describe("accessibility", () => {
     it("treats the icon as decorative when ariaLabel is not provided", async () => {
       const { root } = await render(<opo-icon name="star"></opo-icon>);
@@ -92,7 +98,7 @@ describe("opo-icon", () => {
       expect(base?.getAttribute("role")).toBeNull();
       expect(base?.hasAttribute("role")).toBe(false);
 
-      expect(base?.getAttribute("aria-label")).toBeNull(); // if the icon is decorative, we don't want it to have an accessible name.
+      expect(base?.getAttribute("aria-label")).toBeNull();
     });
 
     it("treats the icon as informative when ariaLabel is provided", async () => {
@@ -103,12 +109,12 @@ describe("opo-icon", () => {
       const base = root.shadowRoot?.querySelector('[part="base"]');
       const svg = root.shadowRoot?.querySelector("svg");
 
-      expect(base?.getAttribute("role")).toBe("img"); // this element acts as an image
+      expect(base?.getAttribute("role")).toBe("img");
       expect(base?.getAttribute("aria-label")).toBe("Warning");
-      expect(base?.getAttribute("aria-hidden")).toBeNull(); //  if the icon is informative, it should not be hidden from screen readers
+      expect(base?.getAttribute("aria-hidden")).toBeNull();
       expect(base?.hasAttribute("aria-hidden")).toBe(false);
 
-      expect(svg?.getAttribute("aria-hidden")).toBe("true"); // The internal SVG is hidden so the screen reader does not read duplicate content
+      expect(svg?.getAttribute("aria-hidden")).toBe("true");
       expect(svg?.getAttribute("focusable")).toBe("false");
     });
   });
@@ -116,8 +122,6 @@ describe("opo-icon", () => {
   // =========================================================
   // STYLING API
   // =========================================================
-  // Verifies the public styling contract exposed through:
-  // classes, modifiers, and shadow parts.
   describe("styling API", () => {
     it("applies the default size class", async () => {
       const { root } = await render(<opo-icon name="check"></opo-icon>);
@@ -162,9 +166,11 @@ describe("opo-icon", () => {
 
       const base = root.shadowRoot?.querySelector('[part="base"]');
       const svg = root.shadowRoot?.querySelector('[part="svg"]');
+      const custom = root.shadowRoot?.querySelector('[part="custom"]');
 
       expect(base).toBeTruthy();
       expect(svg).toBeTruthy();
+      expect(custom).toBeTruthy();
     });
   });
 });

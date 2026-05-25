@@ -70,7 +70,7 @@ describe("opo-button", () => {
   // =========================================================
 
   describe("slots", () => {
-    it("renders the start icon wrapper only when an icon-start slot is provided", async () => {
+    it("marks the start icon wrapper as populated when an icon-start slot is provided", async () => {
       const { root } = await render(
         <opo-button>
           <opo-icon slot="icon-start" name="search"></opo-icon>
@@ -78,14 +78,22 @@ describe("opo-button", () => {
         </opo-button>,
       );
 
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const button = root.shadowRoot?.querySelector("button");
       const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
       const iconEnd = root.shadowRoot?.querySelector('[part="icon-end"]');
 
       expect(iconStart).toBeTruthy();
-      expect(iconEnd).toBeNull();
+      expect(iconEnd).toBeTruthy();
+
+      expect(iconStart).not.toHaveClass("is-empty");
+      expect(iconEnd).toHaveClass("is-empty");
+      expect(button).toHaveClass("has-icon-start");
+      expect(button).not.toHaveClass("has-icon-end");
     });
 
-    it("renders the end icon wrapper only when an icon-end slot is provided", async () => {
+    it("marks the end icon wrapper as populated when an icon-end slot is provided", async () => {
       const { root } = await render(
         <opo-button>
           Continuar
@@ -93,21 +101,32 @@ describe("opo-button", () => {
         </opo-button>,
       );
 
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const button = root.shadowRoot?.querySelector("button");
       const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
       const iconEnd = root.shadowRoot?.querySelector('[part="icon-end"]');
 
-      expect(iconStart).toBeNull();
+      expect(iconStart).toBeTruthy();
       expect(iconEnd).toBeTruthy();
+
+      expect(iconStart).toHaveClass("is-empty");
+      expect(iconEnd).not.toHaveClass("is-empty");
+      expect(button).not.toHaveClass("has-icon-start");
+      expect(button).toHaveClass("has-icon-end");
     });
 
-    it("does not render empty icon wrappers when no icon slots are provided", async () => {
+    it("renders empty icon slot wrappers when no icon slots are provided", async () => {
       const { root } = await render(<opo-button>Guardar</opo-button>);
 
       const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
       const iconEnd = root.shadowRoot?.querySelector('[part="icon-end"]');
 
-      expect(iconStart).toBeNull();
-      expect(iconEnd).toBeNull();
+      expect(iconStart).toBeTruthy();
+      expect(iconEnd).toBeTruthy();
+
+      expect(iconStart).toHaveClass("is-empty");
+      expect(iconEnd).toHaveClass("is-empty");
     });
 
     it("does not render the label wrapper for icon-only buttons", async () => {
@@ -116,6 +135,8 @@ describe("opo-button", () => {
           <opo-icon slot="icon-start" name="search"></opo-icon>
         </opo-button>,
       );
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       const button = root.shadowRoot?.querySelector("button");
       const label = root.shadowRoot?.querySelector('[part="label"]');
@@ -128,6 +149,7 @@ describe("opo-button", () => {
 
       expect(label).toBeNull();
       expect(iconStart).toBeTruthy();
+      expect(iconStart).not.toHaveClass("is-empty");
     });
 
     it("supports icon-only buttons across visual sizes", async () => {
@@ -137,8 +159,11 @@ describe("opo-button", () => {
         </opo-button>,
       );
 
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
       const button = root.shadowRoot?.querySelector("button");
       const label = root.shadowRoot?.querySelector('[part="label"]');
+      const iconStart = root.shadowRoot?.querySelector('[part="icon-start"]');
 
       expect(button).toHaveClass("opo-button--icon-only");
       expect(button).toHaveClass("opo-button--lg");
@@ -146,6 +171,7 @@ describe("opo-button", () => {
       expect(button?.getAttribute("aria-label")).toBe("Buscar");
 
       expect(label).toBeNull();
+      expect(iconStart).not.toHaveClass("is-empty");
     });
   });
 

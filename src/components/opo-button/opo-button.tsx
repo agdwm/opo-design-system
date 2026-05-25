@@ -1,4 +1,4 @@
-import { Build, Component, Element, Prop, h } from "@stencil/core";
+import { Build, Component, Element, Prop, State, h } from "@stencil/core";
 import clsx from "clsx";
 
 @Component({
@@ -34,21 +34,28 @@ export class OpoButton {
   /** Native button type. */
   @Prop() type: "button" | "submit" | "reset" = "button";
 
+  @State() private hasIconStart = false;
+  @State() private hasIconEnd = false;
+
   private get isInteractionDisabled() {
     return this.disabled || this.loading;
-  }
-
-  private get hasIconStart() {
-    return !!this.el.querySelector('[slot="icon-start"]');
-  }
-
-  private get hasIconEnd() {
-    return !!this.el.querySelector('[slot="icon-end"]');
   }
 
   private get isIconOnly() {
     return this.iconOnly;
   }
+
+  private handleIconStartSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+
+    this.hasIconStart = slot.assignedElements().length > 0;
+  };
+
+  private handleIconEndSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+
+    this.hasIconEnd = slot.assignedElements().length > 0;
+  };
 
   private validateAccessibility() {
     if (Build.isDev && this.isIconOnly && !this.ariaLabel) {
@@ -67,13 +74,18 @@ export class OpoButton {
 
       // Variants
       `opo-button--${this.variant}`,
+
       // Sizes
       `opo-button--${this.size}`,
+
       // Modifiers
       {
         "opo-button--full-width": this.fullWidth,
         "opo-button--icon-only": this.iconOnly,
+        "has-icon-start": this.hasIconStart,
+        "has-icon-end": this.hasIconEnd,
       },
+
       // States
       {
         "is-loading": this.loading,
@@ -93,11 +105,18 @@ export class OpoButton {
         aria-label={this.ariaLabel}
         aria-busy={this.loading ? "true" : undefined}
       >
-        {this.hasIconStart && (
-          <span class="opo-button__icon-start" part="icon-start">
-            <slot name="icon-start" />
-          </span>
-        )}
+        <span
+          class={{
+            "opo-button__icon-start": true,
+            "is-empty": !this.hasIconStart,
+          }}
+          part="icon-start"
+        >
+          <slot
+            name="icon-start"
+            onSlotchange={this.handleIconStartSlotChange}
+          />
+        </span>
 
         {!this.isIconOnly && (
           <span class="opo-button__label" part="label">
@@ -105,11 +124,15 @@ export class OpoButton {
           </span>
         )}
 
-        {this.hasIconEnd && (
-          <span class="opo-button__icon-end" part="icon-end">
-            <slot name="icon-end" />
-          </span>
-        )}
+        <span
+          class={{
+            "opo-button__icon-end": true,
+            "is-empty": !this.hasIconEnd,
+          }}
+          part="icon-end"
+        >
+          <slot name="icon-end" onSlotchange={this.handleIconEndSlotChange} />
+        </span>
 
         {this.loading && (
           <span class="opo-button__loader" part="loader" aria-hidden="true">

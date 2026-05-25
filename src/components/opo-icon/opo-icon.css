@@ -81,3 +81,9 @@
   inline-size: 100%;
   block-size: 100%;
 }
+
+
+/* ==================== CUSTOM SLOT ==================== */
+.opo-icon__custom.is-empty {
+  display: none;
+}

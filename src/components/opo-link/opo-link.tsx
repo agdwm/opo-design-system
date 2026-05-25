@@ -1,4 +1,4 @@
-import { Component, Prop, h } from "@stencil/core";
+import { Component, Element, Prop, State, h } from "@stencil/core";
 import clsx from "clsx";
 
 @Component({
@@ -7,6 +7,8 @@ import clsx from "clsx";
   shadow: true,
 })
 export class OpoLink {
+  @Element() el!: HTMLElement;
+
   /** URL that the link points to. */
   @Prop() href?: string;
 
@@ -49,6 +51,9 @@ export class OpoLink {
   /** Accessible label when the visible text is not descriptive enough. */
   @Prop() ariaLabel?: string;
 
+  @State() private hasIconStart = false;
+  @State() private hasIconEnd = false;
+
   private get computedRel() {
     if (this.rel) return this.rel;
 
@@ -63,6 +68,46 @@ export class OpoLink {
     return this.disabled || !this.href;
   }
 
+  private handleIconStartSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+
+    this.hasIconStart = slot.assignedElements().length > 0;
+  };
+
+  private handleIconEndSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+
+    this.hasIconEnd = slot.assignedElements().length > 0;
+  };
+
+  private renderContent() {
+    return [
+      <span
+        class={{
+          "opo-link__icon-start": true,
+          "is-empty": !this.hasIconStart,
+        }}
+        part="icon-start"
+      >
+        <slot name="icon-start" onSlotchange={this.handleIconStartSlotChange} />
+      </span>,
+
+      <span class="opo-link__label" part="label">
+        <slot />
+      </span>,
+
+      <span
+        class={{
+          "opo-link__icon-end": true,
+          "is-empty": !this.hasIconEnd,
+        }}
+        part="icon-end"
+      >
+        <slot name="icon-end" onSlotchange={this.handleIconEndSlotChange} />
+      </span>,
+    ];
+  }
+
   render() {
     const classes = clsx(
       // Base
@@ -75,6 +120,8 @@ export class OpoLink {
       {
         "opo-link--quiet": this.quiet,
         [`opo-link--static-${this.staticColor}`]: this.staticColor,
+        "has-icon-start": this.hasIconStart,
+        "has-icon-end": this.hasIconEnd,
       },
 
       // States
@@ -92,7 +139,7 @@ export class OpoLink {
           aria-disabled={this.disabled ? "true" : undefined}
           aria-label={this.ariaLabel}
         >
-          <slot />
+          {this.renderContent()}
         </span>
       );
     }
@@ -109,7 +156,7 @@ export class OpoLink {
         referrerPolicy={this.referrerPolicy}
         aria-label={this.ariaLabel}
       >
-        <slot />
+        {this.renderContent()}
       </a>
     );
   }

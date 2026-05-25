@@ -164,6 +164,85 @@ export const Quiet: StoryObj<LinkArgs> = {
   render: (args) => renderLink(args, "Enlace quiet"),
 };
 
+export const WithStartIcon: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    variant: "primary",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Example using the icon-start slot to compose the link with opo-icon.",
+      },
+    },
+  },
+  render: (args) => html`
+    <opo-link
+      href=${ifDefined(args.href)}
+      variant=${args.variant ?? "primary"}
+      ?quiet=${args.quiet}
+      ?disabled=${args.disabled}
+    >
+      <opo-icon slot="icon-start" name="external-link" size="sm"></opo-icon>
+      Enlace con icono inicial
+    </opo-link>
+  `,
+};
+
+export const WithEndIcon: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    variant: "primary",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Example using the icon-end slot to place an icon after the link label.",
+      },
+    },
+  },
+  render: (args) => html`
+    <opo-link
+      href=${ifDefined(args.href)}
+      variant=${args.variant ?? "primary"}
+      ?quiet=${args.quiet}
+      ?disabled=${args.disabled}
+    >
+      Ver documentación
+      <opo-icon slot="icon-end" name="arrow-right" size="sm"></opo-icon>
+    </opo-link>
+  `,
+};
+
+export const WithIcons: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    variant: "secondary",
+    quiet: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Example using both icon slots in a quiet navigation-like link.",
+      },
+    },
+  },
+  render: (args) => html`
+    <opo-link
+      href=${ifDefined(args.href)}
+      variant=${args.variant ?? "secondary"}
+      ?quiet=${args.quiet}
+      ?disabled=${args.disabled}
+    >
+      <opo-icon slot="icon-start" name="chevron-left" size="sm"></opo-icon>
+      Inicio
+      <opo-icon slot="icon-end" name="chevron-right" size="sm"></opo-icon>
+    </opo-link>
+  `,
+};
+
 export const StaticWhite: StoryObj<LinkArgs> = {
   args: {
     href: "/",
@@ -251,7 +330,7 @@ export const InlineWithText: StoryObj<LinkArgs> = {
     variant: "primary",
   },
   render: (args) => html`
-    <p style="max-width: 520px; line-height: 1.6;">
+    <p style="max-width: 520px; line-height: 1.5;">
       Puedes consultar más información en
       ${renderLink(args, "la documentación del sistema")} antes de continuar con
       el proceso.

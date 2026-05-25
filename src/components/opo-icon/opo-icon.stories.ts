@@ -1,4 +1,3 @@
-// src/components/opo-icon/opo-icon.stories.ts
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit-html";
 
