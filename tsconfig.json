@@ -16,6 +16,6 @@
     "jsxFragmentFactory": "h.Fragment",
     "types": ["@stencil/vitest/globals"]
   },
-  "include": ["src", "scripts/generate-icon-sprite.js"],
+  "include": ["src", "landing", "scripts/generate-icon-sprite.js"],
   "exclude": ["node_modules"]
 }
