@@ -15,8 +15,9 @@ export class OpoLink {
   /** Visual style of the link. */
   @Prop() variant: "primary" | "secondary" = "primary";
 
-  /** Removes the underline when the surrounding context already makes the link purpose clear. */
-  @Prop({ reflect: true }) quiet = false;
+  /** Underline behavior of the link. */
+  @Prop({ reflect: true }) underline: "default" | "none" | "reveal" =
+    "default";
 
   /**
    * Disables navigation and renders a non-interactive element.
@@ -117,8 +118,8 @@ export class OpoLink {
       `opo-link--${this.variant}`,
 
       // Modifiers
+      `opo-link--underline-${this.underline}`,
       {
-        "opo-link--quiet": this.quiet,
         [`opo-link--static-${this.staticColor}`]: this.staticColor,
         "has-icon-start": this.hasIconStart,
         "has-icon-end": this.hasIconEnd,

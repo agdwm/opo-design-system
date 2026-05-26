@@ -1,8 +1,28 @@
+/*
+ * Icon sizing is controlled from the host.
+ * The host defines the icon box using 1em, while size variants update font-size.
+ * The internal SVG then fills that box, keeping icons scalable and aligned with text.
+ */
 :host {
   display: inline-flex;
   flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
+  color: inherit;
   line-height: 1;
   vertical-align: middle;
+}
+
+:host([size='sm']) {
+  font-size: var(--ref-size-300);
+}
+
+:host([size='md']) {
+  font-size: var(--ref-size-500);
+}
+
+:host([size='lg']) {
+  font-size: var(--ref-size-700);
 }
 
 /* Prevents display:inline-flex from overriding the native hidden behavior. */
@@ -17,8 +37,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--opo-icon-size);
-  block-size: var(--opo-icon-size);
+  inline-size: 100%;
+  block-size: 100%;
   color: currentcolor;
   transition: color var(--ref-motion-duration-faster) ease;
 }
@@ -61,6 +81,9 @@
   display: block;
   inline-size: 100%;
   block-size: 100%;
+  color: currentcolor;
+  fill: currentcolor;
+  stroke: currentcolor;
 }
 
 /* ==================== ANIMACIONES ==================== */

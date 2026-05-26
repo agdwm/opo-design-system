@@ -1,4 +1,4 @@
-const sharedPlugins = [
+const safeSharedPlugins = [
   // removeDimensions does not break visual identity,
   // it only removes width/height from the root to allow scaling via CSS.
   { name: "removeDimensions" },
@@ -6,42 +6,26 @@ const sharedPlugins = [
   {
     name: "removeAttrs",
     params: {
-      // 'xmlns' delete to preserve namespace
-      attrs: ["id", "data-name", "data-testid", "aria-hidden"],
+      // Keep `id` attributes because SVG features such as masks, clipPaths,
+      // gradients and filters depend on internal url(#id) references.
+      attrs: ["data-name", "data-testid", "aria-hidden"],
     },
   },
 
+  { name: "removeScripts" },
+  { name: "removeComments" },
+  { name: "sortAttrs" },
+
+  {
+    name: "convertPathData",
+    params: { floatPrecision: 3 },
+  },
+];
+
+const uiOnlyPlugins = [
   { name: "removeStyleElement" },
-  { name: "removeScripts" },
-  { name: "removeComments" },
   { name: "removeUselessDefs" },
-  { name: "sortAttrs" },
-
-  {
-    name: "convertPathData",
-    params: { floatPrecision: 3 },
-  },
 ];
-
-const safeSharedPlugins = [
-  { name: "removeDimensions" },
-  {
-    name: "removeAttrs",
-    params: {
-      attrs: ["id", "data-name", "data-testid", "aria-hidden"],
-    },
-  },
-  { name: "removeScripts" },
-  { name: "removeComments" },
-  { name: "removeUselessDefs" },
-  { name: "sortAttrs" },
-  {
-    name: "convertPathData",
-    params: { floatPrecision: 3 },
-  },
-];
-
-const uiOnlyPlugins = [{ name: "removeStyleElement" }];
 
 export function createSvgoConfig({
   presetOverrides,

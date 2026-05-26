@@ -28,11 +28,12 @@ const meta: Meta = {
       description: "Estilo visual del enlace.",
       table: { defaultValue: { summary: "primary" } },
     },
-    quiet: {
-      control: "boolean",
+    underline: {
+      control: "select",
+      options: ["default", "none", "reveal"],
       description:
-        "Elimina el subrayado por defecto cuando el contexto ya deja clara la intención del enlace.",
-      table: { defaultValue: { summary: "false" } },
+        "Comportamiento del subrayado: subrayado nativo, sin subrayado o subrayado animado tipo reveal.",
+      table: { defaultValue: { summary: "default" } },
     },
     disabled: {
       control: "boolean",
@@ -95,7 +96,7 @@ export default meta;
 type LinkArgs = {
   href?: string;
   variant?: "primary" | "secondary";
-  quiet?: boolean;
+  underline?: "default" | "none" | "reveal";
   disabled?: boolean;
   staticColor?: "white" | "black";
   target?: "_blank" | "_self" | "_parent" | "_top";
@@ -118,6 +119,7 @@ function renderLink(args: LinkArgs, label = "Ver más") {
     <opo-link
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "primary"}
+      underline=${args.underline ?? "default"}
       static-color=${ifDefined(args.staticColor)}
       target=${ifDefined(args.target)}
       rel=${ifDefined(args.rel)}
@@ -127,7 +129,6 @@ function renderLink(args: LinkArgs, label = "Ver más") {
         typeof args.download === "string" ? args.download : undefined,
       )}
       ?download=${args.download === true}
-      ?quiet=${args.quiet}
       ?disabled=${args.disabled}
     >
       ${label}
@@ -153,16 +154,52 @@ export const Secondary: StoryObj<LinkArgs> = {
   render: (args) => renderLink(args, "Enlace secundario"),
 };
 
-// ==================== MODIFIERS ====================
+// ==================== UNDERLINE ====================
 
-export const Quiet: StoryObj<LinkArgs> = {
+export const UnderlineDefault: StoryObj<LinkArgs> = {
   args: {
     href: "/",
-    variant: "primary",
-    quiet: true,
+    underline: "default",
   },
-  render: (args) => renderLink(args, "Enlace quiet"),
+  render: (args) => renderLink(args, "Subrayado por defecto"),
 };
+
+export const UnderlineNone: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    underline: "none",
+  },
+  render: (args) => renderLink(args, "Sin subrayado"),
+};
+
+export const UnderlineReveal: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    underline: "reveal",
+  },
+  render: (args) => renderLink(args, "Subrayado reveal"),
+};
+
+export const UnderlineRevealOnDark: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    underline: "reveal",
+    staticColor: "white",
+  },
+  render: (args) => html`
+    <div
+      style="
+        background: #383641;
+        padding: 24px;
+        border-radius: 8px;
+      "
+    >
+      ${renderLink(args, "Subrayado reveal sobre fondo oscuro")}
+    </div>
+  `,
+};
+
+// ==================== COMPOSITION ====================
 
 export const WithStartIcon: StoryObj<LinkArgs> = {
   args: {
@@ -181,7 +218,7 @@ export const WithStartIcon: StoryObj<LinkArgs> = {
     <opo-link
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "primary"}
-      ?quiet=${args.quiet}
+      underline=${args.underline ?? "default"}
       ?disabled=${args.disabled}
     >
       <opo-icon slot="icon-start" name="external-link" size="sm"></opo-icon>
@@ -207,7 +244,7 @@ export const WithEndIcon: StoryObj<LinkArgs> = {
     <opo-link
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "primary"}
-      ?quiet=${args.quiet}
+      underline=${args.underline ?? "default"}
       ?disabled=${args.disabled}
     >
       Ver documentación
@@ -220,12 +257,13 @@ export const WithIcons: StoryObj<LinkArgs> = {
   args: {
     href: "/",
     variant: "secondary",
-    quiet: true,
+    underline: "none",
   },
   parameters: {
     docs: {
       description: {
-        story: "Example using both icon slots in a quiet navigation-like link.",
+        story:
+          "Example using both icon slots in an underline-free navigation-like link.",
       },
     },
   },
@@ -233,7 +271,7 @@ export const WithIcons: StoryObj<LinkArgs> = {
     <opo-link
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "secondary"}
-      ?quiet=${args.quiet}
+      underline=${args.underline ?? "default"}
       ?disabled=${args.disabled}
     >
       <opo-icon slot="icon-start" name="chevron-left" size="sm"></opo-icon>
@@ -296,7 +334,7 @@ export const WithoutHref: StoryObj<LinkArgs> = {
   render: (args) => html`
     <opo-link
       variant=${args.variant ?? "primary"}
-      ?quiet=${args.quiet}
+      underline=${args.underline ?? "default"}
       ?disabled=${args.disabled}
     >
       Enlace sin href

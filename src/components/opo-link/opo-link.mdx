@@ -15,6 +15,7 @@ El componente está construido sobre semántica nativa de enlace y `Shadow DOM`,
 
 - navegación accesible,
 - variantes visuales,
+- distintos comportamientos de subrayado,
 - soporte para links externos,
 - estados no navegables,
 - colores estáticos para fondos especiales,
@@ -49,13 +50,27 @@ import "@opo/components/opo-link";
 
 ---
 
-## Quiet
+## Underline
 
-`quiet` elimina el subrayado para contextos donde el enlace ya es evidente visualmente, como navegación, cards o listas.
+`underline` controla el comportamiento del subrayado del enlace.
 
 ```html
-<opo-link href="/docs" quiet>Enlace quiet</opo-link>
+<opo-link href="/docs" underline="default">Subrayado por defecto</opo-link>
+<opo-link href="/docs" underline="none">Sin subrayado</opo-link>
+<opo-link href="/docs" underline="reveal">Subrayado reveal</opo-link>
 ```
+
+### `default`
+
+Usa el subrayado nativo del navegador, ajustado mediante `text-decoration-thickness` y `text-underline-offset` para mantener una lectura equilibrada.
+
+### `none`
+
+Elimina el subrayado cuando el contexto visual ya deja claro que el elemento es navegable, como navegación, breadcrumbs, listas contextuales o cards.
+
+### `reveal`
+
+Oculta el subrayado por defecto y muestra una línea animada en hover/focus. Es útil para navegación o contextos de marketing donde se busca un feedback visual más expresivo, manteniendo el color mediante `currentColor`.
 
 ---
 
@@ -121,7 +136,8 @@ El componente mantiene:
 - fallback no navegable cuando está disabled o no hay `href`,
 - `aria-disabled="true"` solo cuando `disabled` está activo,
 - soporte para `ariaLabel`,
-- y `rel="noopener noreferrer"` automático para enlaces externos.
+- `rel="noopener noreferrer"` automático para enlaces externos,
+- y `prefers-reduced-motion` para reducir la transición del subrayado reveal cuando el usuario lo solicita.
 
 ```html
 <opo-link href="/docs" aria-label="Abrir documentación del sistema"> Docs </opo-link>
@@ -146,6 +162,24 @@ El componente mantiene:
         <code>base</code>
       </td>
       <td>Native anchor or non-navigable fallback element</td>
+    </tr>
+    <tr>
+      <td>
+        <code>label</code>
+      </td>
+      <td>Visible link label wrapper</td>
+    </tr>
+    <tr>
+      <td>
+        <code>icon-start</code>
+      </td>
+      <td>Start icon slot wrapper</td>
+    </tr>
+    <tr>
+      <td>
+        <code>icon-end</code>
+      </td>
+      <td>End icon slot wrapper</td>
     </tr>
   </tbody>
 </table>
@@ -190,15 +224,15 @@ El componente mantiene:
     </tr>
     <tr>
       <td>
-        <code>quiet</code>
+        <code>underline</code>
       </td>
       <td>
-        <code>boolean</code>
+        <code>"default" | "none" | "reveal"</code>
       </td>
       <td>
-        <code>false</code>
+        <code>"default"</code>
       </td>
-      <td>Elimina el subrayado</td>
+      <td>Comportamiento del subrayado</td>
     </tr>
     <tr>
       <td>
@@ -296,8 +330,10 @@ El componente mantiene:
 - Usa `opo-link` para navegación real.
   El componente mantiene semántica nativa de enlace cuando existe `href`, incluyendo comportamiento esperado del navegador.
 
-- Usa `quiet` solo cuando el contexto visual ya indique claramente que el elemento es navegable.
+- Usa `underline="none"` solo cuando el contexto visual ya indique claramente que el elemento es navegable.
   Es adecuado en navegación, breadcrumbs, listas contextuales o cards donde el patrón ya es evidente.
+
+- Usa `underline="reveal"` para patrones de navegación o contextos expresivos donde el subrayado animado aporte feedback visual sin comprometer la claridad.
 
 - Usa `staticColor` sobre fondos fijos o superficies especiales.
   Esto ayuda a mantener contraste y legibilidad cuando el color contextual no es suficiente.

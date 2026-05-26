@@ -13,7 +13,6 @@
   --opo-link-pressed-color: var(--sys-color-link-primary-pressed);
   --opo-link-icon-gap: var(--sys-space-2xs); /* 8px */
 
-
   display: inline-flex;
   align-items: center;
   color: var(--opo-link-color);
@@ -46,12 +45,47 @@
   --opo-link-pressed-color: var(--sys-color-link-secondary-pressed);
 }
 
-/* ==================== QUIET ==================== */
+/* ==================== UNDERLINE ==================== */
+.opo-link__label {
+  min-inline-size: 0;
+}
 
-.opo-link--quiet,
-.opo-link--quiet:hover:not(.is-disabled),
-.opo-link--quiet:active:not(.is-disabled) {
+.opo-link--underline-reveal {
   text-decoration-line: none;
+}
+
+.opo-link--underline-none,
+.opo-link--underline-none:hover:not(.is-disabled),
+.opo-link--underline-none:active:not(.is-disabled),
+.opo-link--underline-reveal,
+.opo-link--underline-reveal:hover:not(.is-disabled),
+.opo-link--underline-reveal:active:not(.is-disabled) {
+  text-decoration-line: none;
+}
+
+.opo-link--underline-reveal .opo-link__label {
+  position: relative;
+  display: inline-block;
+  padding-block-end: 0.15em;
+}
+
+.opo-link--underline-reveal .opo-link__label::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  block-size: 2px;
+  background-color: currentcolor;
+  opacity: 0.88;
+  transition: transform var(--ref-motion-duration-fast) ease;
+  transform: scaleX(0);
+  transform-origin: center;
+}
+
+.opo-link--underline-reveal:hover:not(.is-disabled) .opo-link__label::after,
+.opo-link--underline-reveal:focus-visible:not(.is-disabled)
+  .opo-link__label::after {
+  transform: scaleX(1);
 }
 
 /* ==================== STATIC COLORS ==================== */
@@ -118,6 +152,10 @@
   display: none;
 }
 
+.opo-link ::slotted(opo-icon) {
+  color: currentcolor;
+}
+
 .opo-link__icon-start:not(.is-empty) {
   margin-inline-end: var(--opo-link-icon-gap);
 }
@@ -126,6 +164,11 @@
   margin-inline-start: var(--opo-link-icon-gap);
 }
 
-.opo-link__label {
-  min-inline-size: 0;
+
+
+@media (prefers-reduced-motion: reduce) {
+  .opo-link,
+  .opo-link--underline-reveal .opo-link__label::after {
+    transition: none;
+  }
 }

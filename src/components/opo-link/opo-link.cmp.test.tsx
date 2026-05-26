@@ -93,17 +93,38 @@ describe("opo-link", () => {
       expect(link).toHaveClass("opo-link--secondary");
     });
 
-    it("applies the quiet modifier", async () => {
+    it("applies the default underline modifier", async () => {
+      const { root } = await render(<opo-link href="/docs">Docs</opo-link>);
+
+      const link = root.shadowRoot?.querySelector("a");
+
+      expect(link).toHaveClass("opo-link--underline-default");
+    });
+
+    it("applies the selected underline modifier", async () => {
       const { root } = await render(
-        <opo-link href="/docs" quiet>
-          Quiet link
+        <opo-link href="/docs" underline="reveal">
+          Reveal link
         </opo-link>,
       );
 
       const link = root.shadowRoot?.querySelector("a");
 
-      expect(root.hasAttribute("quiet")).toBe(true);
-      expect(link).toHaveClass("opo-link--quiet");
+      expect(root.getAttribute("underline")).toBe("reveal");
+      expect(link).toHaveClass("opo-link--underline-reveal");
+    });
+
+    it("applies the underline none modifier", async () => {
+      const { root } = await render(
+        <opo-link href="/docs" underline="none">
+          Link without underline
+        </opo-link>,
+      );
+
+      const link = root.shadowRoot?.querySelector("a");
+
+      expect(root.getAttribute("underline")).toBe("none");
+      expect(link).toHaveClass("opo-link--underline-none");
     });
 
     it("applies static color classes", async () => {
