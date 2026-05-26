@@ -81,6 +81,17 @@ function hasHardcodedColor(value) {
   );
 }
 
+function normalizeBrandColors(svgContent) {
+  return (
+    svgContent
+      .replace(/\sfill=(["'])(#fff|#ffffff|white)\1/gi, ' fill="currentColor"')
+
+      // White strokes in brand icons often act as visual cutouts/outlines.
+      // Converting them to currentColor usually makes the icon look too bold.
+      .replace(/\sstroke=(["'])(#fff|#ffffff|white)\1/gi, ' stroke="none"')
+  );
+}
+
 /**
  * Strict validation for UI icons.
  * Rules: viewBox="0 0 24 24", no width/height, no inline styles, no style/script elements, no hardcoded colors.
@@ -362,8 +373,21 @@ async function processFolder(
       process.exit(1);
     }
 
-    const optimized = optimize(svgContent, { path: filePath, ...svgoConfig });
-    spriter.add(filePath, null, optimized.data);
+    const optimized = optimize(svgContent, {
+      path: filePath,
+      ...svgoConfig,
+    });
+
+    let finalSvg = optimized.data;
+
+    // Brand icons:
+    // preserve structure but normalize visible solid colors to currentColor.
+    if (expectedPrefix === "brand") {
+      finalSvg = normalizeBrandColors(finalSvg);
+    }
+
+    spriter.add(filePath, null, finalSvg);
+
     globalRegistry.add(normalizePublicIconName(file));
   }
 
@@ -466,8 +490,18 @@ async function processCombinedSprite({ sources, outputFileName, label }) {
         console.error("\nValidation errors:\n", validationErrors.join("\n"));
         process.exit(1);
       }
-      const optimized = optimize(svgContent, { path: filePath, ...svgoConfig });
-      spriter.add(filePath, null, optimized.data);
+      const optimized = optimize(svgContent, {
+        path: filePath,
+        ...svgoConfig,
+      });
+
+      let finalSvg = optimized.data;
+
+      if (expectedPrefix === "brand") {
+        finalSvg = normalizeBrandColors(finalSvg);
+      }
+
+      spriter.add(filePath, null, finalSvg);
       allNames.push(publicName);
     }
   }

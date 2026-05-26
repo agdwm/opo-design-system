@@ -379,10 +379,11 @@ Los iconos Brand representan logos, pictogramas o assets con identidad visual pr
 
 Por este motivo siguen una estrategia de sanitización más conservadora orientada a:
 
-- preservar colores originales,
+- preservar estructura e identidad visual,
 - mantener proporciones y `viewBox`,
 - respetar detalles visuales específicos,
-- y evitar optimizaciones destructivas.
+- evitar optimizaciones destructivas,
+- y permitir normalización controlada de ciertos colores cuando resulta necesario para integración runtime mediante `currentColor`.
 
 En estos casos, la fidelidad visual del asset tiene prioridad frente a la normalización agresiva.
 
@@ -405,6 +406,45 @@ Si un icono de `brand-broken` pasa a ser necesario en producción, debe migrarse
 
 ---
 
+### Explicación de optimizaciones SVG
+
+La pipeline utiliza SVGO para limpiar y optimizar los SVG antes de generar los sprites. Algunas optimizaciones son seguras para todos los iconos, mientras que otras se aplican o desactivan según el tipo de asset.
+
+- `removeDimensions`  
+  Elimina `width` y `height` del `<svg>` raíz para que el tamaño final pueda controlarse desde CSS sin alterar el `viewBox`.
+
+- safe `removeAttrs`  
+  Elimina metadata innecesaria, como `data-name`, `data-testid` o `aria-hidden`, pero conserva atributos críticos como `id` para no romper referencias internas.
+
+- `removeStyleElement`  
+  Elimina bloques `<style>`. Es útil para iconos UI, pero no se aplica a Brand porque algunos assets pueden depender de estilos internos exportados desde diseño.
+
+- `removeScripts`  
+  Elimina cualquier contenido ejecutable dentro del SVG.
+
+- `removeComments`  
+  Elimina comentarios para reducir ruido y tamaño del asset final.
+
+- `removeUselessDefs`  
+  Elimina definiciones que SVGO considera innecesarias. Es útil para iconos UI simples, pero se desactiva en Brand para evitar eliminar `<defs>` necesarios para máscaras, gradientes o filtros.
+
+- `sortAttrs`  
+  Ordena atributos de forma consistente, mejorando legibilidad y estabilidad en diffs.
+
+- `convertPathData`  
+  Optimiza coordenadas y datos de paths intentando mantener el resultado visual.
+
+- `cleanupIds`  
+  Minifica o limpia IDs internos. En Brand se desactiva para preservar referencias como `mask`, `clipPath`, `filter` o `url(#id)` dentro del sprite.
+
+- `collapseGroups`, `mergePaths` y `convertShapeToPath`  
+  Simplifican estructura SVG. En Brand se desactivan porque pueden alterar assets complejos exportados desde diseño.
+
+- `convertColors`  
+  Normaliza valores de color. En Brand se desactiva para evitar modificaciones automáticas no deseadas; cualquier normalización cromática se aplica de forma controlada desde la pipeline.
+
+---
+
 ### Reglas compartidas de optimización
 
 Ambos tipos de iconos comparten ciertas optimizaciones seguras:
@@ -413,11 +453,10 @@ Ambos tipos de iconos comparten ciertas optimizaciones seguras:
 - safe `removeAttrs`
 - `removeScripts`
 - `removeComments`
-- `removeUselessDefs`
 - `sortAttrs`
 - `convertPathData`
 
-`removeDimensions` elimina `width` y `height` del `<svg>` raíz para permitir que el tamaño final se controle desde CSS, sin alterar necesariamente el `viewBox` ni la proporción interna del asset.
+Estas reglas reducen ruido y tamaño sin alterar la estructura esencial del SVG ni romper su capacidad de escalar mediante CSS.
 
 ---
 
@@ -455,14 +494,27 @@ Los iconos Brand aplican una estrategia conservadora:
 - safe `removeAttrs`
 - `removeScripts`
 - `removeComments`
-- `removeUselessDefs`
 - `sortAttrs`
 - `convertPathData`
+- `cleanupIds: false`
+- `removeUselessDefs: false`
+- `collapseGroups: false`
+- `mergePaths: false`
+- `convertShapeToPath: false`
+- `convertColors: false`
 - no `removeStyleElement`
-- no automatic `fill` / `stroke` removal
+- no aggressive `fill` / `stroke` normalization
 - no automatic `viewBox` normalization
 
-La intención es optimizar sin destruir información visual propia del asset de marca.
+La intención es optimizar sin destruir información visual propia del asset de marca. Por eso se preservan referencias SVG internas como:
+
+- `mask`
+- `clipPath`
+- `filter`
+- `defs`
+- y referencias `url(#id)`
+
+Esto evita que optimizaciones agresivas rompan el renderizado de assets Brand complejos dentro del sprite runtime.
 
 ---
 
@@ -715,7 +767,16 @@ Esto permite que los iconos:
 - reduzcan la necesidad de props visuales explícitas,
 - y se integren mejor con theming.
 
-Para iconos Brand, `currentColor` no siempre es deseable, ya que algunos assets de marca necesitan preservar sus colores originales. Por eso la optimización de Brand es más conservadora y evita normalizaciones destructivas de color.
+Para iconos Brand, `currentColor` no siempre es deseable, ya que algunos assets necesitan preservar parte de su identidad visual original.
+
+No obstante, determinados pictogramas utilizados en navegación o integración UI pueden aplicar una normalización cromática controlada durante la pipeline para mejorar compatibilidad visual con:
+
+- theming,
+- navegación runtime,
+- `currentColor`,
+- y composición dentro de componentes interactivos.
+
+Por este motivo, la optimización de Brand prioriza preservar estructura, referencias SVG internas e identidad visual antes que aplicar normalizaciones cromáticas agresivas.
 
 ---
 

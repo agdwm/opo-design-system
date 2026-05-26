@@ -79,6 +79,9 @@
       "name": "home"
     },
     {
+      "name": "house"
+    },
+    {
       "name": "info"
     },
     {
@@ -118,6 +121,9 @@
       "name": "plus"
     },
     {
+      "name": "present"
+    },
+    {
       "name": "refresh-cw"
     },
     {
@@ -131,6 +137,9 @@
     },
     {
       "name": "share-2"
+    },
+    {
+      "name": "shop"
     },
     {
       "name": "sliders"
