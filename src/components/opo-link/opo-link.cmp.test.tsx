@@ -127,6 +127,28 @@ describe("opo-link", () => {
       expect(link).toHaveClass("opo-link--underline-none");
     });
 
+    it("applies the default orientation modifier", async () => {
+      const { root } = await render(<opo-link href="/docs">Docs</opo-link>);
+
+      const link = root.shadowRoot?.querySelector("a");
+
+      expect(root.getAttribute("orientation")).toBe("horizontal");
+      expect(link).toHaveClass("opo-link--orientation-horizontal");
+    });
+
+    it("applies the selected orientation modifier", async () => {
+      const { root } = await render(
+        <opo-link href="/docs" orientation="vertical">
+          Vertical link
+        </opo-link>,
+      );
+
+      const link = root.shadowRoot?.querySelector("a");
+
+      expect(root.getAttribute("orientation")).toBe("vertical");
+      expect(link).toHaveClass("opo-link--orientation-vertical");
+    });
+
     it("applies static color classes", async () => {
       const { root } = await render(
         <opo-link href="/docs" staticColor="white">

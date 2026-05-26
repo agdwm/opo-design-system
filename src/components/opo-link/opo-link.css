@@ -45,6 +45,30 @@
   --opo-link-pressed-color: var(--sys-color-link-secondary-pressed);
 }
 
+/* ==================== ORIENTATION ==================== */
+
+.opo-link--orientation-vertical {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sys-space-3xs);
+  text-align: center;
+}
+
+.opo-link--orientation-vertical
+  .opo-link__icon-start:not(.is-empty),
+.opo-link--orientation-vertical
+  .opo-link__icon-end:not(.is-empty) {
+  margin-inline: 0;
+}
+
+.opo-link--orientation-vertical .opo-link__icon-start,
+.opo-link--orientation-vertical .opo-link__icon-end {
+  display: inline-flex;
+  justify-content: center;
+  transform: none;
+}
+
 /* ==================== UNDERLINE ==================== */
 .opo-link__label {
   min-inline-size: 0;

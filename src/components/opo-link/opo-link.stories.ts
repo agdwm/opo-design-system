@@ -35,6 +35,13 @@ const meta: Meta = {
         "Comportamiento del subrayado: subrayado nativo, sin subrayado o subrayado animado tipo reveal.",
       table: { defaultValue: { summary: "default" } },
     },
+    orientation: {
+      control: "select",
+      options: ["horizontal", "vertical"],
+      description:
+        "Orientación del contenido del enlace. Permite composiciones horizontales o verticales.",
+      table: { defaultValue: { summary: "horizontal" } },
+    },
     disabled: {
       control: "boolean",
       description:
@@ -97,6 +104,7 @@ type LinkArgs = {
   href?: string;
   variant?: "primary" | "secondary";
   underline?: "default" | "none" | "reveal";
+  orientation?: "horizontal" | "vertical";
   disabled?: boolean;
   staticColor?: "white" | "black";
   target?: "_blank" | "_self" | "_parent" | "_top";
@@ -120,6 +128,7 @@ function renderLink(args: LinkArgs, label = "Ver más") {
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "primary"}
       underline=${args.underline ?? "default"}
+      orientation=${args.orientation ?? "horizontal"}
       static-color=${ifDefined(args.staticColor)}
       target=${ifDefined(args.target)}
       rel=${ifDefined(args.rel)}
@@ -219,6 +228,7 @@ export const WithStartIcon: StoryObj<LinkArgs> = {
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "primary"}
       underline=${args.underline ?? "default"}
+      orientation=${args.orientation ?? "horizontal"}
       ?disabled=${args.disabled}
     >
       <opo-icon slot="icon-start" name="external-link" size="sm"></opo-icon>
@@ -245,6 +255,7 @@ export const WithEndIcon: StoryObj<LinkArgs> = {
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "primary"}
       underline=${args.underline ?? "default"}
+      orientation=${args.orientation ?? "horizontal"}
       ?disabled=${args.disabled}
     >
       Ver documentación
@@ -272,6 +283,7 @@ export const WithIcons: StoryObj<LinkArgs> = {
       href=${ifDefined(args.href)}
       variant=${args.variant ?? "secondary"}
       underline=${args.underline ?? "default"}
+      orientation=${args.orientation ?? "horizontal"}
       ?disabled=${args.disabled}
     >
       <opo-icon slot="icon-start" name="chevron-left" size="sm"></opo-icon>
@@ -317,6 +329,43 @@ export const StaticBlack: StoryObj<LinkArgs> = {
   `,
 };
 
+export const VerticalOrientation: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    orientation: "vertical",
+    underline: "none",
+    staticColor: "white",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Example of a vertically stacked navigation link using an icon above the label.",
+      },
+    },
+  },
+  render: (args) => html`
+    <div
+      style="
+        background: #383641;
+        padding: 24px;
+        border-radius: 12px;
+      "
+    >
+      <opo-link
+        href=${ifDefined(args.href)}
+        variant=${args.variant ?? "primary"}
+        underline=${args.underline ?? "none"}
+        orientation=${args.orientation ?? "vertical"}
+        static-color=${ifDefined(args.staticColor)}
+      >
+        <opo-icon slot="icon-start" name="shop" size="lg"></opo-icon>
+        Carrito
+      </opo-link>
+    </div>
+  `,
+};
+
 // ==================== STATES ====================
 
 export const Disabled: StoryObj<LinkArgs> = {
@@ -335,6 +384,7 @@ export const WithoutHref: StoryObj<LinkArgs> = {
     <opo-link
       variant=${args.variant ?? "primary"}
       underline=${args.underline ?? "default"}
+      orientation=${args.orientation ?? "horizontal"}
       ?disabled=${args.disabled}
     >
       Enlace sin href

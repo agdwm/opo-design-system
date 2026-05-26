@@ -16,8 +16,11 @@ export class OpoLink {
   @Prop() variant: "primary" | "secondary" = "primary";
 
   /** Underline behavior of the link. */
-  @Prop({ reflect: true }) underline: "default" | "none" | "reveal" =
-    "default";
+  @Prop({ reflect: true }) underline: "default" | "none" | "reveal" = "default";
+
+  /** Layout orientation of the link content. */
+  @Prop({ reflect: true }) orientation: "horizontal" | "vertical" =
+    "horizontal";
 
   /**
    * Disables navigation and renders a non-interactive element.
@@ -119,6 +122,7 @@ export class OpoLink {
 
       // Modifiers
       `opo-link--underline-${this.underline}`,
+      `opo-link--orientation-${this.orientation}`,
       {
         [`opo-link--static-${this.staticColor}`]: this.staticColor,
         "has-icon-start": this.hasIconStart,
