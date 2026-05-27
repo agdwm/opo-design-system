@@ -1,3 +1,4 @@
+/* Global style layers -  Shared foundational styles used across the entire project. */
 @layer reset, tokens, base, utilities;
 
 @import url("./reset.css");

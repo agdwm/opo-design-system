@@ -1,0 +1,86 @@
+/* Layout foundations */
+@layer landing.layout {
+  /* ==========================================================
+     Base layout
+     Shared structural primitives for the landing layout.
+  ========================================================== */
+
+  .landing-page {
+    min-block-size: 100vh;
+    margin: 0;
+    background: var(--sys-color-surface-page);
+    color: var(--sys-color-text-primary);
+    font-family: var(--ref-font-family-sans);
+  }
+
+  .landing-main {
+    overflow: clip;
+  }
+
+  .landing-container {
+    --landing-container-max-width: 1200px;
+    --landing-container-padding-inline: 20px;
+
+    width: min(
+      100% - (var(--landing-container-padding-inline) * 2),
+      var(--landing-container-max-width)
+    );
+    margin-inline: auto;
+  }
+
+  .landing-section {
+    padding-block: clamp(56px, 8vw, 112px);
+  }
+
+  .landing-section--compact {
+    padding-block: clamp(40px, 6vw, 72px);
+  }
+
+  .landing-section--bleed {
+    padding-block: 0;
+  }
+
+  .landing-grid {
+    display: grid;
+    gap: clamp(24px, 4vw, 48px);
+  }
+
+  .landing-grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-grid--three {
+    grid-template-columns: 1fr;
+  }
+
+  /* ==========================================================
+     Tablet (>=768)
+     wider container + 2/3 column grid layouts
+  ========================================================== */
+
+  @media (width >= 768px) {
+    .landing-container {
+      --landing-container-padding-inline: 32px;
+    }
+
+    .landing-grid--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+    }
+
+    .landing-grid--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* ==========================================================
+     Desktop (>=1024)
+     wider horizontal breathing space
+  ========================================================== */
+
+  @media (width >= 1024px) {
+    .landing-container {
+      --landing-container-padding-inline: 40px;
+    }
+  }
+}

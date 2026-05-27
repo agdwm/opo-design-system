@@ -1,0 +1,31 @@
+/* Utilities */
+@layer landing.utilities {
+  /* ==========================================================
+     Accessibility utilities
+     reusable helpers for visually hidden content and skip links
+  ========================================================== */
+
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .skip-link {
+    position: fixed;
+    inset-block-start: var(--sys-space-sm);
+    inset-inline-start: var(--sys-space-sm);
+    z-index: var(--sys-z-index-tooltip);
+    transform: translateY(-150%);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+}
