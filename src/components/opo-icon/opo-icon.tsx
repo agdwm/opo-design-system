@@ -90,18 +90,14 @@ export class OpoIcon {
     const classes = clsx(
       // Base
       "opo-icon",
-
-      // Variants
-      `opo-icon--${this.size}`,
-
       // Modifiers
       {
+        [`opo-icon--${this.size}`]: this.size,
         [`opo-icon--color-${this.color}`]: this.color,
-        "has-custom-icon": this.hasCustomIcon,
       },
-
       // States
       {
+        "has-custom-icon": this.hasCustomIcon,
         "is-spinning": this.spinning,
       },
     );

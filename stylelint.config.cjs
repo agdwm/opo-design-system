@@ -4,6 +4,7 @@ module.exports = {
   plugins: ["stylelint-order", "stylelint-value-no-unknown-custom-properties"],
 
   rules: {
+    "no-descending-specificity": null,
     "order/properties-order": [
       [
         {
@@ -346,9 +347,8 @@ module.exports = {
         severity: "warning",
       },
     ],
-
     "selector-class-pattern": [
-      "^(?:[a-z][a-z0-9]*)(?:-[a-z0-9]+)*(?:(?:__|--)[a-z0-9]+(?:-[a-z0-9]+)*)?$|^(?:is|has)-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$|^(?:is|has)-[a-z0-9]+(?:-[a-z0-9]+)*$",
       {
         message:
           "Expected class selector to follow kebab-case, BEM-style modifiers/elements, or state classes like .is-visible / .has-error",

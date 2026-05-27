@@ -1,159 +1,549 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opo Landing Challenge</title>
+    <script type="module" src="./main.ts"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Opo Landing Challenge</title>
-  <script type="module" src="./main.ts"></script>
-</head>
+  <body class="landing-page">
+    <a class="skip-link" href="#main-content">
+      Saltar al contenido principal
+    </a>
 
-<body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <strong class="topbar-brand">Opo UI</strong>
-      <nav class="topbar-nav" aria-label="Principal">
-        <a href="#requisitos">Requisitos</a>
-        <a href="#valoracion">Valoracion</a>
-        <a href="#entrega">Entrega</a>
-        <a href="https://www.figma.com/design/mCvs5Jk4893VNlelRsDPnW/Landing-prueba?node-id=4-444" target="_blank"
-          rel="noreferrer">Figma</a>
-      </nav>
-    </div>
-  </header>
+    <header class="landing-header">
+      <div class="landing-header__inner">
+        <a
+          class="landing-header__brand"
+          href="/"
+          aria-label="OpositaTest, inicio"
+        >
+          <span class="landing-logo"></span>
+        </a>
+        <!-- MAIN NAVIGATION -->
+        <nav class="landing-nav" aria-label="Navegación principal">
+          <ul class="landing-nav__list">
+            <li class="landing-nav__item landing-nav__item--tablet-up">
+              <opo-link
+                href="/oposiciones"
+                variant="primary"
+                static-color="white"
+                underline="reveal"
+              >
+                <opo-icon
+                  slot="icon-start"
+                  name="oppositions"
+                  size="lg"
+                ></opo-icon>
+                Oposiciones
+              </opo-link>
+            </li>
+            <li class="landing-nav__item landing-nav__item--tablet-up">
+              <opo-link
+                href="/esquemas"
+                variant="primary"
+                static-color="white"
+                underline="reveal"
+              >
+                <opo-icon slot="icon-start" name="schemes" size="lg"></opo-icon>
+                Esquemas
+              </opo-link>
+            </li>
+            <li class="landing-nav__item landing-nav__item--desktop-up">
+              <opo-link
+                href="/retos"
+                variant="primary"
+                static-color="white"
+                underline="reveal"
+              >
+                <opo-icon
+                  slot="icon-start"
+                  name="challenge"
+                  size="lg"
+                ></opo-icon>
+                Retos
+              </opo-link>
+            </li>
+            <li class="landing-nav__item landing-nav__item--desktop-up">
+              <opo-link
+                href="/blog"
+                variant="primary"
+                static-color="white"
+                underline="reveal"
+              >
+                <opo-icon slot="icon-start" name="blog" size="lg"></opo-icon>
+                Blog
+              </opo-link>
+            </li>
+          </ul>
+        </nav>
 
-  <section class="hero">
-    <main class="site-shell">
-      <div class="hero-layout">
-        <header class="site-header">
-          <p class="site-kicker">Prueba tecnica</p>
-          <h1>Stencil, Web Components y Storybook</h1>
-          <p class="site-intro">
-            Construye una pequena landing page usando <code>Stencil</code> y documenta los componentes en
-            <code>Storybook</code>. La pagina debe vivir fuera de la libreria, como ocurriria en una web consumidora del
-            paquete.
-          </p>
-          <div class="site-actions">
-            <a class="site-figma-link"
-              href="https://www.figma.com/design/mCvs5Jk4893VNlelRsDPnW/Landing-prueba?node-id=4-444" target="_blank"
-              rel="noreferrer">
-              Abrir Figma →
-            </a>
-          </div>
-        </header>
+        <!-- QUICK NAVIGATION -->
+        <div class="landing-header__actions">
+          <nav class="landing-quick-nav" aria-label="Accesos rápidos">
+            <ul class="landing-quick-nav__list">
+              <li
+                class="landing-quick-nav__item landing-quick-nav__item--desktop-up"
+              >
+                <opo-link
+                  href="/carrito"
+                  variant="primary"
+                  underline="none"
+                  static-color="white"
+                  aria-label="Carrito de compras"
+                  orientation="vertical"
+                >
+                  <opo-icon
+                    slot="icon-start"
+                    name="shop"
+                    aria-hidden="true"
+                    size="md"
+                  ></opo-icon>
+                  Carrito
+                </opo-link>
+              </li>
+              <li
+                class="landing-quick-nav__item landing-quick-nav__item--tablet-up"
+              >
+                <opo-link
+                  href="/mes-gratis"
+                  variant="primary"
+                  underline="none"
+                  static-color="white"
+                  aria-label="Mes gratis de prueba"
+                  orientation="vertical"
+                >
+                  <opo-icon
+                    slot="icon-start"
+                    name="present"
+                    aria-hidden="true"
+                    size="md"
+                  ></opo-icon>
+                  Mes gratis
+                </opo-link>
+              </li>
+              <li
+                class="landing-quick-nav__item landing-quick-nav__item--desktop-up"
+              >
+                <opo-link
+                  href="/area-personal"
+                  variant="primary"
+                  underline="none"
+                  static-color="white"
+                  aria-label="Área personal"
+                  orientation="vertical"
+                >
+                  <opo-icon
+                    slot="icon-start"
+                    name="house"
+                    aria-hidden="true"
+                    size="md"
+                  ></opo-icon>
+                  Área personal
+                </opo-link>
+              </li>
+            </ul>
+          </nav>
 
-        <figure class="hero-reference">
-          <img src="./assets/img/hero-reference.jpg" alt="Referencia visual de la landing objetivo" />
-        </figure>
+          <!-- Hacer test BUTTON-->
+          <opo-button
+            variant="secondary"
+            size="sm"
+            type="button"
+            aria-label="Hacer test"
+          >
+            Hacer test
+          </opo-button>
+          <!-- Avatar con dropdown de cuenta -->
+          <a
+            class="landing-header__account"
+            href="#area-personal"
+            aria-label="Área personal"
+          >
+            <opo-avatar
+              src="./assets/img/landing-avatar.jpg"
+              alt="Jane Doe"
+              size="md"
+            ></opo-avatar>
+          </a>
+
+          <!-- HAMBURGER BUTTON - Mobile menu -->
+          <button
+            class="landing-header__menu-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-navigation"
+            aria-label="Abrir menú de navegación"
+          >
+            <span class="landing-header__menu-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <!-- QUICK NAVIGATION END -->
       </div>
+      <!-- Menú de navegación móvil - Overlay-->
+      <div class="mobile-nav-overlay" hidden></div>
+      <!---->
+      <!-- Menú de navegación móvil -->
+      <aside
+        id="mobile-navigation"
+        class="mobile-nav"
+        aria-labelledby="mobile-navigation-title"
+        hidden
+      >
+        <div class="mobile-nav__header">
+          <a
+            class="mobile-nav__brand"
+            href="/"
+            aria-label="OpositaTest, inicio"
+          >
+            <span class="landing-logo"></span>
+          </a>
+
+          <button
+            class="mobile-nav__close"
+            type="button"
+            aria-label="Cerrar menú de navegación"
+          >
+            <opo-icon name="x" aria-hidden="true"></opo-icon>
+          </button>
+        </div>
+
+        <h2 id="mobile-navigation-title" class="visually-hidden">
+          Menú de navegación
+        </h2>
+
+        <nav class="mobile-nav__nav" aria-label="Menú principal">
+          <ul class="mobile-nav__list">
+            <li>
+              <a class="mobile-nav__link" href="#oposiciones">
+                <span>Oposiciones</span>
+                <opo-icon name="chevron-right" aria-hidden="true"></opo-icon>
+              </a>
+            </li>
+
+            <li>
+              <a class="mobile-nav__link" href="#esquemas">
+                <span>Esquemas</span>
+                <opo-icon name="chevron-right" aria-hidden="true"></opo-icon>
+              </a>
+            </li>
+
+            <li>
+              <a class="mobile-nav__link" href="#retos">
+                <span>Retos</span>
+                <opo-icon name="chevron-right" aria-hidden="true"></opo-icon>
+              </a>
+            </li>
+
+            <li>
+              <a class="mobile-nav__link" href="#blog">
+                <span>Blog</span>
+                <opo-icon name="chevron-right" aria-hidden="true"></opo-icon>
+              </a>
+            </li>
+          </ul>
+
+          <ul
+            class="mobile-nav__list mobile-nav__list--secondary"
+            aria-label="Accesos rápidos"
+          >
+            <li>
+              <a class="mobile-nav__link" href="#carrito">
+                <span>Carrito</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="mobile-nav__link" href="#mes-gratis">
+                <span>Mes gratis</span>
+              </a>
+            </li>
+
+            <li>
+              <a class="mobile-nav__link" href="#area-personal">
+                <span>Área personal</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="mobile-nav__actions">
+          <opo-button>Hacer test</opo-button>
+        </div>
+
+        <a class="mobile-nav__account" href="#area-personal">
+          <opo-avatar></opo-avatar>
+
+          <span class="mobile-nav__account-content">
+            <strong>María López</strong>
+            <span>Ver mi cuenta</span>
+          </span>
+
+          <opo-icon name="chevron-right" aria-hidden="true"></opo-icon>
+        </a>
+      </aside>
+      <!---->
+    </header>
+
+    <main id="main-content" class="landing-main">
+      <!-- HERO -->
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="landing-container hero__layout">
+          <div class="hero__content">
+            <p class="hero__eyebrow">Online course</p>
+
+            <h1 id="hero-title" class="hero__title">
+              Learn UX Design and launch your creative career
+            </h1>
+
+            <p class="hero__description">
+              Build strong foundations in UX, interface design and product
+              thinking through a modern, practical and accessible learning
+              experience.
+            </p>
+
+            <div class="hero__actions">
+              <opo-button size="lg"> Start learning </opo-button>
+
+              <opo-button variant="ghost" size="lg">
+                Explore courses
+              </opo-button>
+            </div>
+
+            <div class="hero__social-proof">
+              <div class="hero__avatars">
+                <opo-avatar></opo-avatar>
+                <opo-avatar></opo-avatar>
+                <opo-avatar></opo-avatar>
+              </div>
+
+              <p class="hero__social-proof-text">
+                Trusted by 12k+ students worldwide
+              </p>
+            </div>
+          </div>
+
+          <div class="hero__media">
+            <figure class="hero__image-wrapper">
+              <img
+                class="hero__image"
+                src="./assets/img/hero-image.jpg"
+                alt="Student learning UX design"
+              />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESOURCES -->
+
+      <section
+        id="resources"
+        class="landing-section resources"
+        aria-labelledby="resources-title"
+      >
+        <div class="landing-container">
+          <div class="section-heading">
+            <p class="section-heading__eyebrow">Free resources</p>
+
+            <h2 id="resources-title" class="section-heading__title">
+              Learn through curated content and practical examples
+            </h2>
+
+            <p class="section-heading__description">
+              Explore a collection of articles, templates and visual references
+              designed to help you improve your UX workflow.
+            </p>
+          </div>
+
+          <div class="resources__grid">
+            <opo-promo-card></opo-promo-card>
+            <opo-promo-card></opo-promo-card>
+            <opo-promo-card></opo-promo-card>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+
+      <section
+        id="features"
+        class="landing-section features"
+        aria-labelledby="features-title"
+      >
+        <div class="landing-container features__layout">
+          <div class="features__content">
+            <div class="section-heading section-heading--left">
+              <p class="section-heading__eyebrow">Why choose us</p>
+
+              <h2 id="features-title" class="section-heading__title">
+                A modern learning experience focused on real product skills
+              </h2>
+
+              <p class="section-heading__description">
+                Learn through practical workflows, reusable systems and
+                accessible design principles used in real teams.
+              </p>
+            </div>
+
+            <ul class="features__list">
+              <li class="features__item">
+                <opo-icon name="check"></opo-icon>
+
+                <div class="features__item-content">
+                  <h3 class="features__item-title">Practical exercises</h3>
+
+                  <p class="features__item-description">
+                    Learn by building real UI patterns and component systems.
+                  </p>
+                </div>
+              </li>
+
+              <li class="features__item">
+                <opo-icon name="check"></opo-icon>
+
+                <div class="features__item-content">
+                  <h3 class="features__item-title">Design system mindset</h3>
+
+                  <p class="features__item-description">
+                    Understand scalable UI architecture and reusable
+                    foundations.
+                  </p>
+                </div>
+              </li>
+
+              <li class="features__item">
+                <opo-icon name="check"></opo-icon>
+
+                <div class="features__item-content">
+                  <h3 class="features__item-title">Accessibility-first</h3>
+
+                  <p class="features__item-description">
+                    Build inclusive experiences with semantic HTML and modern
+                    a11y practices.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="features__media">
+            <img
+              src="./assets/img/features-image.jpg"
+              alt="UX designer working on interface wireframes"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- VIDEO -->
+
+      <section
+        id="video"
+        class="landing-section video-showcase"
+        aria-labelledby="video-title"
+      >
+        <div class="landing-container video-showcase__layout">
+          <div class="video-showcase__content">
+            <div class="section-heading section-heading--left">
+              <p class="section-heading__eyebrow">Watch the course preview</p>
+
+              <h2 id="video-title" class="section-heading__title">
+                See how the learning experience works in practice
+              </h2>
+
+              <p class="section-heading__description">
+                Explore the methodology, platform and practical workflow used
+                throughout the program.
+              </p>
+            </div>
+          </div>
+
+          <div class="video-showcase__media">
+            <div class="video-embed">
+              <!-- lazy youtube embed -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+
+      <section id="faq" class="landing-section faq" aria-labelledby="faq-title">
+        <div class="landing-container faq__layout">
+          <div class="section-heading">
+            <p class="section-heading__eyebrow">FAQ</p>
+
+            <h2 id="faq-title" class="section-heading__title">
+              Frequently asked questions
+            </h2>
+
+            <p class="section-heading__description">
+              Everything you need to know before joining the course.
+            </p>
+          </div>
+
+          <div class="faq__accordion">
+            <opo-accordion></opo-accordion>
+            <opo-accordion></opo-accordion>
+            <opo-accordion></opo-accordion>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+
+      <section
+        class="landing-section final-cta"
+        aria-labelledby="final-cta-title"
+      >
+        <div class="landing-container final-cta__layout">
+          <div class="final-cta__content">
+            <h2 id="final-cta-title" class="final-cta__title">
+              Ready to start your UX journey?
+            </h2>
+
+            <p class="final-cta__description">
+              Join thousands of students learning design systems, accessibility
+              and modern frontend workflows.
+            </p>
+          </div>
+
+          <div class="final-cta__actions">
+            <opo-button size="lg"> Enroll now </opo-button>
+          </div>
+        </div>
+      </section>
     </main>
-  </section>
 
-  <main class="content">
-    <section class="site-summary">
-      <div class="site-shell site-summary-grid" aria-label="Resumen">
-        <article class="site-summary-item">
-          <span class="site-summary-label">Base</span>
-          <strong>Stencil + Storybook</strong>
-          <p>Starter listo para construir componentes y documentarlos.</p>
-        </article>
-        <article class="site-summary-item">
-          <span class="site-summary-label">Scope</span>
-          <strong>Landing externa</strong>
-          <p>La página debe vivir fuera de la librería y consumir sus componentes.</p>
-        </article>
-        <article class="site-summary-item">
-          <span class="site-summary-label">Referencia</span>
-          <strong>Figma incluido</strong>
-          <p>Úsalo como guía visual sin necesidad de replicarlo al pixel.</p>
-        </article>
-      </div>
-    </section>
+    <footer class="landing-footer">
+      <div class="landing-container landing-footer__inner">
+        <div class="landing-footer__brand">
+          <strong>Opo UI</strong>
 
-    <section class="site-section">
-      <div class="site-shell">
-        <div class="site-block site-block-example" aria-labelledby="example-title">
-          <div class="site-example-copy">
-            <h2 id="example-title">Componente de ejemplo</h2>
-            <p class="site-block-intro">
-              Este boton es solo una prueba de que la libreria de componentes esta cargando correctamente en la landing
-              externa.
-            </p>
-            <p>
-              Puedes cambiar su API, estilos, comportamiento o incluso sustituirlo por otra estructura si eso mejora tu
-              solucion.
-            </p>
-          </div>
-          <div class="site-example-preview">
-            <opo-button>Ejemplo de opo-button</opo-button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="site-section" id="requisitos">
-      <div class="site-shell">
-        <div class="site-block" aria-labelledby="requisitos-title">
-          <h2 id="requisitos-title">Que tienes que construir</h2>
-          <p class="site-block-intro">
-            Construye la landing con una arquitectura clara de componentes y documenta en Storybook lo necesario para
-            que otra persona pueda reutilizarlos.
+          <p class="landing-footer__copy">
+            © 2026 Opo UI. All rights reserved.
           </p>
-          <ul class="site-list">
-            <li>Usar <code>Stencil</code> para construir componentes reutilizables.</li>
-            <li>Montar la landing desde la web externa, no desde un componente contenedor dentro de la libreria.</li>
-            <li>Documentar en Storybook los componentes.</li>
-            <li>Trabajar a partir de la referencia visual de Figma.</li>
+        </div>
+
+        <nav class="landing-footer__nav" aria-label="Footer navigation">
+          <ul class="landing-footer__list">
+            <li>
+              <a href="/">Privacy</a>
+            </li>
+
+            <li>
+              <a href="/">Terms</a>
+            </li>
+
+            <li>
+              <a href="/">Contact</a>
+            </li>
           </ul>
-        </div>
+        </nav>
       </div>
-    </section>
-
-    <section class="site-section site-section-alt" id="valoracion">
-      <div class="site-shell">
-        <div class="site-block" aria-labelledby="valoracion-title">
-          <h2 id="valoracion-title">Se valorara especialmente</h2>
-          <p class="site-block-intro">
-            Lo mas importante no es hacer mas componentes, sino tomar buenas decisiones de sistema.
-          </p>
-          <ul class="site-list">
-            <li>Jerarquía de componentes bien pensada.</li>
-            <li>Reutilización real, naming claro y una API consistente.</li>
-            <li>Estados, variantes, accesibilidad básica y uso de CSS variables.</li>
-            <li>Calidad visual general.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="site-section">
-      <div class="site-shell site-grid-two">
-        <div class="site-block site-block-deliver" id="entrega" aria-labelledby="entrega-title">
-          <h2 id="entrega-title">Entrega</h2>
-          <p class="site-block-intro">
-            Comparte la solución y deja contexto suficiente para entender tus decisiones.
-          </p>
-          <p>
-            Sube tus cambios al repositorio o comparte un enlace con tu solución. Incluye una breve explicación con
-            decisiones técnicas, tradeoffs y que mejorarías con más tiempo.
-          </p>
-        </div>
-
-        <div class="site-block" aria-labelledby="bonus-title">
-          <h2 id="bonus-title">Bonus</h2>
-          <p class="site-block-intro">
-            Solo si te da tiempo. No son obligatorios para completar la prueba.
-          </p>
-          <ul class="site-list">
-            <li>Mejoras de accesibilidad.</li>
-            <li>Documentación más completa en Storybook.</li>
-            <li>Theming mediante variables CSS.</li>
-            <li>Tests básicos de componentes.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
-</body>
-
+    </footer>
+  </body>
 </html>

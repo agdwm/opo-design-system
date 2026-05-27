@@ -1,4 +1,6 @@
 :host {
+  --opo-link-vertical-gap: var(--sys-space-3xs);
+
   display: inline;
 }
 
@@ -51,7 +53,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sys-space-3xs);
+  gap: var(--opo-link-vertical-gap);
   text-align: center;
 }
 
@@ -90,13 +92,12 @@
 .opo-link--underline-reveal .opo-link__label {
   position: relative;
   display: inline-block;
-  padding-block-end: 0.15em;
 }
 
 .opo-link--underline-reveal .opo-link__label::after {
   content: "";
   position: absolute;
-  inset-block-end: 0;
+  inset-block-end: -0.15em;
   inset-inline: 0;
   block-size: 2px;
   background-color: currentcolor;

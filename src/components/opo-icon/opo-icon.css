@@ -14,15 +14,15 @@
 }
 
 :host([size='sm']) {
-  font-size: var(--ref-size-300);
+  font-size: var(--ref-size-300); /* 16px */
 }
 
 :host([size='md']) {
-  font-size: var(--ref-size-500);
+  font-size: var(--ref-size-500); /* 20px */
 }
 
 :host([size='lg']) {
-  font-size: var(--ref-size-700);
+  font-size: var(--ref-size-700); /* 24 */
 }
 
 /* Prevents display:inline-flex from overriding the native hidden behavior. */

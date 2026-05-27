@@ -132,7 +132,7 @@
     --ref-shadow-xs: 0 2px 8px 0 oklch(0.3393 0.0192 293.69 / 0.03); /* #38364108 buttons */
     --ref-shadow-sm: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a cards */
     --ref-shadow-md: 0 10px 20px 0 oklch(0.3393 0.0192 293.69 / 0.2); /* #38364133 popovers, overlays.. */
-    --ref-shadow-lg: 0 8px 24px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a accordions */
+    --ref-shadow-lg: 0 8px 24px 0 oklch(0.3393 0.0192 293.69 / 0.1); /* #3836411a accordions, header */
 
     /* Layout width constraints */
     --ref-container-sm: 680px;

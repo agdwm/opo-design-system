@@ -15,6 +15,7 @@
   --opo-button-background: var(--sys-color-action-primary); /* #ffb142 */
   --opo-button-color: var(--sys-color-on-action-primary); /* #ffffff */
   --opo-button-border-color: transparent;
+  --opo-button-padding-inline-sm: 22px;
 
   position: relative;
   display: inline-flex;
@@ -25,7 +26,7 @@
   block-size: var(--opo-button-height); /* 48px */
   min-block-size: var(--opo-button-height); /* 48px */
   padding-block: var(--opo-button-padding-block); /* 12px */
-  padding-inline: var(--sys-space-md); /* 24px */
+  padding-inline: var(--opo-button-padding-inline-sm); /* 22px */
   border: 1px solid var(--opo-button-border-color); /* transparent */
   border-radius: var(--ref-radius-xs); /* 6px */
   background-color: var(--opo-button-background); /* #ffb142 */
