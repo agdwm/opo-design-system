@@ -92,7 +92,6 @@ export class OpoIcon {
       "opo-icon",
       // Modifiers
       {
-        [`opo-icon--${this.size}`]: this.size,
         [`opo-icon--color-${this.color}`]: this.color,
       },
       // States

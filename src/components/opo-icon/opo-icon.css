@@ -1,28 +1,27 @@
-/*
- * Icon sizing is controlled from the host.
- * The host defines the icon box using 1em, while size variants update font-size.
- * The internal SVG then fills that box, keeping icons scalable and aligned with text.
- */
 :host {
+  --opo-icon-size: var(--ref-size-500);
+
   display: inline-flex;
   flex-shrink: 0;
-  inline-size: 1em;
-  block-size: 1em;
+  inline-size: var(--opo-icon-size);
+  block-size: var(--opo-icon-size);
   color: inherit;
   line-height: 1;
   vertical-align: middle;
 }
 
-:host([size='sm']) {
-  font-size: var(--ref-size-300); /* 16px */
+/* ==================== SIZES ==================== */
+
+:host([size="sm"]) {
+  --opo-icon-size: var(--ref-size-300);
 }
 
-:host([size='md']) {
-  font-size: var(--ref-size-500); /* 20px */
+:host([size="md"]) {
+  --opo-icon-size: var(--ref-size-500);
 }
 
-:host([size='lg']) {
-  font-size: var(--ref-size-700); /* 24 */
+:host([size="lg"]) {
+  --opo-icon-size: var(--ref-size-700);
 }
 
 /* Prevents display:inline-flex from overriding the native hidden behavior. */
@@ -43,18 +42,8 @@
   transition: color var(--ref-motion-duration-faster) ease;
 }
 
-/* ==================== SIZES ==================== */
-.opo-icon--sm {
-  --opo-icon-size: var(--ref-size-300);
-}
 
-.opo-icon--md {
-  --opo-icon-size: var(--ref-size-500);
-}
 
-.opo-icon--lg {
-  --opo-icon-size: var(--ref-size-700);
-}
 
 /* ==================== COLORES SEMÁNTICOS ==================== */
 .opo-icon--color-primary {
