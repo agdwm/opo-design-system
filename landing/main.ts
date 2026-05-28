@@ -9,6 +9,7 @@ import "./styles/landing.css";
 ========================================================== */
 import "./scripts/mobile-nav";
 import "./scripts/responsive-logo";
+import "./scripts/header-scroll";
 
 /* ==========================================================
    Web components

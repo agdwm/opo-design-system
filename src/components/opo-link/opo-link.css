@@ -1,5 +1,6 @@
 :host {
   --opo-link-vertical-gap: var(--sys-space-3xs);
+  --opo-link-underline-color: currentcolor;
 
   display: inline;
 }
@@ -97,11 +98,12 @@
 .opo-link--underline-reveal .opo-link__label::after {
   content: "";
   position: absolute;
-  inset-block-end: -0.15em;
+  inset-block-end: -0.16em;
   inset-inline: 0;
-  block-size: 2px;
-  background-color: currentcolor;
-  opacity: 0.88;
+  block-size: 0.1em;
+  min-block-size: 1px;
+  background-color: var(--opo-link-underline-color);
+  opacity: 0.80;
   transition: transform var(--ref-motion-duration-fast) ease;
   transform: scaleX(0);
   transform-origin: center;

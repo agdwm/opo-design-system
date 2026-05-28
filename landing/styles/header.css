@@ -1,9 +1,15 @@
+/* ULTIMA VERSION */
+
 /* Header, nav y mobile drawer */
 @layer landing.header {
   /* ==========================================================
    Mobile (<768)
    logo-small + CTA + avatar + hamburger
 ========================================================== */
+  body.has-mobile-nav-open .landing-header {
+    background-color: var(--ref-color-zinc-900);
+    backdrop-filter: none;
+  }
 
   /* Header shell */
   .landing-header {
@@ -13,6 +19,20 @@
     padding-inline: var(--sys-space-sm); /* 16px */
     background-color: var(--ref-color-zinc-900);
     box-shadow: var(--ref-shadow-lg);
+    transition:
+      background-color var(--ref-motion-duration-normal) ease,
+      backdrop-filter var(--ref-motion-duration-normal) ease,
+      box-shadow var(--ref-motion-duration-normal) ease;
+  }
+
+  .landing-header.is-scrolled {
+    background-color: color-mix(
+      in srgb,
+      var(--ref-color-zinc-900) 78%,
+      transparent
+    );
+    box-shadow: var(--ref-shadow-md);
+    backdrop-filter: blur(10px);
   }
 
   .landing-header__inner {
@@ -63,7 +83,9 @@
     position: fixed;
     inset: 0;
     z-index: var(--sys-z-index-overlay);
-    background-color: rgb(0 0 0 / 48%);
+    inline-size: 100vw;
+    block-size: 100vh;
+    background-color: rgb(0 0 0 / 60%);
     opacity: 0;
     backdrop-filter: blur(4px);
     visibility: hidden;
@@ -73,17 +95,18 @@
   }
 
   .mobile-nav {
+    --mobile-nav-width: clamp(18rem, 78vw, 26rem);
     --mobile-nav-divider-color: var(--ref-color-zinc-700);
     --mobile-nav-interaction-opacity: 0.72;
 
     /* Prevents content from colliding with device safe areas
     (notches, gestures, Dynamic Island). */
     --mobile-nav-padding-inline-start: max(
-      var(--sys-space-sm),
+      clamp(var(--sys-space-sm), 6vw, var(--sys-space-lg)),
       env(safe-area-inset-left)
     );
     --mobile-nav-padding-inline-end: max(
-      var(--sys-space-sm),
+      clamp(var(--sys-space-sm), 6vw, var(--sys-space-lg)),
       env(safe-area-inset-right)
     );
 
@@ -93,13 +116,14 @@
     z-index: var(--sys-z-index-modal);
     display: flex;
     flex-direction: column;
-    inline-size: min(82vw, 21rem);
+    inline-size: var(--mobile-nav-width);
     block-size: 100dvh;
     max-block-size: 100dvh;
     padding: 0;
     background-color: var(--ref-color-zinc-900);
     box-shadow: -4px 0 8px 0 oklch(33.93% 0.0192 293.69deg / 22%);
     opacity: 0;
+    overflow: hidden;
     visibility: hidden;
     color: var(--sys-color-text-inverse);
     transition:
@@ -114,8 +138,9 @@
   .mobile-nav__header,
   .mobile-nav__actions,
   .mobile-nav__account {
-    padding-inline: max(var(--sys-space-sm), env(safe-area-inset-left))
-      max(var(--sys-space-sm), env(safe-area-inset-right));
+    flex: 0 0 auto;
+    padding-inline: var(--mobile-nav-padding-inline-start)
+      var(--mobile-nav-padding-inline-end);
   }
 
   .mobile-nav[hidden],
@@ -139,6 +164,7 @@
     flex: 1;
     flex-direction: column;
     min-block-size: 0;
+    overflow-y: auto;
   }
 
   .mobile-nav__header {
@@ -185,18 +211,33 @@
   }
 
   .mobile-nav__list:first-of-type {
-    flex: 1;
-    margin-block-end: var(--sys-space-sm);
-    padding-block: var(--sys-space-md) var(--sys-space-sm);
+    flex: 0 0 auto;
+    padding-block-start: var(--sys-space-md);
   }
 
   .mobile-nav__list--secondary {
     display: flex;
-    flex: 1;
+    flex: 0 0 auto;
     flex-direction: column;
     justify-content: flex-end;
+    margin-block-start: auto;
     padding-block-end: var(--sys-space-md);
-    border-block-start: 1px solid var(--mobile-nav-divider-color);
+  }
+
+  .mobile-nav__separator {
+    position: relative;
+    flex: 1;
+    min-block-size: var(--sys-space-xl);
+  }
+
+  .mobile-nav__separator::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: 0;
+    block-size: 1px;
+    background-color: var(--mobile-nav-divider-color);
+    transform: translateY(-50%);
   }
 
   .mobile-nav__link {
@@ -205,8 +246,8 @@
     justify-content: space-between;
     gap: var(--sys-space-sm);
     min-block-size: 2rem; /* 32px */
-    padding-inline: max(var(--sys-space-sm), env(safe-area-inset-left))
-      max(var(--sys-space-sm), env(safe-area-inset-right));
+    padding-inline: var(--mobile-nav-padding-inline-start)
+      var(--mobile-nav-padding-inline-end);
     color: var(--sys-color-text-inverse);
     text-decoration: none;
   }
@@ -233,16 +274,10 @@
 
   .mobile-nav__actions {
     display: flex;
+    flex: 0 0 auto;
     align-items: center;
-    margin-block-start: auto;
+    margin-block-start: 0;
     padding-block: var(--sys-space-md);
-    border-block-start: 1px solid var(--mobile-nav-divider-color);
-  }
-
-  .mobile-nav__footer {
-    display: grid;
-    gap: var(--sys-space-md);
-    padding-block: var(--sys-space-lg) var(--sys-space-sm);
     border-block-start: 1px solid var(--mobile-nav-divider-color);
   }
 
@@ -379,12 +414,8 @@
    Main navigation + quick actions + hamburger button
 ========================================================== */
   @media (hover: hover) {
-    .landing-nav opo-link:hover {
-      opacity: 0.72;
-    }
-
     .landing-quick-nav opo-link:hover {
-      opacity: 1;
+      opacity: 0.72;
     }
 
     .landing-header__menu-button:hover {
@@ -394,7 +425,6 @@
 
   /* ==========================================================
    Mobile drawer interactions (Drawer navigation + account section)
-   & Disable drawer animations when reduced motion is preferred
 ========================================================== */
   @media (hover: hover) {
     .mobile-nav__link:hover,
@@ -402,6 +432,10 @@
       opacity: var(--mobile-nav-interaction-opacity);
     }
   }
+
+  /* ==========================================================
+  Disable drawer animations when reduced motion is preferred
+========================================================== */
 
   @media (prefers-reduced-motion: reduce) {
     .mobile-nav,
@@ -482,6 +516,11 @@
     .landing-header__menu-button {
       display: none;
     }
+
+    .mobile-nav,
+    .mobile-nav-overlay {
+      display: none !important;
+    }
   }
 
   /* ==========================================================
@@ -517,6 +556,8 @@
     }
 
     .landing-nav opo-link {
+      --opo-link-underline-color: var(--ref-color-amber-500);
+
       /* optical spacing adjustment */
       padding-inline: 6px;
       font-size: var(--sys-typography-body-size);
