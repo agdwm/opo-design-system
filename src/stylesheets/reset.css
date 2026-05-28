@@ -16,7 +16,9 @@
     margin: 0;
   }
 
-  /* 3. Enable smooth transitions between numeric and intrinsic sizes (e.g. height: 0 -> height: auto) and smooth scrolling when motion is allowed */
+ /* 3. Enable smooth transitions between fixed and intrinsic sizes
+   (e.g. height: 0 -> height: auto) and allow smooth scrolling
+   only when the user has not requested reduced motion. */
   @media (prefers-reduced-motion: no-preference) {
     html {
       interpolate-size: allow-keywords;
