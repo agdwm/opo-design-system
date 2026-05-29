@@ -4,6 +4,13 @@ module.exports = {
   plugins: ["stylelint-order", "stylelint-value-no-unknown-custom-properties"],
 
   rules: {
+    "property-no-vendor-prefix": true,
+    "declaration-block-no-duplicate-properties": [
+      true,
+      {
+        ignore: ["consecutive-duplicates-with-different-syntaxes"],
+      },
+    ],
     "no-descending-specificity": null,
     "order/properties-order": [
       [
@@ -203,6 +210,7 @@ module.exports = {
             "box-shadow",
             "opacity",
             "filter",
+
             "backdrop-filter",
             "mix-blend-mode",
             "isolation",

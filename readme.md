@@ -271,6 +271,65 @@ docs/
 
 ---
 
+## Build Outputs
+
+El repositorio genera distintos artefactos de build para la librería de componentes y para la landing consumidora.
+
+### Component Library (Stencil)
+
+Output principal:
+
+```txt
+dist/
+```
+
+Contiene los bundles compilados de la librería Stencil, incluyendo:
+
+- componentes compilados,
+- estilos encapsulados de componentes,
+- loaders generados por Stencil,
+- artefactos distribuibles de la librería.
+
+Ejemplos:
+
+```txt
+dist/
+├── collection/
+├── components/
+└── ...
+```
+
+### Landing Application (Vite)
+
+Output principal:
+
+`landing/dist/`
+
+Contiene el build final de la landing consumidora generado por Vite:
+
+- HTML final,
+- JavaScript optimizado,
+- CSS agregado y procesado,
+- assets de la landing.
+
+Ejemplos:
+
+```txt
+landing/dist/
+├── index.html
+└── assets/
+    ├── index-xxxxx.css
+    └── index-xxxxx.js
+```
+
+> [!IMPORTANT]
+>
+> Cuando se depuren estilos de la landing (por ejemplo reglas CSS, autoprefixing o assets generados por Vite), el output correcto a inspeccionar es `landing/dist/`.
+>
+> El directorio `dist/` corresponde únicamente al output de la librería Stencil y no refleja necesariamente el bundle final consumido por la landing.
+
+---
+
 > [!IMPORTANT]
 >
 > ## 🧩 Design System Approach
