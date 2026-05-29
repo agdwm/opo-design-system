@@ -6,7 +6,7 @@
    Mobile (<768)
    logo-small + CTA + avatar + hamburger
 ========================================================== */
-  body.has-mobile-nav-open .landing-header {
+body.has-mobile-nav-open .landing-header {
     background-color: var(--ref-color-zinc-900);
     backdrop-filter: none;
   }
@@ -15,6 +15,9 @@
   .landing-header {
     position: sticky;
     inset-block-start: 0;
+
+    /* 'top' for firefox compatibility */
+    top: 0;
     z-index: var(--sys-z-index-header);
     padding-inline: var(--sys-space-sm); /* 16px */
     background-color: var(--ref-color-zinc-900);

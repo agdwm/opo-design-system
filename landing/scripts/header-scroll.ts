@@ -1,6 +1,6 @@
 const header = document.querySelector<HTMLElement>(".landing-header");
 
-const scrollThreshold = header?.offsetHeight ?? 72;
+const scrollThreshold = 16; // 16px, equivalent to the padding of the header
 const bodyOpenClass = "has-mobile-nav-open";
 
 function isMobileNavOpen() {
