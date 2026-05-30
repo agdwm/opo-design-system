@@ -174,12 +174,13 @@
             <span class="landing-header__menu-icon" aria-hidden="true"></span>
           </button>
         </div>
-        <!-- QUICK NAVIGATION END -->
+        <!-- Quick navigation end -->
       </div>
-      <!-- Menú de navegación móvil - Overlay-->
+      <!-- Mobile navigation overlay end -->
       <div class="mobile-nav-overlay" hidden></div>
       <!---->
-      <!-- Menú de navegación móvil -->
+
+      <!-- Mobile navigation -->
       <aside
         id="mobile-navigation"
         class="mobile-nav"
@@ -281,7 +282,7 @@
           <opo-icon name="chevron-right" aria-hidden="true"></opo-icon>
         </a>
       </aside>
-      <!---->
+      <!-- Mobile navigation end -->
     </header>
 
     <main id="main-content" class="landing-main">
@@ -338,36 +339,79 @@
       <!-- HERO END -->
 
       <!-- RESOURCES -->
-
       <section
         id="resources"
         class="landing-section resources"
         aria-labelledby="resources-title"
       >
-        <div class="landing-container">
-          <div class="section-heading">
-            <p class="section-heading__eyebrow">Free resources</p>
-
-            <h2 id="resources-title" class="section-heading__title">
-              Learn through curated content and practical examples
-            </h2>
-
-            <p class="section-heading__description">
-              Explore a collection of articles, templates and visual references
-              designed to help you improve your UX workflow.
-            </p>
-          </div>
-
+        <div class="resources__container">
+          <h2 id="resources-title" class="resources__title">
+            <span>Además...</span>
+            <span>¡Recursos gratuitos y sorteos!</span>
+          </h2>
           <div class="resources__grid">
-            <opo-promo-card></opo-promo-card>
-            <opo-promo-card></opo-promo-card>
-            <opo-promo-card></opo-promo-card>
+            <div class="resources__row resources__row--top">
+              <opo-promo-card
+                full-width
+                heading="Gana 1 año en opositaTest"
+                description="Ya tenemos los ganadores ¡gracias por participar!"
+                image-src="./assets/img/resources-1-2x.webp"
+                image-alt=""
+                pending
+              ></opo-promo-card>
+
+              <opo-promo-card
+                full-width
+                heading="Test de conocimientos"
+                description="¿Cuánto sabes sobre el proceso de la oposición? ¡Entra y descúbrelo!"
+                image-src="./assets/img/resources-2-2x.webp"
+                image-alt=""
+              >
+                <opo-button slot="action" variant="primary">
+                  Hacer test de conocimientos
+                </opo-button>
+              </opo-promo-card>
+              <opo-promo-card
+                full-width
+                heading="OpositaTest es Gratis"
+                description="¡Accede gratis a todos los test de oposiciones!"
+                image-src="./assets/img/resources-3-2x.webp"
+                image-alt=""
+              >
+                <opo-button slot="action" variant="primary">
+                  ¡Acceder gratis!
+                </opo-button>
+              </opo-promo-card>
+            </div>
+
+            <div class="resources__row resources__row--bottom">
+              <opo-promo-card
+                full-width
+                heading="Las 10 preguntas más falladas de tu oposición"
+                description="¿Aceptas nuestro desafío?"
+                image-src="./assets/img/resources-4-2x.webp"
+                image-alt=""
+              >
+                <opo-button slot="action" variant="primary">
+                  Acepto el desafío
+                </opo-button>
+              </opo-promo-card>
+
+              <opo-promo-card
+                full-width
+                heading="El TREBEP: ahora en formato curso"
+                description="Vídeos, test y esquemas explicativos"
+                image-src="./assets/img/resources-5-2x.webp"
+                image-alt=""
+                pending
+              ></opo-promo-card>
+            </div>
           </div>
         </div>
       </section>
+      <!-- RESOURCES END -->
 
       <!-- FEATURES -->
-
       <section
         id="features"
         class="landing-section features"

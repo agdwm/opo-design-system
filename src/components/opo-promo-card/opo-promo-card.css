@@ -21,7 +21,7 @@
   --opo-promo-card-description-color: var(--ref-color-zinc-600); /* #88868d */
   --opo-promo-card-pending-color: var(--ref-color-zinc-600); /* #88868d */
 
-  /* Base behavior ideal for any context in the library */
+  /* Default standalone layout for reusable card composition. */
   display: flex;
   flex-direction: column;
   inline-size: var(--opo-promo-card-inline-size);
@@ -69,7 +69,7 @@
   inline-size: 100%;
   max-inline-size: var(--opo-promo-card-media-max-inline-size);
 
-  /* Force the aspect ratio in the CONTAINER */
+  /* Keep media dimensions predictable across card instances. */
   aspect-ratio: var(--opo-promo-card-media-aspect-ratio); /* 492 / 340 */
   margin: 0 auto;
   margin-bottom: var(--opo-promo-card-media-action-gap);
@@ -89,7 +89,7 @@
   display: block;
   inline-size: 100%;
 
-  /* Force the image to stretch to fill the container's height (and the subgrid) without distortion */
+  /* Fill the media container without distorting the image. */
   block-size: 100%;
   max-width: 100%;
   aspect-ratio: auto;
@@ -104,7 +104,7 @@
   inline-size: 100%;
   max-inline-size: var(--opo-promo-card-media-max-inline-size);
 
-  /* Push the button down in normal Flexbox mode */
+ /* Keep the footer anchored when cards have uneven content heights. */
   margin-block-start: auto;
   margin-inline: auto;
   text-align: center;

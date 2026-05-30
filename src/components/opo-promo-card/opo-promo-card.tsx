@@ -31,14 +31,6 @@ export class OpoPromoCard {
   /** Makes the card take the full available width. */
   @Prop({ reflect: true }) fullWidth = false;
 
-  /**
-   * Defines how the card participates in external layouts.
-   *
-   * - standalone: default isolated layout
-   * - subgrid: enables synchronized row alignment inside parent subgrids
-   */
-  @Prop({ reflect: true }) layout: "standalone" | "subgrid" = "standalone";
-
   /** Shows a non-interactive pending state instead of the action slot. */
   @Prop({ reflect: true }) pending = false;
 
@@ -51,10 +43,6 @@ export class OpoPromoCard {
     const classes = clsx(
       // Base
       "opo-promo-card",
-
-      // Layouts
-      `opo-promo-card--layout-${this.layout}`,
-
       // Modifiers
       {
         "opo-promo-card--full-width": this.fullWidth,

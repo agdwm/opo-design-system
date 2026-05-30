@@ -15,8 +15,12 @@ export default defineConfig({
     fs: {
       allow: [".."],
     },
+    /* Expose dev server to local network devices
+    (physical mobile devices, BrowserStack, etc.) */
     host: "0.0.0.0",
+    /* Custom dev server port */
     port: 8080,
+    /* Explicitly allow Browserstack Local and localhost access */
     allowedHosts: ["bs-local.com", "localhost", "127.0.0.1"],
   },
 });

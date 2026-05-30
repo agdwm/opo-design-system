@@ -261,88 +261,47 @@ export const CardGroup: StoryObj<PromoCardArgs> = {
     docs: {
       description: {
         story:
-          "Example layout showing repeated promo cards inside a responsive grid.",
+          "Example layout showing repeated promo cards inside a responsive external grid. The card keeps its own standalone flex layout.",
       },
     },
   },
   render: () => html`
     <style>
+      .opo-promo-cards-demo {
+        min-height: 500px;
+        padding: 30px 40px 40px;
+        box-sizing: border-box;
+      }
+
       .opo-promo-cards-grid {
         display: grid;
-        grid-template-columns: minmax(min(100%, 333px), 333px);
+        grid-template-columns: minmax(0, 333px);
         justify-content: center;
-        padding: 30px 40px 40px;
-        gap: 48px 0;
+        gap: 48px;
+        max-inline-size: 1100px;
+        margin-inline: auto;
       }
 
-      .opo-promo-cards-grid opo-promo-card {
-        margin-bottom: 0;
-      }
-
-      .opo-promo-cards-grid opo-promo-card::part(base) {
-        display: flex !important;
-        flex-direction: column !important;
-      }
-
-      @media (768px <= width < 1024px) {
+      @media (width >= 768px) {
         .opo-promo-cards-grid {
-          grid-template-columns: repeat(2, 333px);
-          grid-auto-rows: subgrid;
-          grid-template-rows: repeat(3, max-content);
-
-          /* CLAVE: Ponemos el gap de filas a 0 para que no se herede */
-          /* dentro de las tarjetas y no recorte las imágenes */
-          gap: 0 48px;
-        }
-
-        .opo-promo-cards-grid opo-promo-card {
-          display: contents !important;
-        }
-
-        /* Añadimos un margen inferior a los elementos de la primera fila */
-        /* para separarlos de la segunda fila de tarjetas de manera limpia */
-        .opo-promo-cards-grid opo-promo-card:nth-child(-n + 2)::part(base) {
-          margin-bottom: 48px;
-        }
-
-        .opo-promo-cards-grid opo-promo-card::part(base) {
-          display: grid !important;
-          grid-template-rows: subgrid !important;
-          grid-row: span 3 !important;
-          row-gap: 0 !important;
+          grid-template-columns: repeat(2, minmax(0, 333px));
+          column-gap: 48px;
         }
       }
 
       @media (width >= 1024px) {
         .opo-promo-cards-grid {
-          grid-template-columns: repeat(3, 333px);
-          grid-auto-rows: subgrid;
-          grid-template-rows: repeat(3, max-content);
-          align-content: start;
-          gap: 0 48px;
-        }
-
-        .opo-promo-cards-grid opo-promo-card {
-          display: contents !important;
-          margin-bottom: 0;
-        }
-
-        .opo-promo-cards-grid opo-promo-card::part(base) {
-          display: grid !important;
-          grid-template-rows: subgrid !important;
-          grid-row: span 3 !important;
-          row-gap: 0 !important;
-          margin-bottom: 0 !important;
+          grid-template-columns: repeat(3, minmax(0, 333px));
         }
       }
     </style>
 
-    <div style="min-height: 500px;">
+    <div class="opo-promo-cards-demo">
       <div class="opo-promo-cards-grid">
         <opo-promo-card
           full-width
-          heading="OpositaTest es Gratis"
-          description="¡Accede gratis a todos los test de oposiciones!"
+          heading="OpositaTest gratis"
+          description="Accede gratis a todos los test de oposiciones."
           image-src=${freeTestsImage}
           image-alt=""
         >
@@ -353,8 +312,8 @@ export const CardGroup: StoryObj<PromoCardArgs> = {
 
         <opo-promo-card
           full-width
-          heading="Test de conocimientos"
-          description="¿Cuánto sabes sobre el proceso de la oposición?"
+          heading="Test de nivel"
+          description="Comprueba cuánto sabes sobre tu oposición."
           image-src=${knowledgeTestImage}
           image-alt=""
         >
@@ -364,7 +323,7 @@ export const CardGroup: StoryObj<PromoCardArgs> = {
         <opo-promo-card
           full-width
           heading="Nuevos recursos"
-          description="Estamos preparando nuevas herramientas para ayudarte a estudiar."
+          description="Estamos preparando nuevas herramientas de estudio."
           image-src=${pendingImage}
           image-alt=""
           pending
