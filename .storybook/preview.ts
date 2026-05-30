@@ -2,11 +2,7 @@ import type { Preview } from "@storybook/web-components-vite";
 import { theme } from "./theme";
 import { defineCustomElements } from "../loader";
 
-import "@fontsource/ibm-plex-sans/400.css";
-import "@fontsource/ibm-plex-sans/500.css";
-import "@fontsource/ibm-plex-sans/600.css";
-import "@fontsource/ibm-plex-sans/700.css";
-
+import "../src/stylesheets/fonts";
 import "../src/stylesheets/global.css";
 import "../src/foundations/foundations.css";
 

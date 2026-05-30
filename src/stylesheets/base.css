@@ -23,6 +23,10 @@
     line-height: var(--sys-typography-body-line-height);
   }
 
+  a {
+    color: inherit;
+  }
+
   :focus-visible {
     outline: var(--sys-outline-focus);
     outline-offset: 2px;
