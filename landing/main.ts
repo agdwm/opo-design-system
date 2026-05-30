@@ -1,6 +1,7 @@
 /* ==========================================================
    Styles
 ========================================================== */
+import "../src/stylesheets/fonts";
 import "../src/stylesheets/global.css";
 import "./styles/landing.css";
 

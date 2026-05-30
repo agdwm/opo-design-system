@@ -147,12 +147,7 @@
           </nav>
 
           <!-- Hacer test BUTTON-->
-          <opo-button
-            variant="secondary"
-            size="sm"
-            type="button"
-            aria-label="Hacer test"
-          >
+          <opo-button variant="secondary" size="sm" type="button">
             Hacer test
           </opo-button>
           <!-- Avatar con dropdown de cuenta -->
@@ -267,9 +262,7 @@
             </li>
           </ul>
           <div class="mobile-nav__actions">
-            <opo-button full-width aria-label="Hacer test"
-              >Hacer test</opo-button
-            >
+            <opo-button full-width>Hacer test</opo-button>
           </div>
         </nav>
 
@@ -293,54 +286,56 @@
 
     <main id="main-content" class="landing-main">
       <!-- HERO -->
-
       <section class="hero" aria-labelledby="hero-title">
-        <div class="landing-container hero__layout">
-          <div class="hero__content">
-            <p class="hero__eyebrow">Online course</p>
+        <div class="hero__body">
+          <div class="hero__layout">
+            <div class="hero__content">
+              <p class="hero__date">28.05.2022</p>
 
-            <h1 id="hero-title" class="hero__title">
-              Learn UX Design and launch your creative career
-            </h1>
+              <h1 id="hero-title" class="hero__title">
+                Celebra este día tan especial
+              </h1>
 
-            <p class="hero__description">
-              Build strong foundations in UX, interface design and product
-              thinking through a modern, practical and accessible learning
-              experience.
-            </p>
+              <p class="hero__description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                vulputate libero et velit interdum, ac aliquet odio mattis.
+              </p>
 
-            <div class="hero__actions">
-              <opo-button size="lg"> Start learning </opo-button>
-
-              <opo-button variant="ghost" size="lg">
-                Explore courses
-              </opo-button>
-            </div>
-
-            <div class="hero__social-proof">
-              <div class="hero__avatars">
-                <opo-avatar></opo-avatar>
-                <opo-avatar></opo-avatar>
-                <opo-avatar></opo-avatar>
-              </div>
-
-              <p class="hero__social-proof-text">
-                Trusted by 12k+ students worldwide
+              <p class="hero__resources">
+                Visita nuestros
+                <a href="#resources">recursos gratuitos</a>
               </p>
             </div>
-          </div>
 
-          <div class="hero__media">
-            <figure class="hero__image-wrapper">
+            <div class="hero__promo">
               <img
-                class="hero__image"
-                src="./assets/img/hero-image.jpg"
-                alt="Student learning UX design"
+                class="hero__promo-image"
+                src="./assets/img/hero-discount.svg"
+                alt="Descuentazo: 20% en toda la web"
               />
-            </figure>
+
+              <div class="hero__actions">
+                <opo-button
+                  size="md"
+                  full-width
+                  variant="primary"
+                  aria-label="Ir a la web de OpositaTest"
+                >
+                  Ir a la web de OpositaTest
+                </opo-button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <img
+          class="hero__edge"
+          src="./assets/img/hero-torn-edge.svg"
+          alt=""
+          aria-hidden="true"
+        />
       </section>
+      <!-- HERO END -->
 
       <!-- RESOURCES -->
 

@@ -554,10 +554,6 @@ body.has-mobile-nav-open .landing-header {
       transform: translateY(2px);
     }
 
-    .landing-nav__list {
-      --landing-nav-gap: 14px; /* optical gap, no global spacing token yet */
-    }
-
     .landing-nav opo-link {
       --opo-link-underline-color: var(--ref-color-amber-500);
 
@@ -592,7 +588,7 @@ body.has-mobile-nav-open .landing-header {
     }
 
     .landing-quick-nav__list {
-      --landing-quick-nav-gap: var(--sys-space-xs); /* 12px */
+      --landing-quick-nav-gap: 18px/* optical gap, no global spacing token yet */
     }
 
     .landing-nav__item--desktop-up,
