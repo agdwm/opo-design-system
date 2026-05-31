@@ -1,18 +1,23 @@
-/* ULTIMA VERSION */
-
 /* Header, nav y mobile drawer */
 @layer landing.header {
   /* ==========================================================
    Mobile (<768)
    logo-small + CTA + avatar + hamburger
 ========================================================== */
-body.has-mobile-nav-open .landing-header {
+  body.has-mobile-nav-open .landing-header {
     background-color: var(--ref-color-zinc-900);
     backdrop-filter: none;
   }
 
   /* Header shell */
   .landing-header {
+    --landing-header-height: 4.5rem; /* 72px */
+    --landing-header-mobile-logo-height: 2.125rem; /* 34px */
+    --landing-header-tablet-logo-height: 2rem; /* 32px */
+    --landing-header-desktop-logo-height: 2.8125rem; /* 45px */
+    --landing-header-blur: 10px;
+    --landing-header-scrolled-opacity: 78%;
+
     position: sticky;
     inset-block-start: 0;
 
@@ -31,11 +36,11 @@ body.has-mobile-nav-open .landing-header {
   .landing-header.is-scrolled {
     background-color: color-mix(
       in srgb,
-      var(--ref-color-zinc-900) 78%,
+      var(--ref-color-zinc-900) var(--landing-header-scrolled-opacity),
       transparent
     );
     box-shadow: var(--ref-shadow-md);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(var(--landing-header-blur));
   }
 
   .landing-header__inner {
@@ -45,7 +50,7 @@ body.has-mobile-nav-open .landing-header {
     align-items: center;
     justify-content: space-between;
     gap: var(--landing-header-brand-gap);
-    min-block-size: 4.5rem; /* 72px */
+    min-block-size: var(--landing-header-height);
   }
 
   /* Brand */
@@ -68,7 +73,7 @@ body.has-mobile-nav-open .landing-header {
   .mobile-nav__brand svg {
     display: block;
     inline-size: auto;
-    block-size: 2.125rem; /* 34px */
+    block-size: var(--landing-header-mobile-logo-height);
     transform: translate(-0.5px, -0.035em);
   }
 
@@ -101,6 +106,7 @@ body.has-mobile-nav-open .landing-header {
     --mobile-nav-width: clamp(18rem, 78vw, 26rem);
     --mobile-nav-divider-color: var(--ref-color-zinc-700);
     --mobile-nav-interaction-opacity: 0.72;
+    --mobile-nav-shadow: -4px 0 8px 0 oklch(33.93% 0.0192 293.69deg / 22%);
 
     /* Prevents content from colliding with device safe areas
     (notches, gestures, Dynamic Island). */
@@ -124,7 +130,7 @@ body.has-mobile-nav-open .landing-header {
     max-block-size: 100dvh;
     padding: 0;
     background-color: var(--ref-color-zinc-900);
-    box-shadow: -4px 0 8px 0 oklch(33.93% 0.0192 293.69deg / 22%);
+    box-shadow: var(--mobile-nav-shadow);
     opacity: 0;
     overflow: hidden;
     visibility: hidden;
@@ -458,7 +464,7 @@ body.has-mobile-nav-open .landing-header {
 
     .landing-header__brand svg,
     .mobile-nav__brand svg {
-      block-size: 2rem; /* 32px */
+      block-size: var(--landing-header-tablet-logo-height);
       transform: translate(0);
     }
 
@@ -522,6 +528,11 @@ body.has-mobile-nav-open .landing-header {
 
     .mobile-nav,
     .mobile-nav-overlay {
+      /*
+      * Defensive safeguard:
+      * mobile navigation must never be visible from tablet upwards,
+      * even if runtime state classes are not fully reset after a viewport change.
+      */
       display: none !important;
     }
   }
@@ -547,7 +558,7 @@ body.has-mobile-nav-open .landing-header {
 
     .landing-header__brand svg,
     .mobile-nav__brand svg {
-      block-size: 2.8125rem; /* 45px */
+      block-size: var(--landing-header-desktop-logo-height);
     }
 
     .landing-nav {
@@ -584,11 +595,13 @@ body.has-mobile-nav-open .landing-header {
 ========================================================== */
   @media (width >= 1440px) {
     .landing-header__inner {
-      --landing-header-brand-gap: 56px; /* optical gap, no global spacing token yet */
+      /* optical gap, no global spacing token yet */
+      --landing-header-brand-gap: 56px;
     }
 
     .landing-quick-nav__list {
-      --landing-quick-nav-gap: 18px/* optical gap, no global spacing token yet */
+      /* optical gap, no global spacing token yet */
+      --landing-quick-nav-gap: 18px;
     }
 
     .landing-nav__item--desktop-up,

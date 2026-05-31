@@ -1,121 +1,130 @@
-.resources {
-  padding-block-start: var(--sys-space-xl); /* 40px */
-  background: var(--sys-color-surface-panel);
-}
+@layer landing.resources {
+  .resources {
+    --resources-section-padding-block-start: var(--sys-space-xl); /* 40px */
+    --resources-title-max-inline-size: 42.25rem; /* 676px */
+    --resources-grid-margin-block-start: 50px;
+    --resources-grid-row-gap: 52px;
+    --resources-tablet-row-gap: 3.4375rem; /* 55px */
+    --resources-desktop-top-column-gap: 22px;
 
-.resources__container {
-  width: min(100% - var(--sys-space-lg), var(--ref-container-xl));
-  margin-inline: auto;
-}
+    padding-block-start: var(--resources-section-padding-block-start);
+    background: var(--sys-color-surface-panel);
+  }
 
-.resources__title {
-  max-inline-size: 42.25rem; /* 676px */
-  margin: 0 auto;
-  color: var(--sys-typography-heading-color);
-  font-size: clamp(2rem, 4vw, 2.5rem);
-  font-weight: var(--ref-font-weight-semibold);
-  line-height: 1.2; /* 48 / 40 */
-  text-align: center;
-}
-
-.resources__title span {
-  display: block;
-}
-
-.resources__grid {
-  display: grid;
-  row-gap: 52px;
-  margin-top: 50px;
-}
-
-.resources__row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--sys-space-xl);
-}
-
-/* ==========================================================================
-   Tablet
-   ========================================================================== */
-@media (width >= 768px) {
   .resources__container {
-    width: min(100% - var(--sys-space-2xl), var(--ref-container-xl));
+    inline-size: min(100% - var(--sys-space-lg), var(--ref-container-xl));
+    margin-inline: auto;
   }
 
-  .resources__row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 3.4375rem var(--sys-space-md); /* 55px */ /* 24px */
+  .resources__title {
+    max-inline-size: var(--resources-title-max-inline-size);
+    margin: 0 auto;
+    color: var(--sys-typography-heading-color);
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: var(--ref-font-weight-semibold);
+    line-height: 1.2; /* 48 / 40 */
+    text-align: center;
   }
-}
 
-/* ==========================================================================
-   Tablet Only
-   ========================================================================== */
-@media (width >= 768px) and (width < 1024px) {
+  .resources__title span {
+    display: block;
+  }
+
   .resources__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 var(--sys-space-lg);
+    row-gap: var(--resources-grid-row-gap);
+    margin-block-start: var(--resources-grid-margin-block-start);
   }
 
   .resources__row {
-    display: contents;
-  }
-
-  .resources__row > opo-promo-card {
-    display: contents;
-  }
-
-  .resources__row > opo-promo-card::part(base) {
     display: grid;
-    grid-template-rows: subgrid;
-    grid-row: span 4;
-    row-gap: 0;
+    grid-template-columns: 1fr;
+    gap: var(--sys-space-xl);
   }
 
-  .resources__row > opo-promo-card::part(header) {
-    display: contents;
+  /* ==========================================================================
+     Tablet
+     ========================================================================== */
+  @media (width >= 768px) {
+    .resources__container {
+      inline-size: min(100% - var(--sys-space-2xl), var(--ref-container-xl));
+    }
+
+    .resources__row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--resources-tablet-row-gap) var(--sys-space-md);
+    }
   }
 
-  .resources__row > opo-promo-card::part(description) {
-    margin-block-end: var(--sys-space-lg);
+  /* ==========================================================================
+     Tablet Only
+     ========================================================================== */
+  @media (width >= 768px) and (width < 1024px) {
+    .resources__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 var(--sys-space-lg);
+    }
+
+    .resources__row {
+      display: contents;
+    }
+
+    .resources__row > opo-promo-card {
+      display: contents;
+    }
+
+    .resources__row > opo-promo-card::part(base) {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 4;
+      row-gap: 0;
+    }
+
+    .resources__row > opo-promo-card::part(header) {
+      display: contents;
+    }
+
+    .resources__row > opo-promo-card::part(description) {
+      margin-block-end: var(--sys-space-lg);
+    }
+
+    /* Contextual subgrid used only in Resources to align card sections without coupling the component layout. */
+
+    /* Visual row 1: cards 1 + 2 */
+    .resources__row--top > opo-promo-card:nth-child(1)::part(base),
+    .resources__row--top > opo-promo-card:nth-child(2)::part(base) {
+      margin-block-end: var(--resources-tablet-row-gap);
+    }
+
+    /* Visual row 2: cards 3 + 4 */
+    .resources__row--top > opo-promo-card:nth-child(3)::part(base),
+    .resources__row--bottom > opo-promo-card:nth-child(1)::part(base) {
+      margin-block-end: var(--resources-tablet-row-gap);
+    }
+
+    /* Visual row 3: card 5 centered */
+    .resources__row--bottom > opo-promo-card:nth-child(2)::part(base) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      inline-size: calc((100% - var(--sys-space-lg)) / 2);
+    }
   }
 
-  /* Contextual subgrid used only in Resources to align card sections without coupling the component layout. */
+  /* ==========================================================================
+     Desktop
+     ========================================================================== */
+  @media (width >= 1024px) {
+    .resources__row--top {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
 
-  /* Visual row 1: cards 1 + 2 */
-  .resources__row--top > opo-promo-card:nth-child(1)::part(base),
-  .resources__row--top > opo-promo-card:nth-child(2)::part(base) {
-    margin-bottom: 3.4375rem; /* 55px */
-  }
+      /* Pixel-perfect adjustment from validated Figma overlay. */
+      column-gap: var(--resources-desktop-top-column-gap);
+    }
 
-  /* Visual row 2: cards 3 + 4 */
-  .resources__row--top > opo-promo-card:nth-child(3)::part(base),
-  .resources__row--bottom > opo-promo-card:nth-child(1)::part(base) {
-    margin-bottom: 3.4375rem; /* 55px */
-  }
-
-  /* Visual row 3: card 5 centered */
-  .resources__row--bottom > opo-promo-card:nth-child(2)::part(base) {
-    grid-column: 1 / -1;
-    justify-self: center;
-    inline-size: calc((100% - var(--sys-space-lg)) / 2);
-  }
-}
-
-/* ==========================================================================
-   Desktop
-   ========================================================================== */
-@media (width >= 1024px) {
-  .resources__row--top {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    /* pixel perfect adjustments */
-    column-gap: 22px;
-  }
-
-  .resources__row--bottom {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--sys-space-md); /* 24px */
+    .resources__row--bottom {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--sys-space-md); /* 24px */
+    }
   }
 }

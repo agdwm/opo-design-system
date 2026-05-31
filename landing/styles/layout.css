@@ -18,12 +18,12 @@
   }
 
   .landing-container {
-    --landing-container-max-width: 1200px;
+    --landing-container-max-inline-size: 1200px;
     --landing-container-padding-inline: 20px;
 
-    width: min(
+    inline-size: min(
       100% - (var(--landing-container-padding-inline) * 2),
-      var(--landing-container-max-width)
+      var(--landing-container-max-inline-size)
     );
     margin-inline: auto;
   }
@@ -45,10 +45,7 @@
     gap: clamp(24px, 4vw, 48px);
   }
 
-  .landing-grid--two {
-    grid-template-columns: 1fr;
-  }
-
+  .landing-grid--two,
   .landing-grid--three {
     grid-template-columns: 1fr;
   }
