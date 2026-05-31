@@ -123,22 +123,18 @@ describe("opo-icon", () => {
   // STYLING API
   // =========================================================
   describe("styling API", () => {
-    it("applies the default size class", async () => {
+    it("reflects the default size attribute", async () => {
       const { root } = await render(<opo-icon name="check"></opo-icon>);
 
-      const base = root.shadowRoot?.querySelector('[part="base"]');
-
-      expect(base).toHaveClass("opo-icon--md");
+      expect(root.getAttribute("size")).toBe("md");
     });
 
-    it("applies the selected size class", async () => {
+    it("reflects the selected size attribute", async () => {
       const { root } = await render(
         <opo-icon name="check" size="lg"></opo-icon>,
       );
 
-      const base = root.shadowRoot?.querySelector('[part="base"]');
-
-      expect(base).toHaveClass("opo-icon--lg");
+      expect(root.getAttribute("size")).toBe("lg");
     });
 
     it("applies the selected semantic color class", async () => {

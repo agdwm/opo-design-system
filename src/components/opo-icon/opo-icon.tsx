@@ -18,7 +18,7 @@ export class OpoIcon {
   @Prop() name?: string;
 
   /** Visual size of the icon. */
-  @Prop() size: "sm" | "md" | "lg" = "md";
+  @Prop({ reflect: true }) size: "sm" | "md" | "lg" = "md";
 
   /** Semantic color of the icon. */
   @Prop() color?: "primary" | "secondary" | "success" | "danger" | "warning";
