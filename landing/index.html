@@ -510,38 +510,40 @@
       <!-- FEATURES END -->
 
       <!-- VIDEO -->
-
       <section
         id="video"
         class="landing-section video-showcase"
         aria-labelledby="video-title"
       >
-        <div class="landing-container video-showcase__layout">
-          <div class="video-showcase__content">
-            <div class="section-heading section-heading--left">
-              <p class="section-heading__eyebrow">Watch the course preview</p>
+        <div class="video-showcase__container">
+          <h2 id="video-title" class="visually-hidden">
+            Vídeo de presentación de OpositaTest
+          </h2>
 
-              <h2 id="video-title" class="section-heading__title">
-                See how the learning experience works in practice
-              </h2>
+          <div class="video-embed" data-youtube-id="495M6ld7pJw">
+            <button
+              class="video-embed__button"
+              type="button"
+              aria-label="Reproducir vídeo de presentación de OpositaTest"
+            >
+              <img
+                class="video-embed__poster"
+                src="./assets/img/video-poster.webp"
+                width="1031"
+                height="545"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
 
-              <p class="section-heading__description">
-                Explore the methodology, platform and practical workflow used
-                throughout the program.
-              </p>
-            </div>
-          </div>
-
-          <div class="video-showcase__media">
-            <div class="video-embed">
-              <!-- lazy youtube embed -->
-            </div>
+              <span class="video-embed__play" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </section>
+      <!-- VIDEO END -->
 
       <!-- FAQ -->
-
       <section id="faq" class="landing-section faq" aria-labelledby="faq-title">
         <div class="landing-container faq__layout">
           <div class="section-heading">
