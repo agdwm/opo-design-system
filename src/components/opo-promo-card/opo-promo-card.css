@@ -14,7 +14,7 @@
   --opo-promo-card-header-media-gap: var(--sys-space-lg); /* 32px */
   --opo-promo-card-media-action-gap: var(--sys-space-md); /* 24px */
   --opo-promo-card-media-max-inline-size: 100%;
-  --opo-promo-card-media-aspect-ratio: 492 / 340;/* 1.45:1 */
+  --opo-promo-card-media-aspect-ratio: 3 / 2; /* 1.5:1 */
   --opo-promo-card-image-radius: var(--ref-radius-xs); /* 6px */
   --opo-promo-card-action-min-block-size: 3rem; /* 48px */
   --opo-promo-card-title-color: var(--ref-color-zinc-900); /* #383641 */
@@ -71,7 +71,7 @@
   max-inline-size: var(--opo-promo-card-media-max-inline-size);
 
   /* Keep media dimensions predictable across card instances. */
-  aspect-ratio: var(--opo-promo-card-media-aspect-ratio); /* 492 / 340 */
+  aspect-ratio: var(--opo-promo-card-media-aspect-ratio);
   margin: 0 auto;
   margin-bottom: var(--opo-promo-card-media-action-gap);
   border-radius: var(--opo-promo-card-image-radius);
@@ -105,7 +105,7 @@
   inline-size: 100%;
   max-inline-size: var(--opo-promo-card-media-max-inline-size);
 
- /* Keep the footer anchored when cards have uneven content heights. */
+  /* Keep the footer anchored when cards have uneven content heights. */
   margin-block-start: auto;
   margin-inline: auto;
   text-align: center;
