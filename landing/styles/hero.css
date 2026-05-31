@@ -93,6 +93,9 @@
   display: block;
   width: 100%;
   height: auto;
+
+  /* prevent ghost line on rendering */
+  margin-block-start: -1px;
   pointer-events: none;
 }
 

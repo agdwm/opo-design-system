@@ -50,6 +50,7 @@
   line-height: var(--ref-line-height-base); /* 32px */
   letter-spacing: var(--ref-letter-spacing-normal);
   text-align: center;
+  text-wrap: pretty;
 }
 
 .opo-promo-card__description {

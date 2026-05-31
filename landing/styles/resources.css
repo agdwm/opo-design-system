@@ -1,9 +1,10 @@
 .resources {
+  padding-block-start: var(--sys-space-xl); /* 40px */
   background: var(--sys-color-surface-panel);
 }
 
 .resources__container {
-  width: min(100% - var(--sys-space-lg), 1032px);
+  width: min(100% - var(--sys-space-lg), var(--ref-container-xl));
   margin-inline: auto;
 }
 
@@ -23,8 +24,8 @@
 
 .resources__grid {
   display: grid;
-  row-gap: 3.4375rem; /* 55px */
-  margin-top: var(--sys-space-3xl);
+  row-gap: 52px;
+  margin-top: 50px;
 }
 
 .resources__row {
@@ -38,7 +39,7 @@
    ========================================================================== */
 @media (width >= 768px) {
   .resources__container {
-    width: min(100% - var(--sys-space-2xl), 1032px);
+    width: min(100% - var(--sys-space-2xl), var(--ref-container-xl));
   }
 
   .resources__row {
@@ -68,9 +69,19 @@
   .resources__row > opo-promo-card::part(base) {
     display: grid;
     grid-template-rows: subgrid;
-    grid-row: span 3;
+    grid-row: span 4;
     row-gap: 0;
   }
+
+  .resources__row > opo-promo-card::part(header) {
+    display: contents;
+  }
+
+  .resources__row > opo-promo-card::part(description) {
+    margin-block-end: var(--sys-space-lg);
+  }
+
+  /* Contextual subgrid used only in Resources to align card sections without coupling the component layout. */
 
   /* Visual row 1: cards 1 + 2 */
   .resources__row--top > opo-promo-card:nth-child(1)::part(base),
@@ -98,6 +109,8 @@
 @media (width >= 1024px) {
   .resources__row--top {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    /* pixel perfect adjustments */
     column-gap: 22px;
   }
 
