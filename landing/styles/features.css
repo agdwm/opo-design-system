@@ -1,6 +1,16 @@
 .features {
+  /* sticky offset includes header height + visual shadow footprint */
+  --features-sticky-offset-base: calc(72px + 20px);
+  --features-section-padding: 56px;
+  --features-container-width: 902px;
+  --features-content-width: 414px;
+  --features-cards-width: 376px;
+  --features-columns-gap: 92px;
+  --features-spray-width: 269px;
+  --features-spray-offset-inline: -30px;
+
   position: relative;
-  padding-block: 56px;
+  padding-block: var(--features-section-padding);
   background: var(--sys-color-surface-disabled); /* #f5f5f5 */
   overflow: clip;
 }
@@ -9,17 +19,16 @@
   content: "";
   position: absolute;
   top: 8px;
-  right: -30px;
-  width: 269px;
+  right: var(--features-spray-offset-inline);
+  width: var(--features-spray-width);
   height: auto;
   aspect-ratio: 269 / 260;
-  background: url("../assets/img/features-spray.svg") center / contain
-    no-repeat;
+  background: url("../assets/img/features-spray.svg") center / contain no-repeat;
   pointer-events: none;
 }
 
 .features__container {
-  width: min(100% - var(--sys-space-lg), 902px);
+  width: min(100% - var(--sys-space-lg), var(--features-container-width));
   margin-inline: auto;
 }
 
@@ -37,9 +46,9 @@
 .features__title {
   margin: 0;
   color: var(--sys-typography-heading-color);
-  font-size: 2rem; /* 32px */
+  font-size: var(--ref-font-size-900); /* 32px */
   font-weight: var(--ref-font-weight-semibold); /* 600 */
-  line-height: 1.25; /* 40 / 32 */
+  line-height: var(--ref-line-height-snug); /* 40 / 32 */
   text-wrap: initial;
 }
 
@@ -58,6 +67,11 @@
 .features__cards {
   display: grid;
   gap: var(--sys-space-sm); /* 16px */
+}
+
+.features__card {
+  opacity: 1;
+  transform: none;
 }
 
 .features__card-title {
@@ -82,7 +96,7 @@
    ========================================================================== */
 @media (width >= 768px) {
   .features__container {
-    width: min(100% - var(--sys-space-2xl), 902px);
+    width: min(100% - var(--sys-space-2xl), var(--features-container-width));
   }
 
   .features__cards {
@@ -108,19 +122,45 @@
    ========================================================================== */
 @media (width >= 1024px) {
   .features__layout {
-    grid-template-columns: 414px 376px;
+    grid-template-columns:
+      var(--features-content-width)
+      var(--features-cards-width);
     align-items: center;
 
     /* Includes visual shadow footprint to match validated Figma overlay. */
-    column-gap: 92px;
+    column-gap: var(--features-columns-gap);
   }
 
   .features__content {
     position: sticky;
-    top: calc(var(--landing-header-height, 92px) + var(--sys-space-xl));
+    top: calc(var(--features-sticky-offset-base) + var(--sys-space-xl));
   }
 
   .features__cards {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (width >= 1024px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .features__card {
+      opacity: 0;
+      animation: feature-card-enter ease-out both;
+      transform: translateY(24px) scale(0.98);
+      animation-range: entry 0% cover 35%;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes feature-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
