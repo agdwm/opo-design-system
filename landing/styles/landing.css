@@ -1,9 +1,10 @@
 /*  Landing style layers -  Application-specific styles for the landing. */
-@layer landing.layout, landing.utilities, landing.header, landing.hero;
+@layer landing.layout, landing.utilities, landing.header, landing.hero, landing.resources, landing.features;
 
 @import url("./layout.css");
 @import url("./utilities.css");
 @import url("./header.css");
 @import url("./hero.css");
 @import url("./resources.css");
+@import url("./features.css");
 
