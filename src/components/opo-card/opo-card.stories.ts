@@ -11,7 +11,7 @@ const meta: Meta = {
       page: null,
       description: {
         component:
-          "Contenedor composable del Design System OPO. Soporta variantes visuales, tamaños, media, header, content, footer y acciones mediante slots.",
+          "Primitivo visual para componer superficies tipo card. Aporta superficie, borde, sombra, radio y padding, mientras que la estructura interna del contenido pertenece a quien consume el componente.",
       },
     },
   },
@@ -19,7 +19,7 @@ const meta: Meta = {
     as: {
       control: "select",
       options: ["div", "article", "section"],
-      description: "Elemento semántico raíz renderizado por la card.",
+      description: "Elemento raíz semántico renderizado por la card.",
       table: { defaultValue: { summary: "div" } },
     },
     variant: {
@@ -31,7 +31,7 @@ const meta: Meta = {
     size: {
       control: "select",
       options: ["sm", "md", "lg"],
-      description: "Densidad interna de espaciado.",
+      description: "Densidad de espaciado interno.",
       table: { defaultValue: { summary: "md" } },
     },
     fullWidth: {
@@ -42,7 +42,7 @@ const meta: Meta = {
     interactive: {
       control: "boolean",
       description:
-        "Añade affordance visual interactiva. No añade semántica de botón o enlace.",
+        "Añade affordance visual interactiva. No añade semántica de botón ni de enlace.",
       table: { defaultValue: { summary: "false" } },
     },
   },
@@ -67,21 +67,28 @@ function renderCard(args: CardArgs) {
       ?full-width=${args.fullWidth}
       ?interactive=${args.interactive}
     >
-      <span slot="eyebrow">Preparación</span>
-      <h3 slot="title">Plan de estudio semanal</h3>
-      <p slot="description">
-        Organiza tus sesiones de estudio, repasos y simulacros desde un único
-        espacio.
-      </p>
+      <div style="display: grid; gap: 12px;">
+        <p
+          style="margin: 0; color: var(--sys-color-text-muted); font-size: 0.875rem;"
+        >
+          Preparación
+        </p>
 
-      <p>
-        Crea una rutina flexible y visual para avanzar con claridad durante la
-        semana.
-      </p>
+        <h3
+          style="margin: 0; color: var(--sys-typography-heading-color); font-size: 1.25rem; line-height: 1.25;"
+        >
+          Plan de estudio semanal
+        </h3>
 
-      <opo-button slot="footer" variant="primary" size="md">
-        Ver plan
-      </opo-button>
+        <p
+          style="margin: 0; color: var(--sys-color-text-muted); line-height: 1.5;"
+        >
+          Organiza tus sesiones de estudio, repasos y simulacros desde un único
+          espacio.
+        </p>
+
+        <opo-button variant="primary" size="md"> Ver plan </opo-button>
+      </div>
     </opo-card>
   `;
 }
@@ -153,7 +160,7 @@ export const AsArticle: StoryObj<CardArgs> = {
     docs: {
       description: {
         story:
-          "Renderiza la card con article cuando representa una pieza de contenido independiente.",
+          "Usa article cuando la card representa una pieza de contenido independiente.",
       },
     },
   },
@@ -170,7 +177,7 @@ export const AsSection: StoryObj<CardArgs> = {
     docs: {
       description: {
         story:
-          "Renderiza la card con section cuando agrupa una sección temática dentro de una página.",
+          "Usa section cuando la card agrupa un área temática dentro de una página más amplia.",
       },
     },
   },
@@ -179,106 +186,98 @@ export const AsSection: StoryObj<CardArgs> = {
 
 // ==================== COMPOSITION ====================
 
+export const CustomComposition: StoryObj<CardArgs> = {
+  args: {
+    as: "article",
+    variant: "default",
+    size: "md",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "La card no impone slots de header, content o footer. Quien consume el componente compone la estructura interna con HTML estándar y componentes del Design System.",
+      },
+    },
+  },
+  render: (args) => html`
+    <opo-card
+      as=${args.as ?? "article"}
+      variant=${args.variant ?? "default"}
+      size=${args.size ?? "md"}
+      ?full-width=${args.fullWidth}
+      ?interactive=${args.interactive}
+    >
+      <div style="display: grid; gap: 16px; max-inline-size: 320px;">
+        <div style="display: grid; gap: 8px;">
+          <span
+            style="color: var(--sys-color-brand-primary); font-weight: 600;"
+          >
+            Recurso
+          </span>
+
+          <h3
+            style="margin: 0; color: var(--sys-typography-heading-color); font-size: 1.25rem; line-height: 1.25;"
+          >
+            Guía de accesibilidad
+          </h3>
+
+          <p
+            style="margin: 0; color: var(--sys-color-text-muted); line-height: 1.5;"
+          >
+            Buenas prácticas para interfaces accesibles y mantenibles.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <opo-button variant="primary" size="md">Leer guía</opo-button>
+          <opo-link href="/" variant="secondary">Ver detalles</opo-link>
+        </div>
+      </div>
+    </opo-card>
+  `,
+};
+
 export const WithMedia: StoryObj<CardArgs> = {
   args: {
-    as: "div",
+    as: "article",
     variant: "default",
     size: "md",
   },
   render: (args) => html`
     <opo-card
-      as=${args.as ?? "div"}
+      as=${args.as ?? "article"}
       variant=${args.variant ?? "default"}
       size=${args.size ?? "md"}
       ?full-width=${args.fullWidth}
       ?interactive=${args.interactive}
     >
-      <img
-        slot="media"
-        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&auto=format&fit=crop"
-        alt=""
-      />
+      <div style="display: grid; gap: 16px; max-inline-size: 360px;">
+        <img
+          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&auto=format&fit=crop"
+          alt=""
+          style="display: block; inline-size: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 6px;"
+        />
 
-      <span slot="eyebrow">Curso</span>
-      <h3 slot="title">Diseño de componentes</h3>
-      <p slot="description">
-        Aprende a estructurar componentes reutilizables con una API clara.
-      </p>
+        <div style="display: grid; gap: 8px;">
+          <span
+            style="color: var(--sys-color-brand-primary); font-weight: 600;"
+          >
+            Curso
+          </span>
 
-      <p>
-        Una card puede combinar contenido, media, acciones y metadatos sin
-        acoplarse a un layout concreto.
-      </p>
-    </opo-card>
-  `,
-};
+          <h3
+            style="margin: 0; color: var(--sys-typography-heading-color); font-size: 1.25rem; line-height: 1.25;"
+          >
+            Diseño de componentes
+          </h3>
 
-export const WithAction: StoryObj<CardArgs> = {
-  args: {
-    as: "div",
-    variant: "outlined",
-    size: "md",
-  },
-  render: (args) => html`
-    <opo-card
-      as=${args.as ?? "div"}
-      variant=${args.variant ?? "outlined"}
-      size=${args.size ?? "md"}
-      ?full-width=${args.fullWidth}
-      ?interactive=${args.interactive}
-    >
-      <span slot="eyebrow">Proyecto</span>
-      <h3 slot="title">Biblioteca de componentes</h3>
-      <p slot="description">
-        Estado general de documentación, accesibilidad y tests.
-      </p>
-
-      <opo-button
-        slot="action"
-        variant="ghost"
-        size="md"
-        icon-only
-        aria-label="Más opciones"
-      >
-        <opo-icon slot="icon-start" name="settings"></opo-icon>
-      </opo-button>
-
-      <p>
-        Revisa el estado actual de los componentes y las tareas pendientes del
-        sistema.
-      </p>
-    </opo-card>
-  `,
-};
-
-export const WithFooter: StoryObj<CardArgs> = {
-  args: {
-    as: "div",
-    variant: "default",
-    size: "md",
-  },
-  render: (args) => html`
-    <opo-card
-      as=${args.as ?? "div"}
-      variant=${args.variant ?? "default"}
-      size=${args.size ?? "md"}
-      ?full-width=${args.fullWidth}
-      ?interactive=${args.interactive}
-    >
-      <span slot="eyebrow">Recurso</span>
-      <h3 slot="title">Guía de accesibilidad</h3>
-      <p slot="description">
-        Buenas prácticas para interfaces accesibles y mantenibles.
-      </p>
-
-      <p>
-        Una referencia rápida para revisar roles, foco, nombres accesibles y
-        navegación por teclado.
-      </p>
-
-      <div slot="footer" style="display: flex; gap: 12px;">
-        <opo-button variant="primary" size="md">Leer guía</opo-button>
-        <opo-link href="/" variant="secondary">Ver detalles</opo-link>
+          <p
+            style="margin: 0; color: var(--sys-color-text-muted); line-height: 1.5;"
+          >
+            Aprende a estructurar componentes reutilizables con una API clara.
+          </p>
+        </div>
       </div>
     </opo-card>
   `,

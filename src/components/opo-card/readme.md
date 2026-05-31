@@ -18,15 +18,9 @@
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"action"`  |             |
-| `"base"`    |             |
-| `"body"`    |             |
-| `"content"` |             |
-| `"footer"`  |             |
-| `"header"`  |             |
-| `"heading"` |             |
+| Part     | Description |
+| -------- | ----------- |
+| `"base"` |             |
 
 
 ----------------------------------------------

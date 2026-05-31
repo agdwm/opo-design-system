@@ -44,29 +44,7 @@ export class OpoCard {
 
     return (
       <Tag part="base" class={classes}>
-        <slot name="media" />
-
-        <div part="body" class="opo-card__body">
-          <header part="header" class="opo-card__header">
-            <div part="heading" class="opo-card__heading">
-              <slot name="eyebrow" />
-              <slot name="title" />
-              <slot name="description" />
-            </div>
-
-            <div part="action" class="opo-card__action">
-              <slot name="action" />
-            </div>
-          </header>
-
-          <div part="content" class="opo-card__content">
-            <slot />
-          </div>
-
-          <footer part="footer" class="opo-card__footer">
-            <slot name="footer" />
-          </footer>
-        </div>
+        <slot />
       </Tag>
     );
   }

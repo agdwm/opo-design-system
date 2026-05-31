@@ -38,6 +38,19 @@ describe("opo-card", () => {
 
       expect(base?.tagName.toLowerCase()).toBe("section");
     });
+
+    it("renders default slotted content directly inside the card surface", async () => {
+      const { root } = await render(
+        <opo-card>
+          <p>Contenido principal</p>
+        </opo-card>,
+      );
+
+      const defaultSlot = root.shadowRoot?.querySelector("slot");
+
+      expect(defaultSlot).toBeTruthy();
+      expect(root.textContent).toContain("Contenido principal");
+    });
   });
 
   // =========================================================
@@ -93,130 +106,20 @@ describe("opo-card", () => {
   });
 
   // =========================================================
-  // SLOTS
-  // =========================================================
-
-  describe("slots", () => {
-    it("renders the media slot", async () => {
-      const { root } = await render(
-        <opo-card>
-          <img slot="media" src="/image.jpg" alt="" />
-        </opo-card>,
-      );
-
-      const mediaSlot = root.shadowRoot?.querySelector('slot[name="media"]');
-      const slottedMedia = root.querySelector('img[slot="media"]');
-
-      expect(mediaSlot).toBeTruthy();
-      expect(slottedMedia).toBeTruthy();
-    });
-
-    it("renders heading slots", async () => {
-      const { root } = await render(
-        <opo-card>
-          <span slot="eyebrow">Preparación</span>
-          <h3 slot="title">Plan semanal</h3>
-          <p slot="description">Descripción breve.</p>
-        </opo-card>,
-      );
-
-      const eyebrowSlot = root.shadowRoot?.querySelector(
-        'slot[name="eyebrow"]',
-      );
-      const titleSlot = root.shadowRoot?.querySelector('slot[name="title"]');
-      const descriptionSlot = root.shadowRoot?.querySelector(
-        'slot[name="description"]',
-      );
-
-      expect(eyebrowSlot).toBeTruthy();
-      expect(titleSlot).toBeTruthy();
-      expect(descriptionSlot).toBeTruthy();
-
-      expect(root.querySelector('[slot="eyebrow"]')?.textContent).toBe(
-        "Preparación",
-      );
-      expect(root.querySelector('[slot="title"]')?.textContent).toBe(
-        "Plan semanal",
-      );
-      expect(root.querySelector('[slot="description"]')?.textContent).toBe(
-        "Descripción breve.",
-      );
-    });
-
-    it("renders the default content slot", async () => {
-      const { root } = await render(
-        <opo-card>
-          <p>Contenido principal</p>
-        </opo-card>,
-      );
-
-      const content = root.shadowRoot?.querySelector('[part="content"]');
-      const defaultSlot = content?.querySelector("slot");
-
-      expect(content).toBeTruthy();
-      expect(defaultSlot).toBeTruthy();
-      expect(root.textContent).toContain("Contenido principal");
-    });
-
-    it("renders the action slot", async () => {
-      const { root } = await render(
-        <opo-card>
-          <opo-button
-            slot="action"
-            variant="ghost"
-            iconOnly
-            ariaLabel="Opciones"
-          >
-            <opo-icon slot="icon-start" name="settings"></opo-icon>
-          </opo-button>
-        </opo-card>,
-      );
-
-      const actionSlot = root.shadowRoot?.querySelector('slot[name="action"]');
-      const slottedAction = root.querySelector('[slot="action"]');
-
-      expect(actionSlot).toBeTruthy();
-      expect(slottedAction).toBeTruthy();
-    });
-
-    it("renders the footer slot", async () => {
-      const { root } = await render(
-        <opo-card>
-          <opo-button slot="footer">Ver más</opo-button>
-        </opo-card>,
-      );
-
-      const footerSlot = root.shadowRoot?.querySelector('slot[name="footer"]');
-      const slottedFooter = root.querySelector('[slot="footer"]');
-
-      expect(footerSlot).toBeTruthy();
-      expect(slottedFooter).toBeTruthy();
-    });
-  });
-
-  // =========================================================
   // SHADOW PARTS
   // =========================================================
 
   describe("shadow parts", () => {
-    it("exposes the expected shadow parts", async () => {
+    it("exposes only the base shadow part", async () => {
       const { root } = await render(<opo-card>Contenido</opo-card>);
 
       const base = root.shadowRoot?.querySelector('[part="base"]');
-      const body = root.shadowRoot?.querySelector('[part="body"]');
-      const header = root.shadowRoot?.querySelector('[part="header"]');
-      const heading = root.shadowRoot?.querySelector('[part="heading"]');
-      const action = root.shadowRoot?.querySelector('[part="action"]');
-      const content = root.shadowRoot?.querySelector('[part="content"]');
-      const footer = root.shadowRoot?.querySelector('[part="footer"]');
+      const legacyParts = root.shadowRoot?.querySelectorAll(
+        '[part="body"], [part="header"], [part="heading"], [part="action"], [part="content"], [part="footer"]',
+      );
 
       expect(base).toBeTruthy();
-      expect(body).toBeTruthy();
-      expect(header).toBeTruthy();
-      expect(heading).toBeTruthy();
-      expect(action).toBeTruthy();
-      expect(content).toBeTruthy();
-      expect(footer).toBeTruthy();
+      expect(legacyParts?.length).toBe(0);
     });
   });
 });
