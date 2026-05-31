@@ -371,7 +371,40 @@ landing/dist/
 
 Cómo se ha separado la librería y la landing.
 
-<!-- TO DO -->
+### Landing composition decisions
+
+La landing se ha utilizado como caso real de consumo de la librería, diferenciando entre componentes reutilizables y estilos de composición propios de página.
+
+- `opo-card` se ha simplificado como primitive visual composable: aporta superficie, borde, sombra, radio, padding y estados visuales, pero no impone estructura interna. Esto permite construir distintas variantes de card desde HTML semántico y composición externa.
+- `opo-promo-card` mantiene una estructura más específica porque responde a un patrón visual reutilizable de producto, pero las decisiones de grid/subgrid no viven dentro del componente.
+- La sección `Resources` usa `subgrid` de forma contextual para alinear title, description, media y footer entre cards con contenido desigual, sin acoplar esa responsabilidad al componente base.
+- La sección `Features` combina `opo-card` como primitive con una composición sticky en desktop: el bloque izquierdo permanece fijo mientras las cards de la derecha se desplazan.
+- La animación de aparición de las cards de `Features` se resuelve con CSS **Scroll-Driven Animations** como progressive enhancement, sin JavaScript, porque es una interacción decorativa. El contenido permanece visible si el navegador no soporta `animation-timeline: view()` o si el usuario prefiere reducir movimiento.
+- Los ajustes pixel-perfect específicos de landing, como compensaciones por sombra, offsets decorativos o medidas exactas de Figma, permanecen en CSS de sección y no se convierten en tokens globales salvo que representen una decisión reutilizable.
+
+### Asset optimization
+
+Las imágenes utilizadas en la landing se han exportado y optimizado utilizando [Squoosh](https://squoosh.app/).
+
+Se ha priorizado el formato `WebP` para los assets rasterizados de la landing por su buena relación entre calidad visual y tamaño de descarga.
+
+La estrategia utilizada ha sido:
+
+- Exportación de assets desde Figma.
+- Optimización mediante Squoosh.
+- Conversión a formato `WebP`.
+- Generación de variantes `1x` y `2x` cuando el diseño lo requería para pantallas de alta densidad (`Retina`).
+
+Beneficios de este enfoque:
+
+- Menor peso de descarga frente a formatos tradicionales como PNG o JPEG.
+- Mejor rendimiento de carga inicial.
+- Menor consumo de ancho de banda.
+- Mejor experiencia en dispositivos móviles.
+- Compatibilidad sólida con navegadores modernos.
+- Mayor fidelidad visual manteniendo tamaños de archivo reducidos.
+
+Cuando ha sido necesario preservar transparencias o elementos gráficos decorativos complejos, se ha mantenido el uso de SVG.
 
 ---
 
@@ -462,6 +495,15 @@ La API runtime de iconos consume el sprite combinado `opo-sprite.svg`, mientras 
 - APIs de componentes orientadas a **accesibilidad**.
 - Pipeline SVG con validación, optimización y generación automática de **sprites**, manifest y typings.
 - Arquitectura semántica de **Design Tokens**.
+- Compatibilidad progresiva mediante **Autoprefixer** y configuración explícita de **Browserslist** para garantizar soporte coherente entre navegadores modernos.
+- Calidad y consistencia CSS mediante **Stylelint**, incluyendo validación de convenciones, detección de errores comunes y mantenimiento de una arquitectura CSS predecible.
+- Nomenclatura CSS basada en **BEM (Block Element Modifier)** para mantener una separación clara entre componentes, composición y estados visuales, favoreciendo una arquitectura CSS predecible y escalable.
+
+> [!NOTE]
+>
+> Se ha configurado `Autoprefixer` junto con una política explícita de `Browserslist` para automatizar la generación de prefijos cuando son necesarios y evitar depender de prefijos escritos manualmente en el código fuente.
+>
+> La configuración de `Stylelint` se utiliza como mecanismo adicional de calidad para detectar inconsistencias, errores de CSS y desviaciones respecto a las convenciones establecidas por el sistema.
 
 > [!NOTE]
 >
@@ -545,6 +587,7 @@ Por ejemplo:
 - Se valoró el uso de `@scope` para encapsular determinados estilos de composición de la landing, pero se priorizó una arquitectura más simple basada en cascade layers (`@layer`), estilos encapsulados por componente en Stencil y CSS custom properties para theming.
 - Aunque inicialmente se valoró incorporar fallbacks adicionales de compatibilidad `@supports` para determinadas características modernas de CSS como `oklch()`, finalmente se optó por priorizar una implementación más simple y alineada con el soporte actual de navegadores modernos ([OKLCH support](https://caniuse.com/?search=oklch)).
   Considero que el soporte actual de `oklch()` en navegadores modernos resulta **suficientemente sólido** como para incorporarlo progresivamente en sistemas frontend contemporáneos, especialmente en entornos donde no existen fuertes requisitos de compatibilidad legacy.
+- Algunas composiciones de landing usan CSS avanzado como `subgrid`, `position: sticky` y Scroll-Driven Animations de forma localizada, priorizando una solución declarativa y progresiva frente a añadir JavaScript cuando la interacción es puramente decorativa.
 
 ---
 
@@ -565,6 +608,7 @@ En un contexto real de evolución del sistema, algunos aspectos que podrían des
 - Integración de end-to-end testing ([Playwright](https://playwright.dev/)).
 - Automatización de análisis estático y métricas de calidad mediante herramientas como [SonarQube](https://www.sonarsource.com/es/products/sonarqube/).
 - Integración de herramientas de monitoring y runtime error tracking mediante plataformas como [Sentry](https://sentry.io/).
+- Incorporar una estrategia completa de responsive images (`srcset`, `sizes`) para optimizar automáticamente la selección de assets según viewport y densidad de pantalla.
 
 - Migrar de `npm` a [`pnpm@^11`](https://pnpm.io/) para obtener una **gestión de dependencias más segura** (resolución estricta, prevención de dependencias fantasma y lockfile más robusto), junto con instalaciones más rápidas y menor consumo de disco.
 
