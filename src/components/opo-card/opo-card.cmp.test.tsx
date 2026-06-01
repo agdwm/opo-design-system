@@ -103,6 +103,15 @@ describe("opo-card", () => {
       expect(root.hasAttribute("interactive")).toBe(true);
       expect(base).toHaveClass("opo-card--interactive");
     });
+
+    it("does not add interactive semantics when interactive is true", async () => {
+      const { root } = await render(<opo-card interactive>Contenido</opo-card>);
+
+      const base = root.shadowRoot?.querySelector('[part="base"]');
+
+      expect(base?.getAttribute("role")).toBeNull();
+      expect(base?.hasAttribute("tabindex")).toBe(false);
+    });
   });
 
   // =========================================================

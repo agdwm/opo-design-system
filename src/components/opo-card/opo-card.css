@@ -81,9 +81,20 @@
     transform var(--ref-motion-duration-faster) ease;
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .opo-card--interactive:hover {
     box-shadow: var(--ref-shadow-md); /* #38364133 */
     transform: translateY(-1px);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .opo-card--interactive {
+    transition: none;
+  }
+
+  .opo-card--interactive:hover {
+    transform: none;
+  }
+}
+

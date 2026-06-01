@@ -58,9 +58,7 @@ Esto permite construir diferentes composiciones sobre la misma primitive visual:
   <div class="study-card">
     <span class="study-card__eyebrow">Preparación</span>
     <h3 class="study-card__title">Plan semanal</h3>
-    <p class="study-card__description">
-      Organiza tus sesiones de estudio, repasos y simulacros.
-    </p>
+    <p class="study-card__description">Organiza tus sesiones de estudio, repasos y simulacros.</p>
     <opo-button>Ver plan</opo-button>
   </div>
 </opo-card>
@@ -206,3 +204,14 @@ opo-card
 ```
 
 Esto evita acoplar la card a un único patrón de producto y permite construir encima composiciones específicas como feature cards, stat cards, promo cards o course cards.
+
+---
+
+## Implementation notes
+
+- `opo-card` está diseñado intencionadamente como un primitivo visual y no como un patrón de contenido rígido.
+- La estructura interna pertenece al consumidor, por lo que el componente no expone slots de `header`, `content`, `footer` o `actions`.
+- La prop `interactive` únicamente añade una affordance visual. No añade semántica de enlace o botón, ni atributos como `role` o `tabindex`.
+- Utiliza la prop `as` para seleccionar el elemento semántico más adecuado según el contexto.
+- Los estados hover solo se aplican en dispositivos que soportan hover mediante un puntero preciso.
+- El componente respeta `prefers-reduced-motion` cuando el usuario ha solicitado reducir animaciones.
