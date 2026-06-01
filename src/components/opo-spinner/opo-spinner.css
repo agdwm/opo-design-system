@@ -3,10 +3,15 @@
   color: currentcolor;
 }
 
+:host([hidden]) {
+  display: none;
+}
+
 .opo-spinner {
-  --opo-spinner-size: 1rem;
+  --opo-spinner-size: var(--ref-size-500);
   --opo-spinner-border-width: 2px;
 
+  display: inline-block;
   inline-size: var(--opo-spinner-size);
   block-size: var(--opo-spinner-size);
   border: var(--opo-spinner-border-width) solid currentcolor;
@@ -15,12 +20,10 @@
   border-block-start-color: transparent;
 }
 
+/* ==================== SIZES ==================== */
+
 .opo-spinner--sm {
   --opo-spinner-size: var(--ref-size-300);
-}
-
-.opo-spinner--md {
-  --opo-spinner-size: var(--ref-size-500);
 }
 
 .opo-spinner--lg {
@@ -35,6 +38,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .opo-spinner {
-    animation-duration: 1.5s;
+    animation: none;
   }
 }

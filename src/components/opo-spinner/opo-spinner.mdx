@@ -1,0 +1,161 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SpinnerStories from "./opo-spinner.stories";
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+`opo-spinner` es un indicador visual de carga del Design System OPO.
+
+Puede utilizarse como indicador accesible autónomo mediante `role="status"` o como elemento decorativo cuando otro componente ya comunica el estado de carga.
+
+## Vista previa
+
+<Canvas of={SpinnerStories.Default} />
+
+## Descripción general
+
+Utiliza `opo-spinner` para comunicar que una operación está en curso.
+
+El componente cubre:
+
+- tamaños `sm`, `md` y `lg`;
+- etiqueta accesible mediante `label`;
+- modo decorativo mediante `decorative`;
+- color heredado mediante `currentColor`;
+- soporte para `prefers-reduced-motion`.
+
+## Import
+
+```ts
+import { defineCustomElements } from "landing-challenge/loader";
+```
+
+En una aplicación consumidora, el componente se registra junto con el resto de Web Components del Design System.
+
+## Uso básico
+
+```html
+<opo-spinner label="Cargando"></opo-spinner>
+```
+
+## Tamaños
+
+```html
+<opo-spinner size="sm" label="Cargando"></opo-spinner>
+<opo-spinner size="md" label="Cargando"></opo-spinner>
+<opo-spinner size="lg" label="Cargando"></opo-spinner>
+```
+
+<Canvas of={SpinnerStories.Sizes} />
+
+## Label accesible
+
+Cuando el spinner comunica por sí mismo el estado de carga, utiliza `label` para describir qué está ocurriendo.
+
+```html
+<opo-spinner label="Cargando resultados"></opo-spinner>
+```
+
+<Canvas of={SpinnerStories.WithCustomLabel} />
+
+## Modo decorativo
+
+Usa `decorative` cuando otro elemento ya comunica el estado.
+
+```html
+<opo-spinner decorative></opo-spinner>
+```
+
+Por ejemplo, dentro de un botón en estado `loading`, el botón ya expone `aria-busy="true"`, por lo que el spinner puede ser decorativo.
+
+<Canvas of={SpinnerStories.Decorative} />
+
+## Composición
+
+```html
+<opo-button loading>
+  Procesando
+  <opo-spinner slot="loader" size="sm" decorative></opo-spinner>
+</opo-button>
+```
+
+<Canvas of={SpinnerStories.InButton} />
+
+## Accesibilidad
+
+- Por defecto, el spinner usa `role="status"` y `aria-label`.
+- Usa `label` para aportar una descripción específica cuando el spinner comunica el estado por sí mismo.
+- Usa `decorative` cuando el estado ya está comunicado por otro elemento.
+- En modo decorativo, el spinner utiliza `aria-hidden="true"` y no expone `role` ni `aria-label`.
+
+## Movimiento
+
+El spinner utiliza animación para comunicar progreso indeterminado.
+
+Cuando el usuario tiene activa la preferencia `prefers-reduced-motion`, la animación se desactiva para evitar movimiento no esencial.
+
+## Shadow Parts
+
+<table>
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>base</code></td>
+      <td>Elemento visual del spinner.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Props
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Tipo</th>
+      <th>Valor por defecto</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>size</code></td>
+      <td><code>"sm" | "md" | "lg"</code></td>
+      <td><code>"md"</code></td>
+      <td>Tamaño visual del spinner.</td>
+    </tr>
+    <tr>
+      <td><code>label</code></td>
+      <td><code>string</code></td>
+      <td><code>"Cargando"</code></td>
+      <td>Etiqueta accesible cuando el spinner comunica carga por sí mismo.</td>
+    </tr>
+    <tr>
+      <td><code>decorative</code></td>
+      <td><code>boolean</code></td>
+      <td><code>false</code></td>
+      <td>Oculta el spinner a tecnologías asistivas cuando otro elemento ya comunica el estado.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Recomendaciones
+
+### ✅ Recomendado
+
+- Usa `label` específico cuando el spinner sea el único indicador de carga.
+- Usa `decorative` dentro de componentes que ya expongan estado de carga.
+- Deja que el spinner herede color mediante `currentColor`.
+- Respeta `prefers-reduced-motion`.
+
+### ❌ Evitar
+
+- No uses varios spinners accesibles simultáneamente para el mismo estado.
+- No uses `decorative` si no hay otro texto o estado que comunique la carga.
+- No utilices el spinner para procesos con progreso medible; en ese caso sería mejor un indicador de progreso determinado.
