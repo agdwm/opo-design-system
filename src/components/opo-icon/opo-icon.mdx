@@ -109,6 +109,8 @@ En ese caso:
 
 Cuando el icono tiene significado propio, debería proporcionar `ariaLabel`.
 
+En HTML, la prop `ariaLabel` se consume como atributo `aria-label`.
+
 ```html
 <opo-icon name="warning" aria-label="Advertencia"></opo-icon>
 ```
@@ -127,7 +129,14 @@ Además del sprite principal, el componente soporta SVGs personalizados mediante
 
 ```html
 <opo-icon aria-label="Icono personalizado">
-  <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+  <svg
+    slot="icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    aria-hidden="true"
+    focusable="false"
+  >
     <circle cx="12" cy="12" r="10" />
   </svg>
 </opo-icon>
@@ -138,6 +147,8 @@ El soporte mediante slot está pensado para:
 - contenido estático,
 - iconos puntuales,
 - o iconografía que no pertenece al catálogo principal.
+
+Cuando el componente `opo-icon` proporciona el nombre accesible mediante `aria-label`, el SVG slotted debería marcarse como decorativo con `aria-hidden="true"` y `focusable="false"` para evitar duplicar información accesible.
 
 ---
 
@@ -201,6 +212,12 @@ El soporte mediante slot está pensado para:
         <code>svg</code>
       </td>
       <td>Internal SVG element</td>
+    </tr>
+    <tr>
+      <td>
+        <code>custom</code>
+      </td>
+      <td>Wrapper for custom slotted SVG icons</td>
     </tr>
   </tbody>
 </table>
@@ -352,3 +369,4 @@ El soporte mediante slot está pensado para:
 - El componente soporta tanto iconos del sprite como SVGs personalizados mediante slot.
 - Los prefijos internos como `opo-icon-`, `ui-` o `brand-` se normalizan automáticamente.
 - El componente hereda `currentColor` salvo que se defina un color semántico explícito.
+- La animación `spinning` respeta `prefers-reduced-motion`.

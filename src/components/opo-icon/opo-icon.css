@@ -31,8 +31,6 @@
 
 /* ==================== BASE ==================== */
 .opo-icon {
-  --opo-icon-size: var(--ref-size-500);
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -42,10 +40,7 @@
   transition: color var(--ref-motion-duration-faster) ease;
 }
 
-
-
-
-/* ==================== COLORES SEMÁNTICOS ==================== */
+/* ==================== SEMANTIC COLORS ==================== */
 .opo-icon--color-primary {
   color: var(--sys-color-brand-primary);
 }
@@ -75,10 +70,16 @@
   stroke: currentcolor;
 }
 
-/* ==================== ANIMACIONES ==================== */
+/* ==================== ANIMATIONS ==================== */
 .is-spinning {
   animation: icon-spin var(--ref-motion-duration-slower) linear infinite;
   transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-spinning {
+    animation: none;
+  }
 }
 
 @keyframes icon-spin {
@@ -87,7 +88,7 @@
   }
 }
 
-/* ==================== SOPORTE PARA SVG CUSTOM (slot) ==================== */
+/* ==================== CUSTOM SVG SUPPORT (slot) ==================== */
 :host ::slotted(svg) {
   display: block;
   inline-size: 100%;

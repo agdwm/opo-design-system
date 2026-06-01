@@ -49,6 +49,23 @@ describe("opo-icon", () => {
       );
     });
 
+    it("normalizes ui and brand prefixes from the public name API", async () => {
+      const { root: uiRoot } = await render(<opo-icon name="ui-check"></opo-icon>);
+      const { root: brandRoot } = await render(
+        <opo-icon name="brand-check"></opo-icon>,
+      );
+
+      const uiUse = uiRoot.shadowRoot?.querySelector("use");
+      const brandUse = brandRoot.shadowRoot?.querySelector("use");
+
+      expect(uiUse?.getAttribute("href")).toBe(
+        "/icons/opo-sprite.svg#opo-icon-check",
+      );
+      expect(brandUse?.getAttribute("href")).toBe(
+        "/icons/opo-sprite.svg#opo-icon-check",
+      );
+    });
+
     it('renders a custom slotted SVG instead of the internal sprite icon when slot="icon" is provided', async () => {
       const { root } = await render(
         <opo-icon name="check" ariaLabel="Custom icon">
@@ -69,6 +86,33 @@ describe("opo-icon", () => {
 
       expect(slot).toBeTruthy();
       expect(custom).not.toHaveClass("is-empty");
+      expect(slottedSvg).toBeTruthy();
+      expect(internalSvg).toBeNull();
+      expect(internalUse).toBeNull();
+      expect(base).toHaveClass("has-custom-icon");
+    });
+
+    it('renders a custom slotted SVG when no name is provided', async () => {
+      const { root } = await render(
+        <opo-icon ariaLabel="Custom icon">
+          <svg slot="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+        </opo-icon>,
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const base = root.shadowRoot?.querySelector('[part="base"]');
+      const custom = root.shadowRoot?.querySelector('[part="custom"]');
+      const slot = root.shadowRoot?.querySelector('slot[name="icon"]');
+      const slottedSvg = root.querySelector('svg[slot="icon"]');
+      const internalSvg = root.shadowRoot?.querySelector('[part="svg"]');
+      const internalUse = root.shadowRoot?.querySelector("use");
+
+      expect(base).toBeTruthy();
+      expect(custom).not.toHaveClass("is-empty");
+      expect(slot).toBeTruthy();
       expect(slottedSvg).toBeTruthy();
       expect(internalSvg).toBeNull();
       expect(internalUse).toBeNull();

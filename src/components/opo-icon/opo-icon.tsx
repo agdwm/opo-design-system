@@ -32,6 +32,14 @@ export class OpoIcon {
   /** Custom path to the SVG sprite file. */
   @Prop() spriteUrl = "/icons/opo-sprite.svg";
 
+  componentWillLoad() {
+    this.hasCustomIcon = this.hasIconSlotContent();
+  }
+
+  private hasIconSlotContent() {
+    return this.el.querySelector('[slot="icon"]') !== null;
+  }
+
   private handleIconSlotChange = (event: Event) => {
     const slot = event.target as HTMLSlotElement;
 

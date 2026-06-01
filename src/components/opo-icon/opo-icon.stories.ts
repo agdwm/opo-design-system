@@ -221,6 +221,8 @@ export const CustomSVG: Story = {
         fill="none"
         stroke="currentColor"
         stroke-width="2"
+        aria-hidden="true"
+        focusable="false"
       >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4l3 3" />
