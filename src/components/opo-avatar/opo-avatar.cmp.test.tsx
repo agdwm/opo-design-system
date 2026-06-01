@@ -101,20 +101,16 @@ describe("opo-avatar", () => {
       await waitForChanges();
 
       expect(root.shadowRoot?.querySelector("img")).toBeNull();
-      expect(
-        root.shadowRoot?.querySelector('[part="fallback"]'),
-      ).toBeTruthy();
+      expect(root.shadowRoot?.querySelector('[part="fallback"]')).toBeTruthy();
 
-      root.src = avatarSrc;
+      (root as HTMLOpoAvatarElement).src = avatarSrc;
       await waitForChanges();
 
       const updatedImage = root.shadowRoot?.querySelector("img");
 
       expect(updatedImage).toBeTruthy();
       expect(updatedImage?.getAttribute("src")).toBe(avatarSrc);
-      expect(
-        root.shadowRoot?.querySelector('[part="fallback"]'),
-      ).toBeNull();
+      expect(root.shadowRoot?.querySelector('[part="fallback"]')).toBeNull();
     });
   });
 
