@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 const meta: Meta = {
   title: "Components/Atoms/Button",
@@ -89,7 +90,7 @@ function renderButton(args: ButtonArgs, label = "Botón") {
       variant=${args.variant ?? "primary"}
       size=${args.size ?? "md"}
       type=${args.type ?? "button"}
-      aria-label=${args.ariaLabel ?? ""}
+      aria-label=${ifDefined(args.ariaLabel)}
       ?icon-only=${args.iconOnly}
       ?full-width=${args.fullWidth}
       ?loading=${args.loading}

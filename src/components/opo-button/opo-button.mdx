@@ -441,3 +441,15 @@ Los botones solo-icono deberían proporcionar siempre un nombre accesible:
 - Las transiciones utilizan motion tokens compartidos del sistema.
 - Los icon buttons utilizan un pequeño optical alignment para mejorar el centrado visual de iconos.
 - Usa `opo-link` cuando la intención principal sea navegar.
+
+---
+
+## Implementation notes
+
+- `type="button"` is the default to prevent accidental form submission.
+- `loading` uses the native `disabled` attribute plus `aria-busy="true"` to prevent duplicate interactions while an action is in progress.
+- Icon-only buttons should always provide `aria-label` / `ariaLabel`.
+- The component preserves native `hidden` behaviour with `:host([hidden])`.
+- Hover-only visual feedback is limited to devices that support hover, while active states remain available for pointer and touch interaction.
+- Motion is reduced when the user has enabled `prefers-reduced-motion`.
+

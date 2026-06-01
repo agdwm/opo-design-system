@@ -3,6 +3,11 @@
   width: fit-content;
 }
 
+/* Prevents the host display value from overriding the native hidden behavior. */
+:host([hidden]) {
+  display: none;
+}
+
 :host([full-width]) {
   display: block;
   width: 100%;
@@ -80,10 +85,6 @@
   --opo-button-color: var(--sys-color-on-action-primary); /* #ffffff */
 }
 
-.opo-button--primary:hover:not(:disabled, .is-disabled, .is-loading) {
-  --opo-button-background: var(--sys-color-action-primary-hover); /* #ffc470 */
-}
-
 .opo-button--primary:active:not(:disabled, .is-disabled, .is-loading) {
   --opo-button-background: var(--sys-color-action-primary-pressed); /* #ffd599 */
 }
@@ -96,10 +97,6 @@
   box-shadow: var(--ref-shadow-xs); /* 0 2px 8px 0 #38364108 */
 }
 
-.opo-button--secondary:hover:not(:disabled, .is-disabled, .is-loading) {
-  --opo-button-color: var(--sys-color-on-action-secondary-hover); /* #88868d */
-}
-
 .opo-button--secondary:active:not(:disabled, .is-disabled, .is-loading) {
   --opo-button-color: var(--sys-color-on-action-secondary-pressed); /* #605e67 */
 }
@@ -107,10 +104,6 @@
 .opo-button--ghost {
   --opo-button-background: transparent;
   --opo-button-color: var(--sys-color-text-tertiary); /* #88868d */
-}
-
-.opo-button--ghost:hover:not(:disabled, .is-disabled, .is-loading) {
-  --opo-button-color: var(--sys-color-on-action-ghost-hover); /* #383641 */
 }
 
 .opo-button--ghost:active:not(:disabled, .is-disabled, .is-loading) {
@@ -123,18 +116,36 @@
   --opo-button-border-color: var(--sys-color-border-destructive);
 }
 
-.opo-button--destructive:hover:not(:disabled, .is-disabled, .is-loading) {
-  --opo-button-background: var(--sys-color-action-destructive-hover);
-}
-
 .opo-button--destructive:active:not(:disabled, .is-disabled, .is-loading) {
   --opo-button-background: var(--sys-color-action-destructive-pressed);
 }
 
 /* States */
 .opo-button:focus-visible {
-  outline: var(--sys-outline-focus);/* #ff793f */
+  outline: var(--sys-outline-focus); /* #ff793f */
   outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .opo-button:hover:not(:disabled, .is-disabled, .is-loading) {
+    transform: translateY(-1px);
+  }
+
+  .opo-button--primary:hover:not(:disabled, .is-disabled, .is-loading) {
+    --opo-button-background: var(--sys-color-action-primary-hover); /* #ffc470 */
+  }
+
+  .opo-button--secondary:hover:not(:disabled, .is-disabled, .is-loading) {
+    --opo-button-color: var(--sys-color-on-action-secondary-hover); /* #88868d */
+  }
+
+  .opo-button--ghost:hover:not(:disabled, .is-disabled, .is-loading) {
+    --opo-button-color: var(--sys-color-on-action-ghost-hover); /* #383641 */
+  }
+
+  .opo-button--destructive:hover:not(:disabled, .is-disabled, .is-loading) {
+    --opo-button-background: var(--sys-color-action-destructive-hover);
+  }
 }
 
 .opo-button:disabled:not(.is-loading),
@@ -145,10 +156,6 @@
 
   cursor: not-allowed;
   transform: none;
-}
-
-.opo-button:hover:not(:disabled, .is-disabled, .is-loading) {
-  transform: translateY(-1px);
 }
 
 .opo-button:active:not(:disabled, .is-disabled, .is-loading) {
@@ -202,4 +209,20 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opo-button,
+  .opo-button :where(
+    .opo-button__label,
+    .opo-button__icon-start,
+    .opo-button__icon-end
+  ) {
+    transition: none;
+  }
+
+  .opo-button:hover:not(:disabled, .is-disabled, .is-loading),
+  .opo-button:active:not(:disabled, .is-disabled, .is-loading) {
+    transform: none;
+  }
 }
