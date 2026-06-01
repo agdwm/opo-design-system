@@ -446,10 +446,9 @@ Los botones solo-icono deberían proporcionar siempre un nombre accesible:
 
 ## Implementation notes
 
-- `type="button"` is the default to prevent accidental form submission.
-- `loading` uses the native `disabled` attribute plus `aria-busy="true"` to prevent duplicate interactions while an action is in progress.
-- Icon-only buttons should always provide `aria-label` / `ariaLabel`.
-- The component preserves native `hidden` behaviour with `:host([hidden])`.
-- Hover-only visual feedback is limited to devices that support hover, while active states remain available for pointer and touch interaction.
-- Motion is reduced when the user has enabled `prefers-reduced-motion`.
-
+- `opo-card` está diseñado intencionadamente como un primitivo visual y no como un patrón de contenido rígido.
+- La estructura interna pertenece al consumidor, por lo que el componente no expone slots de `header`, `content`, `footer` o `actions`.
+- La prop `interactive` únicamente añade una affordance visual. No añade semántica de enlace o botón, ni atributos como `role` o `tabindex`.
+- Utiliza la prop `as` para seleccionar el elemento semántico más adecuado según el contexto.
+- Los estados hover solo se aplican en dispositivos que soportan hover mediante un puntero preciso.
+- El componente respeta `prefers-reduced-motion` cuando el usuario ha solicitado reducir animaciones.
