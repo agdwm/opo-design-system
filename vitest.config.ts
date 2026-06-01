@@ -1,5 +1,4 @@
 import { defineVitestConfig } from "@stencil/vitest/config";
-import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 
 export default defineVitestConfig({
@@ -19,6 +18,7 @@ export default defineVitestConfig({
         test: {
           name: "browser",
           include: ["src/**/*.cmp.test.{ts,tsx}"],
+          // Browser tests validate the generated Stencil bundle in Chromium.
           setupFiles: ["./vitest-setup.ts"],
           browser: {
             enabled: true,
