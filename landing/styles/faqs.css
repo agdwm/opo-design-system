@@ -1,0 +1,33 @@
+@layer landing.faq {
+  .faq {
+    --faq-section-background: var(--ref-color-zinc-200); /* #eeedf0  */
+    --faq-section-padding-block-start: var(--sys-space-2xl); /* 48px */
+    --faq-section-padding-block-end: 6.4688rem; /* 103.5px */
+    --faq-section-padding-inline: var(--sys-space-md);
+    --faq-container-max-inline-size: 53.5rem; /* 856px */
+    --faq-content-gap: var(--sys-space-3xl); /* 64px */
+
+    padding-block: var(--faq-section-padding-block-start)
+      var(--faq-section-padding-block-end);
+    padding-inline: var(--faq-section-padding-inline);
+    background: var(--faq-section-background);
+  }
+
+  .faq__layout {
+    display: grid;
+    gap: var(--faq-content-gap);
+    max-inline-size: var(--faq-container-max-inline-size);
+    margin-inline: auto;
+  }
+
+  .faq__title {
+    margin: 0;
+    color: var(--sys-typography-heading-color);
+    font-family: var(--sys-typography-heading-font-family);
+    font-size: var(--ref-font-size-900); /* 32px */
+    font-weight: var(--ref-font-weight-semibold);
+    line-height: 1.25; /* 40px / 32px */
+    letter-spacing: var(--ref-letter-spacing-normal);
+    text-align: center;
+  }
+}

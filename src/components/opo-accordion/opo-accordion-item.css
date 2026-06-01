@@ -31,7 +31,7 @@
   gap: var(--opo-accordion-icon-gap);
   inline-size: 100%;
   min-block-size: 4.4375rem; /* 71px */
-  padding-block: var(--opo-accordion-trigger-padding-block);
+  padding-block: var(--opo-accordion-trigger-padding-block) 23px;
   padding-inline: var(--opo-accordion-trigger-padding-inline);
   border: 0;
   border-block-end: 1px solid var(--opo-accordion-border-color);
@@ -110,9 +110,14 @@
 
   /* Keeps shadow rendering stable between closed and open states */
   box-shadow: inset 0 1px 0 transparent;
+  color: var(--sys-color-text-secondary);
 
   /* Optical adjustment to prevent border overlap */
   transform: translateY(-1px);
+}
+
+.opo-accordion-item__content ::slotted(*) {
+  color: inherit;
 }
 
 .opo-accordion-item.is-open .opo-accordion-item__content {

@@ -325,12 +325,13 @@
           </div>
         </div>
 
-        <img
-          class="hero__edge"
-          src="./assets/img/hero-torn-edge.svg"
-          alt=""
-          aria-hidden="true"
-        />
+        <div class="hero__edge-wrapper" aria-hidden="true">
+          <img
+            class="hero__edge"
+            src="./assets/img/hero-torn-edge.svg"
+            alt=""
+          />
+        </div>
       </section>
       <!-- HERO END -->
 
@@ -545,78 +546,282 @@
 
       <!-- FAQ -->
       <section id="faq" class="landing-section faq" aria-labelledby="faq-title">
-        <div class="landing-container faq__layout">
-          <div class="section-heading">
-            <p class="section-heading__eyebrow">FAQ</p>
+        <div class="faq__layout">
+          <h2 id="faq-title" class="faq__title">Preguntas frecuentes</h2>
 
-            <h2 id="faq-title" class="section-heading__title">
-              Frequently asked questions
-            </h2>
+          <opo-accordion
+            type="multiple"
+            default-value="faq-1 faq-2 faq-3"
+            full-width
+          >
+            <opo-accordion-item
+              value="faq-1"
+              label="¿Qué es el Día tan especial?"
+            >
+              <p>
+                Este día es
+                <strong
+                  >una celebración del tesón, paciencia y perseverancia de
+                  quienes opositáis.</strong
+                >
+                Hace dos años decidimos honrar vuestro esfuerzo en un día
+                especial. Una jornada en la que festejar las incontables horas
+                que pasáis delante del temario, a veces sin convocatoria de
+                oposiciones a la vista.
+                <strong
+                  >El día especial es la fecha en la que reconocemos y honramos
+                  vuestra dedicación</strong
+                >
+                y empeño por lograr un sueño: la plaza.
+              </p>
+            </opo-accordion-item>
 
-            <p class="section-heading__description">
-              Everything you need to know before joining the course.
-            </p>
-          </div>
+            <opo-accordion-item
+              value="faq-2"
+              label="¿Cuándo se celebra el Día del San Valentín?"
+            >
+              <p>
+                <strong
+                  >El día de san valentín se celebra desde 2019 el último
+                  viernes de febrero.</strong
+                >
+                Esta fecha fue decidida, por unanimidad, entre los opositores
+                que pertenecéis a la comunidad de OpositaTest. En votación
+                abierta seleccionasteis este día para festejar todos juntos, la
+                causa común de quienes opositan y sueñan con convertirse en
+                funcionarios de la Administración Pública.
+              </p>
+            </opo-accordion-item>
 
-          <div class="faq__accordion">
-            <opo-accordion></opo-accordion>
-            <opo-accordion></opo-accordion>
-            <opo-accordion></opo-accordion>
-          </div>
+            <opo-accordion-item
+              value="faq-3"
+              label="¿Cómo se celebra el Día de San Valentín?"
+            >
+              <p>
+                El día se celebra, oficialmente, el último viernes del mes de
+                febrero. Sin embargo, las actividades relacionadas con el mismo
+                suelen iniciarse en la semana o semana previas.
+              </p>
+            </opo-accordion-item>
+          </opo-accordion>
         </div>
       </section>
-
-      <!-- FINAL CTA -->
-
-      <section
-        class="landing-section final-cta"
-        aria-labelledby="final-cta-title"
-      >
-        <div class="landing-container final-cta__layout">
-          <div class="final-cta__content">
-            <h2 id="final-cta-title" class="final-cta__title">
-              Ready to start your UX journey?
-            </h2>
-
-            <p class="final-cta__description">
-              Join thousands of students learning design systems, accessibility
-              and modern frontend workflows.
-            </p>
-          </div>
-
-          <div class="final-cta__actions">
-            <opo-button size="lg"> Enroll now </opo-button>
-          </div>
-        </div>
-      </section>
+      <!-- FAQ END-->
     </main>
 
-    <footer class="landing-footer">
-      <div class="landing-container landing-footer__inner">
-        <div class="landing-footer__brand">
-          <strong>Opo UI</strong>
+    <!-- FOOTER -->
+    <footer class="landing-footer" aria-labelledby="footer-title">
+      <h2 id="footer-title" class="visually-hidden">Pie de página</h2>
 
-          <p class="landing-footer__copy">
-            © 2026 Opo UI. All rights reserved.
-          </p>
+      <!-- Footer top -->
+      <div class="landing-footer__top">
+        <div class="landing-footer__container">
+          <!-- Brand -->
+          <div class="landing-footer__brand">
+            <a
+              class="landing-footer__logo-link"
+              href="/"
+              aria-label="OpositaTest, inicio"
+            >
+              <img
+                class="landing-footer__logo"
+                src="./assets/img/footer-logo.svg"
+                alt="OpositaTest"
+              />
+            </a>
+            <nav aria-label="Redes sociales">
+              <ul class="landing-footer__social-list">
+                <li>
+                  <a
+                    href="#"
+                    aria-label="Facebook"
+                    class="landing-footer__social-link"
+                  >
+                    <img
+                      src="./assets/img/social-facebook.svg"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href="#"
+                    aria-label="Instagram"
+                    class="landing-footer__social-link"
+                  >
+                    <img
+                      src="./assets/img/social-instagram.svg"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href="#"
+                    aria-label="Pinterest"
+                    class="landing-footer__social-link"
+                  >
+                    <img
+                      src="./assets/img/social-pinterest.svg"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Para ti -->
+          <nav
+            class="landing-footer__nav"
+            aria-labelledby="footer-for-you-title"
+          >
+            <h3 id="footer-for-you-title" class="landing-footer__nav-title">
+              Para ti
+            </h3>
+
+            <ul class="landing-footer__nav-list">
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Blog
+                </opo-link>
+              </li>
+
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Calendario
+                </opo-link>
+              </li>
+
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  OpositaTest Academy
+                </opo-link>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Eventos -->
+          <nav
+            class="landing-footer__nav"
+            aria-labelledby="footer-events-title"
+          >
+            <h3 id="footer-events-title" class="landing-footer__nav-title">
+              Eventos
+            </h3>
+
+            <ul class="landing-footer__nav-list">
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Día del Opositor
+                </opo-link>
+              </li>
+
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  OpoAwards
+                </opo-link>
+              </li>
+
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Evento Oposiciones
+                </opo-link>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Nosotros -->
+          <nav class="landing-footer__nav" aria-labelledby="footer-about-title">
+            <h3 id="footer-about-title" class="landing-footer__nav-title">
+              Nosotros
+            </h3>
+
+            <ul class="landing-footer__nav-list">
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Sobre nosotros
+                </opo-link>
+              </li>
+
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Opiniones
+                </opo-link>
+              </li>
+
+              <li>
+                <opo-link href="#" variant="secondary" underline="reveal">
+                  Únete a nosotros
+                </opo-link>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Descarga la app -->
+          <div class="landing-footer__app">
+            <h3 class="landing-footer__nav-title">Descarga la app</h3>
+
+            <div class="landing-footer__app-links">
+              <a href="#" aria-label="Descargar en App Store">
+                <img src="./assets/img/app-store.svg" alt="" />
+              </a>
+
+              <a href="#" aria-label="Descargar en Google Play">
+                <img src="./assets/img/google-play.svg" alt="" />
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <nav class="landing-footer__nav" aria-label="Footer navigation">
-          <ul class="landing-footer__list">
-            <li>
-              <a href="/">Privacy</a>
-            </li>
+      <!-- Footer bottom -->
+      <div class="landing-footer__bottom">
+        <div class="landing-footer__container">
+          <div class="landing-footer__legal">
+            <small>
+              2014–2021 © OpositaTest. Todos los derechos reservados.
+            </small>
 
-            <li>
-              <a href="/">Terms</a>
-            </li>
+            <nav
+              class="landing-footer__legal-links"
+              aria-label="Información legal"
+            >
+              <opo-link href="#" variant="secondary" underline="default">
+                Términos y condiciones
+              </opo-link>
 
-            <li>
-              <a href="/">Contact</a>
-            </li>
-          </ul>
-        </nav>
+              <opo-link href="#" variant="secondary" underline="default">
+                Privacidad
+              </opo-link>
+
+              <opo-link href="#" variant="secondary" underline="default">
+                Configurar cookies
+              </opo-link>
+            </nav>
+          </div>
+
+          <div class="landing-footer__payments">
+            <p class="landing-footer__secure-payment">
+              <opo-icon name="lock" size="lg" aria-hidden="true"></opo-icon>
+
+              <small>Pago online seguro</small>
+            </p>
+
+            <img
+              class="landing-footer__paypal"
+              src="./assets/img/paypal.svg"
+              alt="PayPal"
+            />
+          </div>
+        </div>
       </div>
     </footer>
+    <!-- FOOTER END -->
   </body>
 </html>

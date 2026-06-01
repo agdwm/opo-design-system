@@ -95,6 +95,12 @@
     inline-size: min(100%, var(--hero-action-width));
   }
 
+  .hero__edge-wrapper {
+    margin-block-start: -1px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
   .hero__edge {
     display: block;
 
@@ -102,9 +108,7 @@
     inline-size: calc(100% + var(--hero-edge-overscan));
     max-inline-size: none;
     block-size: auto;
-    margin-block-start: -1px;
-    margin-inline: var(--hero-edge-offset);
-    pointer-events: none;
+    margin-inline: var(--hero-edge-offset)
   }
 
   /* ==========================================================
