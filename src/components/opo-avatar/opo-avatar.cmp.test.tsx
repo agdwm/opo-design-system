@@ -24,6 +24,8 @@ describe("opo-avatar", () => {
       expect(image).toBeTruthy();
       expect(image?.getAttribute("src")).toBe(avatarSrc);
       expect(image?.getAttribute("alt")).toBe("Jane Doe");
+      expect(image?.getAttribute("loading")).toBe("lazy");
+      expect(image?.getAttribute("decoding")).toBe("async");
 
       expect(fallback).toBeNull();
     });
@@ -82,6 +84,37 @@ describe("opo-avatar", () => {
 
       expect(fallback).toBeTruthy();
       expect(fallback?.textContent?.trim()).toBe("JD");
+    });
+
+    it("resets image error state when src changes", async () => {
+      const { root, waitForChanges } = await render(
+        <opo-avatar
+          src="/missing-avatar.jpg"
+          alt="Jane Doe"
+          fallback="JD"
+        ></opo-avatar>,
+      );
+
+      const image = root.shadowRoot?.querySelector("img");
+
+      image?.dispatchEvent(new Event("error"));
+      await waitForChanges();
+
+      expect(root.shadowRoot?.querySelector("img")).toBeNull();
+      expect(
+        root.shadowRoot?.querySelector('[part="fallback"]'),
+      ).toBeTruthy();
+
+      root.src = avatarSrc;
+      await waitForChanges();
+
+      const updatedImage = root.shadowRoot?.querySelector("img");
+
+      expect(updatedImage).toBeTruthy();
+      expect(updatedImage?.getAttribute("src")).toBe(avatarSrc);
+      expect(
+        root.shadowRoot?.querySelector('[part="fallback"]'),
+      ).toBeNull();
     });
   });
 

@@ -69,6 +69,8 @@ export class OpoAvatar {
             class="opo-avatar__image"
             src={this.src}
             alt={this.alt}
+            loading="lazy"
+            decoding="async"
             onError={this.handleImageError}
           />
         ) : (

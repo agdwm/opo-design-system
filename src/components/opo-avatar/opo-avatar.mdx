@@ -327,3 +327,15 @@ aria-hidden="true"
 - El componente está diseñado como representación visual, no como control interactivo.
 - El avatar es siempre circular.
 - Las imágenes utilizan `object-fit: cover` para evitar deformaciones visuales.
+
+---
+
+## Notas de implementación
+
+- El avatar sigue una jerarquía progresiva de fallback: imagen, iniciales y finalmente icono.
+- `alt=""` es el valor por defecto porque muchos avatares aparecen junto al nombre visible de la persona.
+- Los fallbacks visuales se ocultan a tecnologías asistivas mediante `aria-hidden="true"` para evitar información duplicada.
+- La imagen usa `loading="lazy"` y `decoding="async"` para favorecer una carga más eficiente.
+- Si la imagen falla y posteriormente cambia `src`, el componente reinicia el estado de error y vuelve a intentar renderizar la imagen.
+- El avatar es representacional. Si debe ser interactivo, la semántica debe pertenecer a un botón o enlace contenedor.
+
