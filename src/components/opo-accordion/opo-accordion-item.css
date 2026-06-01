@@ -51,8 +51,10 @@
   outline-offset: -2px;
 }
 
-.opo-accordion-item__trigger:hover:not(:disabled) {
-  background: var(--opo-accordion-trigger-hover-background);
+@media (hover: hover) and (pointer: fine) {
+  .opo-accordion-item__trigger:hover:not(:disabled) {
+    background: var(--opo-accordion-trigger-hover-background);
+  }
 }
 
 .opo-accordion-item.is-open .opo-accordion-item__trigger {
@@ -151,7 +153,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .opo-accordion-item__chevron {
+  .opo-accordion-item__chevron,
+  .opo-accordion-item__panel {
     transition: none;
   }
 }
