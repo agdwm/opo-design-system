@@ -16,58 +16,58 @@ const meta: Meta = {
       page: null,
       description: {
         component:
-          "Promo card block for promotional product areas. It combines a heading, supporting text, visual media and either a slotted action or a pending state.",
+          "Bloque promocional para áreas de producto. Combina un título, texto de apoyo, media visual y una acción mediante slot o un estado pendiente.",
       },
     },
   },
   argTypes: {
     heading: {
       control: "text",
-      description: "Main heading displayed in the card header.",
+      description: "Título principal mostrado en la cabecera de la card.",
       table: { defaultValue: { summary: "undefined" } },
     },
     description: {
       control: "text",
-      description: "Supporting text displayed below the heading.",
+      description: "Texto de apoyo mostrado debajo del título.",
       table: { defaultValue: { summary: "undefined" } },
     },
     imageSrc: {
       control: "text",
-      description: "Image source used in the media area.",
+      description: "Ruta de la imagen utilizada en el área media.",
       table: { defaultValue: { summary: "undefined" } },
     },
     imageAlt: {
       control: "text",
       description:
-        "Accessible image alternative text. Leave empty when the image is decorative.",
+        "Texto alternativo accesible para la imagen. Déjalo vacío cuando la imagen sea decorativa.",
       table: { defaultValue: { summary: '""' } },
     },
     headingLevel: {
       control: "select",
       options: [2, 3, 4, 5, 6],
       description:
-        "Semantic heading level. The visual style remains unchanged.",
+        "Nivel semántico del heading. El estilo visual no cambia.",
       table: { defaultValue: { summary: "3" } },
     },
     fullWidth: {
       control: "boolean",
-      description: "Makes the card take the full available width.",
+      description: "Hace que la card ocupe todo el ancho disponible.",
       table: { defaultValue: { summary: "false" } },
     },
     pending: {
       control: "boolean",
       description:
-        "Shows a non-interactive pending state instead of the action slot.",
+        "Muestra un estado pendiente no interactivo en lugar del slot de acción.",
       table: { defaultValue: { summary: "false" } },
     },
     pendingLabel: {
       control: "text",
-      description: "Text displayed when the card is in pending state.",
+      description: "Texto mostrado cuando la card está en estado pendiente.",
       table: { defaultValue: { summary: "Próximamente" } },
     },
     actionLabel: {
       control: "text",
-      description: "Story-only label used for the slotted action example.",
+      description: "Label utilizado solo en la story para el ejemplo de acción mediante slot.",
       table: {
         category: "Story helpers",
       },
@@ -90,8 +90,8 @@ type PromoCardArgs = {
 };
 
 /**
- * Helper to render individual stories with a layout override
- * to test subgrid compatibility safely.
+ * Helper para renderizar stories individuales con un override de layout
+ * y validar de forma segura la compatibilidad con subgrid.
  */
 function renderStory(content: unknown) {
   return html`
@@ -261,7 +261,7 @@ export const CardGroup: StoryObj<PromoCardArgs> = {
     docs: {
       description: {
         story:
-          "Example layout showing repeated promo cards inside a responsive external grid. The card keeps its own standalone flex layout.",
+          "Ejemplo de layout con varias promo cards dentro de un grid externo responsive. La card mantiene su layout flex standalone.",
       },
     },
   },

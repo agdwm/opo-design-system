@@ -1,0 +1,228 @@
+import { Meta, Canvas, Controls, Stories } from "@storybook/addon-docs/blocks";
+import * as PromoCardStories from "./opo-promo-card.stories";
+
+<Meta of={PromoCardStories} />
+
+# Preview
+
+<Stories />
+
+# Promo Card
+
+`opo-promo-card` es un bloque promocional pensado para presentar contenido de producto con una estructura visual estable: título, descripción opcional, imagen y una acción o estado pendiente.
+
+A diferencia de `opo-card`, que funciona como un primitivo visual genérico, `opo-promo-card` representa un patrón más específico y semántico. Por eso define una estructura interna propia y renderiza un `article` como raíz.
+
+## Vista previa
+
+<Canvas of={PromoCardStories.Default} />
+
+## Descripción general
+
+Utiliza `opo-promo-card` cuando necesites mostrar una pieza promocional o de acceso a recursos dentro de una landing, sección comercial o área de producto.
+
+El componente cubre:
+
+- título principal mediante `heading`;
+- descripción opcional mediante `description`;
+- imagen con `imageSrc` e `imageAlt`;
+- nivel semántico configurable mediante `headingLevel`;
+- acción mediante `slot="action"`;
+- estado no interactivo mediante `pending`;
+- layout `full-width` para adaptarse al contenedor.
+
+## Import
+
+```ts
+import { defineCustomElements } from "landing-challenge/loader";
+```
+
+En una aplicación consumidora, el componente se registra junto con el resto de Web Components del Design System.
+
+## Uso básico
+
+```html
+<opo-promo-card
+  heading="OpositaTest gratis"
+  description="Accede gratis a todos los test de oposiciones."
+  image-src="/assets/promo-card-free-tests.png"
+  image-alt=""
+>
+  <opo-button slot="action" variant="primary"> Acceder gratis </opo-button>
+</opo-promo-card>
+```
+
+## Acción mediante slot
+
+La acción no es una prop. Se compone mediante `slot="action"` para que el consumidor pueda decidir qué elemento interactivo usar.
+
+```html
+<opo-promo-card
+  heading="Test de conocimientos"
+  description="Comprueba cuánto sabes sobre tu oposición."
+  image-src="/assets/promo-card-knowledge-test.png"
+  image-alt=""
+>
+  <opo-button slot="action" variant="primary"> Hacer test </opo-button>
+</opo-promo-card>
+```
+
+Esta decisión evita acoplar el componente a una única acción interna y mantiene la responsabilidad interactiva en un botón o enlace real.
+
+## Estado pendiente
+
+Cuando `pending` está activo, el componente muestra un estado no interactivo en lugar del slot de acción.
+
+```html
+<opo-promo-card
+  pending
+  heading="Nuevos recursos"
+  description="Estamos preparando nuevas herramientas de estudio."
+  image-src="/assets/promo-card-course.png"
+  image-alt=""
+></opo-promo-card>
+```
+
+Puedes personalizar el texto con `pending-label`:
+
+```html
+<opo-promo-card
+  pending
+  pending-label="Disponible pronto"
+  heading="Nuevos simulacros"
+  image-src="/assets/promo-card-course.png"
+  image-alt=""
+></opo-promo-card>
+```
+
+## Heading semántico
+
+`headingLevel` permite adaptar la jerarquía del documento sin modificar el estilo visual.
+
+```html
+<opo-promo-card
+  heading-level="4"
+  heading="Recursos para preparar tu oposición"
+  image-src="/assets/promo-card-free-tests.png"
+  image-alt=""
+>
+  <opo-button slot="action" variant="primary"> Ver recursos </opo-button>
+</opo-promo-card>
+```
+
+Utiliza un nivel coherente con la sección donde aparece la card.
+
+## Imagen y texto alternativo
+
+Por defecto, `imageAlt` es una cadena vacía porque en muchas promo cards la imagen es decorativa y la información relevante ya está en el título, la descripción y la acción.
+
+Usa un texto alternativo descriptivo solo cuando la imagen aporte información que no esté disponible en el texto visible.
+
+```html
+<opo-promo-card
+  heading="Vista de la plataforma"
+  image-src="/assets/platform-preview.png"
+  image-alt="Captura de la plataforma con estadísticas de progreso"
+>
+  <opo-button slot="action" variant="primary"> Ver plataforma </opo-button>
+</opo-promo-card>
+```
+
+## Layout y subgrid
+
+El componente usa un layout standalone por defecto basado en `flex`.
+
+En layouts externos donde sea necesario alinear varias promo cards por filas internas, el consumidor puede apoyarse en `display: contents` sobre el host y `subgrid` sobre el `part="base"`.
+
+Este patrón permite mantener el componente reutilizable sin acoplarlo a un grid concreto de producto.
+
+## Accesibilidad
+
+- La raíz se renderiza como `article`, ya que la promo card representa una pieza de contenido independiente.
+- El título utiliza un heading real (`h2`–`h6`) configurable mediante `headingLevel`.
+- La imagen utiliza `loading="lazy"` para mejorar carga inicial.
+- `imageAlt=""` es correcto cuando la imagen es decorativa.
+- La acción debe ser un elemento interactivo real, normalmente `opo-button` u `opo-link`.
+- El estado `pending` no renderiza una acción falsa ni un botón deshabilitado.
+
+## Responsive
+
+`opo-promo-card` ocupa el ancho disponible hasta `--sys-container-sm` por defecto.
+
+Usa `full-width` cuando la card deba adaptarse completamente al contenedor externo.
+
+```html
+<opo-promo-card full-width heading="OpositaTest gratis" image-src="/assets/promo-card-free-tests.png" image-alt="">
+  <opo-button slot="action" variant="primary"> Acceder gratis </opo-button>
+</opo-promo-card>
+```
+
+## Shadow Parts
+
+
+<table>
+  <thead>
+    <tr><th>Part</th><th>Descripción</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>base</code></td><td>Superficie raíz de la promo card.</td></tr>
+    <tr><td><code>header</code></td><td>Contenedor del título y la descripción.</td></tr>
+    <tr><td><code>title</code></td><td>Heading principal.</td></tr>
+    <tr><td><code>description</code></td><td>Texto de apoyo.</td></tr>
+    <tr><td><code>media</code></td><td>Contenedor de la imagen.</td></tr>
+    <tr><td><code>image</code></td><td>Imagen interna.</td></tr>
+    <tr><td><code>footer</code></td><td>Área inferior para la acción o estado pendiente.</td></tr>
+    <tr><td><code>pending</code></td><td>Texto mostrado cuando <code>pending</code> está activo.</td></tr>
+  </tbody>
+</table>
+
+
+## Props
+
+
+<table>
+  <thead>
+    <tr><th>Prop</th><th>Tipo</th><th>Valor por defecto</th><th>Descripción</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>heading</code></td><td><code>string</code></td><td>—</td><td>Título principal mostrado en la card.</td></tr>
+    <tr><td><code>description</code></td><td><code>string</code></td><td><code>undefined</code></td><td>Texto de apoyo opcional.</td></tr>
+    <tr><td><code>imageSrc</code></td><td><code>string</code></td><td>—</td><td>Ruta de la imagen.</td></tr>
+    <tr><td><code>imageAlt</code></td><td><code>string</code></td><td><code>""</code></td><td>Texto alternativo de la imagen.</td></tr>
+    <tr><td><code>headingLevel</code></td><td><code>2 | 3 | 4 | 5 | 6</code></td><td><code>3</code></td><td>Nivel semántico del heading.</td></tr>
+    <tr><td><code>fullWidth</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Hace que la card ocupe todo el ancho disponible.</td></tr>
+    <tr><td><code>pending</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Muestra un estado pendiente en lugar del slot de acción.</td></tr>
+    <tr><td><code>pendingLabel</code></td><td><code>string</code></td><td><code>"Próximamente"</code></td><td>Texto mostrado en estado pendiente.</td></tr>
+  </tbody>
+</table>
+
+
+## Slots
+
+
+<table>
+  <thead>
+    <tr><th>Slot</th><th>Descripción</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>action</code></td><td>Acción principal de la card. Normalmente contiene <code>opo-button</code> u <code>opo-link</code>.</td></tr>
+  </tbody>
+</table>
+
+
+## Recomendaciones
+
+### ✅ Recomendado
+
+- Usa `opo-promo-card` para bloques promocionales repetidos o secciones de producto.
+- Usa `headingLevel` para mantener una jerarquía semántica correcta.
+- Deja `imageAlt=""` si la imagen es decorativa.
+- Usa `slot="action"` con un componente interactivo real.
+- Usa `pending` cuando el recurso todavía no esté disponible.
+
+### ❌ Evitar
+
+- No uses la promo card como sustituto de `opo-card` para cualquier superficie genérica.
+- No conviertas toda la card en clickable si no existe una semántica clara de enlace o botón.
+- No dupliques en `imageAlt` información que ya aparece en el título o la descripción.
+- No uses `pending` para acciones disponibles pero deshabilitadas por permisos o errores.
