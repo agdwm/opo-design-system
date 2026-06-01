@@ -16,22 +16,32 @@
   --opo-link-pressed-color: var(--sys-color-link-primary-pressed);
   --opo-link-icon-gap: var(--sys-space-2xs); /* 8px */
 
-  display: inline-flex;
-  align-items: center;
+  display: inline;
   color: var(--opo-link-color);
   font: inherit;
   text-decoration-line: underline;
 
-  /* Use underline thickness defined by the font for more balanced text decoration rendering */
+  /* Use underline thickness defined by the font for more balanced text decoration rendering. */
   text-decoration-thickness: from-font;
 
-  /* Improve underline readability by adding visual separation from the text baseline */
+  /* Improve underline readability by adding visual separation from the text baseline. */
   text-underline-offset: 0.15em;
   vertical-align: baseline;
   cursor: pointer;
   transition:
     color var(--ref-motion-duration-faster) ease,
     text-decoration-color var(--ref-motion-duration-faster) ease;
+}
+
+/*
+ * Keep regular links as close as possible to native inline anchors.
+ * Switch to inline-flex only when the component needs controlled composition.
+ */
+.opo-link.has-icon-start,
+.opo-link.has-icon-end,
+.opo-link--orientation-vertical {
+  display: inline-flex;
+  align-items: center;
 }
 
 /* ==================== VARIANTS ==================== */
@@ -52,7 +62,6 @@
 
 .opo-link--orientation-vertical {
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   gap: var(--opo-link-vertical-gap);
   text-align: center;
@@ -73,6 +82,7 @@
 }
 
 /* ==================== UNDERLINE ==================== */
+
 .opo-link__label {
   min-inline-size: 0;
 }
@@ -103,16 +113,22 @@
   block-size: 0.1em;
   min-block-size: 1px;
   background-color: var(--opo-link-underline-color);
-  opacity: 0.80;
+  opacity: 0.8;
   transition: transform var(--ref-motion-duration-fast) ease;
   transform: scaleX(0);
   transform-origin: center;
 }
 
-.opo-link--underline-reveal:hover:not(.is-disabled) .opo-link__label::after,
 .opo-link--underline-reveal:focus-visible:not(.is-disabled)
   .opo-link__label::after {
   transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .opo-link--underline-reveal:hover:not(.is-disabled)
+    .opo-link__label::after {
+    transform: scaleX(1);
+  }
 }
 
 /* ==================== STATIC COLORS ==================== */
@@ -138,11 +154,13 @@
   outline-offset: 2px;
 }
 
-.opo-link:hover:not(.is-disabled) {
-  color: var(
-    --opo-link-hover-color,
-    var(--opo-link-color)
-  );
+@media (hover: hover) and (pointer: fine) {
+  .opo-link:hover:not(.is-disabled) {
+    color: var(
+      --opo-link-hover-color,
+      var(--opo-link-color)
+    );
+  }
 }
 
 .opo-link:active:not(.is-disabled) {
@@ -159,6 +177,7 @@
 }
 
 /* ==================== ICONS ==================== */
+
 .opo-link :where(
   .opo-link__icon-start,
   .opo-link__icon-end
@@ -168,7 +187,7 @@
   align-items: center;
   color: currentcolor;
 
-  /* optical alignment */
+  /* Optical alignment. */
   transform: translateY(0.03em);
 }
 
@@ -190,8 +209,6 @@
 .opo-link__icon-end:not(.is-empty) {
   margin-inline-start: var(--opo-link-icon-gap);
 }
-
-
 
 @media (prefers-reduced-motion: reduce) {
   .opo-link,

@@ -245,7 +245,7 @@ describe("opo-link", () => {
       expect(link?.getAttribute("rel")).toBe("noopener noreferrer");
     });
 
-    it("preserves custom rel when provided", async () => {
+    it("merges custom rel with noopener noreferrer when target is _blank", async () => {
       const { root } = await render(
         <opo-link href="https://example.com" target="_blank" rel="external">
           External
@@ -254,7 +254,27 @@ describe("opo-link", () => {
 
       const link = root.shadowRoot?.querySelector("a");
 
-      expect(link?.getAttribute("rel")).toBe("external");
+      expect(link?.getAttribute("rel")).toBe(
+        "external noopener noreferrer",
+      );
+    });
+
+    it("does not duplicate security rel values when they are already provided", async () => {
+      const { root } = await render(
+        <opo-link
+          href="https://example.com"
+          target="_blank"
+          rel="external noopener"
+        >
+          External
+        </opo-link>,
+      );
+
+      const link = root.shadowRoot?.querySelector("a");
+
+      expect(link?.getAttribute("rel")).toBe(
+        "external noopener noreferrer",
+      );
     });
 
     it("applies download as a filename when provided as string", async () => {

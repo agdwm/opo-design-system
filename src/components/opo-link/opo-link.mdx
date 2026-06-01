@@ -95,6 +95,8 @@ Oculta el subrayado por defecto y muestra una línea animada en hover/focus. Es 
 
 Es la orientación por defecto. Está pensada para enlaces inline, navegación horizontal, breadcrumbs o enlaces dentro de texto.
 
+> Nota técnica: `opo-link` usa `inline-flex` para poder alinear iconos y label de forma consistente. Esto aporta una composición más robusta para navegación y enlaces con iconos, aunque un enlace largo puede comportarse como una caja inline atómica dentro de texto corrido. Para enlaces largos en párrafos, conviene validar el wrapping visual en el contexto real.
+
 ### `vertical`
 
 Apila icono y texto en columna. Es útil para accesos rápidos, navegación visual, shortcuts de dashboard o patrones donde el icono funciona como apoyo visual principal.
@@ -136,14 +138,19 @@ Si no se proporciona `href`, el componente también renderiza un fallback no nav
 
 ## External links
 
-Cuando `target="_blank"` se usa sin `rel`, el componente aplica automáticamente:
+Cuando `target="_blank"` se usa, el componente garantiza automáticamente:
 
 ```html
 rel="noopener noreferrer"
 ```
 
+Si el consumidor proporciona un valor custom de `rel`, el componente lo conserva y añade los valores de seguridad que falten.
+
 ```html
 <opo-link href="https://example.com" target="_blank">Abrir enlace externo</opo-link>
+<opo-link href="https://example.com" target="_blank" rel="external">
+  Abrir enlace externo
+</opo-link>
 ```
 
 ---
@@ -401,3 +408,4 @@ El componente mantiene:
 - Usa `orientation="horizontal"` para enlaces inline o navegación convencional y `orientation="vertical"` para accesos visuales con icono sobre texto.
 - Evita usar links sin `href` salvo en placeholders (Ej: próximamente) o estados deliberadamente no navegables.
 - `disabled` no simula un `<a disabled>`; cambia la semántica renderizada para evitar navegación falsa.
+- Cuando `target="_blank"` se combina con `rel` custom, el componente conserva el valor custom y añade `noopener noreferrer` si faltan.

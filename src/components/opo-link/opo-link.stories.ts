@@ -425,3 +425,29 @@ export const InlineWithText: StoryObj<LinkArgs> = {
     </p>
   `,
 };
+
+export const LongInlineWithText: StoryObj<LinkArgs> = {
+  args: {
+    href: "/",
+    variant: "primary",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Example showing the trade-off of inline-flex links with longer labels inside running text.",
+      },
+    },
+  },
+  render: (args) => html`
+    <p style="max-width: 360px; line-height: 1.5;">
+      Este ejemplo comprueba cómo se comporta un enlace más largo dentro de un
+      párrafo:
+      ${renderLink(
+        args,
+        "consulta la documentación completa del sistema de diseño",
+      )}
+      antes de continuar.
+    </p>
+  `,
+};

@@ -59,13 +59,18 @@ export class OpoLink {
   @State() private hasIconEnd = false;
 
   private get computedRel() {
-    if (this.rel) return this.rel;
-
-    if (this.target === "_blank") {
-      return "noopener noreferrer";
+    if (this.target !== "_blank") {
+      return this.rel;
     }
 
-    return undefined;
+    const relValues = new Set(
+      (this.rel ?? "").split(/\s+/).filter(Boolean),
+    );
+
+    relValues.add("noopener");
+    relValues.add("noreferrer");
+
+    return Array.from(relValues).join(" ");
   }
 
   private get isDisabled() {
