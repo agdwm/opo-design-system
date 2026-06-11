@@ -203,7 +203,7 @@ export const Controlled: StoryObj<AccordionArgs> = {
     docs: {
       description: {
         story:
-          "Ejemplo de uso controlado mediante value. El componente emite opoChange cuando se solicita un cambio, pero el estado visible depende del valor controlado desde fuera.",
+          "Ejemplo de uso controlado mediante `value`. El componente emite `opoChange` cuando el usuario solicita un cambio, pero el estado visible depende del valor controlado desde fuera. El consumidor debe escuchar `opoChange`, actualizar el estado externo y volver a proporcionar el nuevo `value` al componente para que el cambio se refleje visualmente.",
       },
     },
   },
