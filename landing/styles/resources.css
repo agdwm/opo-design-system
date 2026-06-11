@@ -38,6 +38,8 @@
 
   .resources__row {
     display: grid;
+
+    /* In mobile, each `resources__row` is a single column */
     grid-template-columns: 1fr;
     gap: var(--sys-space-xl);
   }
@@ -62,26 +64,44 @@
   @media (width >= 768px) and (width < 1024px) {
     .resources__grid {
       display: grid;
+
+      /* In tablet, each `resource__row` is a two-column layout */
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0 var(--sys-space-lg);
     }
 
     .resources__row {
+      /* !note; `resources__row` stops generating its own layout box.
+      That way its children can behave as they are
+      direct children of the `resources__grid` */
       display: contents;
     }
 
     .resources__row > opo-promo-card {
+      /* !note; `opo-promo-card` stops generating its own layout box.
+      That way its children can behave as they are
+      direct children of the `resources__grid` */
       display: contents;
     }
 
+    /* Contextual subgrid: <article part="base">
+    align title, description, media and footer across cards. */
     .resources__row > opo-promo-card::part(base) {
       display: grid;
+
+      /* Dont use your own rows, use the parent grid's rows */
       grid-template-rows: subgrid;
+
+      /* Important: when using row subgrid, the card must explicitly span
+      the number of parent rows it needs to inherit. */
+
+      /* Each card spans 4 tracks: 1 title, 2 description, 3 image, and 4 footer */
       grid-row: span 4;
       row-gap: 0;
     }
 
     .resources__row > opo-promo-card::part(header) {
+      /* The header disappears from layout, and its children can occupy different rows of the subgrid. */
       display: contents;
     }
 

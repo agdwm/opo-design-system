@@ -37,6 +37,8 @@
   border-block-end: 1px solid var(--opo-accordion-border-color);
   background: var(--opo-accordion-trigger-background);
   color: var(--ref-color-zinc-900);
+
+  /* Appearance of heading */
   font-family: inherit;
   font-size: var(--ref-font-size-300);
   font-weight: var(--ref-font-weight-regular);
@@ -87,19 +89,27 @@
 
 .opo-accordion-item__panel {
   display: grid;
+
+  /* Creates a grid row with flexible size 0fr.
+  The panel has a height of 0 when closed, and expands to show its content when open.
+  The trick works because inside there is a wrapper "height:0", overflow: hidden  */
   grid-template-rows: minmax(0, 0fr);
   background: var(--opo-accordion-panel-background);
   overflow: hidden;
+
+  /* Technique to animate grid without calculating height */
+
+  /* Closed panel */
   transition: grid-template-rows var(--ref-motion-duration-normal) ease-in-out;
 }
 
 .opo-accordion-item.is-open .opo-accordion-item__panel {
+  /* Open panel */
   grid-template-rows: minmax(0, 1fr);
 }
 
 .opo-accordion-item__panel-inner {
   min-block-size: 0;
-  min-height: 0;
   overflow: hidden;
 }
 

@@ -1,5 +1,4 @@
 :host {
-  /* Por defecto actúa como un bloque normal en la librería */
   display: block;
 }
 
@@ -76,10 +75,8 @@
   margin-bottom: var(--opo-promo-card-media-action-gap);
   border-radius: var(--opo-promo-card-image-radius);
 
-  /* Isolate the block rendering to avoid visual conflicts between layers */
+  /* Defensive rendering boundary for the clipped media layer. */
   isolation: isolate;
-
-  /* Clip the straight edges of the image to adopt the parent's border-radius */
   overflow: hidden;
 
   /* Force the GPU usage to avoid flickering or corner issues when scrolling */

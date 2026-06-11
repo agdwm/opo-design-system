@@ -147,23 +147,32 @@
     @supports (animation-timeline: view()) {
       .features__card {
         opacity: 0;
+
+        /* `both` (animation-fill-mode) ensures the element RETAINS the styles defined in the keyframes before and after the animation */
         animation: feature-card-enter ease-out both;
-        transform: translateY(24px) scale(0.98);
-        animation-range: entry 0% cover 35%;
+
+        /* Initial state, security fallback */
+        transform: translateY(24px) scale(0.90);
+
+        /* Animation START when the card enters (0%) to the viewport
+        * Animation END when the card covers 35% of its recorrido de entrada */
+        animation-range: entry 15% cover 50%;
+
+        /* Use the position of the element in the viewport as the animation timeline */
         animation-timeline: view();
       }
     }
   }
 
-  @keyframes feature-card-enter {
-    from {
-      opacity: 0;
-      transform: translateY(24px) scale(0.98);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+@keyframes feature-card-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.90);
   }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 }

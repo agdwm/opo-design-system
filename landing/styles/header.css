@@ -4,6 +4,10 @@
    Mobile (<768)
    logo-small + CTA + avatar + hamburger
 ========================================================== */
+  body.has-mobile-nav-open {
+    overflow: hidden;
+  }
+
   body.has-mobile-nav-open .landing-header {
     background-color: var(--ref-color-zinc-900);
     backdrop-filter: none;
@@ -378,10 +382,13 @@
     inline-size: 1.5rem; /* 24px */
     block-size: 1rem; /* 16px */
     border-radius: var(--ref-radius-full);
+
+    /* Hamburger icon center line */
     background: linear-gradient(currentcolor 0 0) center / 100% 2px no-repeat;
     transition: background-color var(--ref-motion-duration-fast) ease;
   }
 
+  /* Hamburger icon top and bottom lines */
   .landing-header__menu-icon::before,
   .landing-header__menu-icon::after {
     content: "";
@@ -404,15 +411,18 @@
     inset-block-end: 0;
   }
 
+  /* Hamburger central line disappears */
   .landing-header__menu-button.is-open .landing-header__menu-icon {
     background: transparent;
   }
 
+  /* Hamburger top line rotates */
   .landing-header__menu-button.is-open .landing-header__menu-icon::before {
     inset-block-start: 50%;
     transform: translateY(-50%) rotate(45deg);
   }
 
+  /* Hamburger bottom line rotates */
   .landing-header__menu-button.is-open .landing-header__menu-icon::after {
     inset-block: 50% auto;
     transform: translateY(-50%) rotate(-45deg);
@@ -422,7 +432,12 @@
    Desktop header interactions
    Main navigation + quick actions + hamburger button
 ========================================================== */
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
+    .landing-header.is-scrolled:hover {
+      background-color: var(--ref-color-zinc-900);
+      backdrop-filter: none;
+    }
+
     .landing-quick-nav opo-link:hover {
       opacity: 0.72;
     }
@@ -435,7 +450,7 @@
   /* ==========================================================
    Mobile drawer interactions (Drawer navigation + account section)
 ========================================================== */
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .mobile-nav__link:hover,
     .mobile-nav__account:hover {
       opacity: var(--mobile-nav-interaction-opacity);
