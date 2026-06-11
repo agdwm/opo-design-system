@@ -58,14 +58,13 @@ export class OpoLink {
   @State() private hasIconStart = false;
   @State() private hasIconEnd = false;
 
+  /** Computes the `rel` attribute for the link, adding `noopener` and `noreferrer` when `target="_blank"`. */
   private get computedRel() {
     if (this.target !== "_blank") {
       return this.rel;
     }
 
-    const relValues = new Set(
-      (this.rel ?? "").split(/\s+/).filter(Boolean),
-    );
+    const relValues = new Set((this.rel ?? "").split(/\s+/).filter(Boolean));
 
     relValues.add("noopener");
     relValues.add("noreferrer");

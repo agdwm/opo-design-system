@@ -70,26 +70,33 @@ export class OpoAccordion {
   }
 
   @Method()
+  // value is the item id that has been triggered to toggle its state.
   async toggleItem(value: string) {
     const isOpen = this.openValues.includes(value);
+    // Declare a variable that will store the new calculated state.
     let nextValues: string[];
 
     if (this.type === "single") {
+      // Single mode REPLACES the state to open or closed depending on the current state and the collapsible configuration.
       if (isOpen && this.collapsible) {
         nextValues = [];
       } else {
         nextValues = [value];
       }
     } else {
-      nextValues = isOpen
-        ? this.openValues.filter((itemValue) => itemValue !== value)
-        : [...this.openValues, value];
+      // Multiple REMOVE or ADD the value to the state depending on the current state.
+      if (isOpen) {
+        nextValues = this.openValues.filter((itemValue) => itemValue !== value);
+      } else {
+        nextValues = [...this.openValues, value];
+      }
     }
 
+    // In uncontrolled mode the accordion owns the state.
     if (!this.isControlled) {
       this.internalValue = nextValues;
     }
-
+    // Notify consumers and child items about the proposed state change.
     this.emitChange(nextValues);
   }
 

@@ -28,17 +28,27 @@ export class OpoAvatar {
   /** Fallback color treatment. */
   @Prop() color: "neutral" | "brand" = "neutral";
 
+  /* @State is reactive, so if hasImageError changes,
+     the component will automatically re-render. */
   @State() private hasImageError = false;
 
+  /* If the image URL changes, Stencil executes the @Watch method,
+  which calls handleSrcChange to reset the error and retry rendering the new image. */
   @Watch("src")
   protected handleSrcChange() {
+    /* hasImageError is a State (reactive), so when the value changes,
+    Stencil detects a State change and automatically re-renders the component. */
     this.hasImageError = false;
   }
 
+  // We only render the image when a URL exists
+  // and the image has not previously failed.
   private get shouldRenderImage() {
     return !!this.src && !this.hasImageError;
   }
 
+  // If the image fails to load,
+  // we activate fallback mode.
   private handleImageError = () => {
     this.hasImageError = true;
   };
@@ -71,6 +81,8 @@ export class OpoAvatar {
             alt={this.alt}
             loading="lazy"
             decoding="async"
+            /* Native event that is triggered when the image fails to load:
+            404, corrupted image, network error, etc. */
             onError={this.handleImageError}
           />
         ) : (
