@@ -2,6 +2,7 @@ import { Config } from "@stencil/core";
 
 export const config: Config = {
   namespace: "landing-challenge",
+  sourceMap: true,
   globalStyle: "src/stylesheets/global.css",
   outputTargets: [
     {
