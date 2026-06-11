@@ -1,7 +1,7 @@
 import { Meta, Canvas, Stories } from "@storybook/addon-docs/blocks";
-import meta from "./opo-avatar.stories";
+import * as AvatarStories from "./opo-avatar.stories";
 
-<Meta of={meta} />
+<Meta of={AvatarStories} />
 
 # Preview
 
@@ -338,4 +338,3 @@ aria-hidden="true"
 - La imagen usa `loading="lazy"` y `decoding="async"` para favorecer una carga más eficiente.
 - Si la imagen falla y posteriormente cambia `src`, el componente reinicia el estado de error y vuelve a intentar renderizar la imagen.
 - El avatar es representacional. Si debe ser interactivo, la semántica debe pertenecer a un botón o enlace contenedor.
-

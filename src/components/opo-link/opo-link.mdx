@@ -1,7 +1,7 @@
 import { Meta, Stories } from "@storybook/addon-docs/blocks";
-import meta from "./opo-link.stories";
+import * as LinkStories from "./opo-link.stories";
 
-<Meta of={meta} />
+<Meta of={LinkStories} />
 
 # Preview
 
@@ -148,9 +148,7 @@ Si el consumidor proporciona un valor custom de `rel`, el componente lo conserva
 
 ```html
 <opo-link href="https://example.com" target="_blank">Abrir enlace externo</opo-link>
-<opo-link href="https://example.com" target="_blank" rel="external">
-  Abrir enlace externo
-</opo-link>
+<opo-link href="https://example.com" target="_blank" rel="external"> Abrir enlace externo </opo-link>
 ```
 
 ---

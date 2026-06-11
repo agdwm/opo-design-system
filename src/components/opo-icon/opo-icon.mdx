@@ -1,7 +1,7 @@
 import { Meta, Canvas, Stories } from "@storybook/addon-docs/blocks";
-import meta from "./opo-icon.stories";
+import * as IconStories from "./opo-icon.stories";
 
-<Meta of={meta} />
+<Meta of={IconStories} />
 
 # Preview
 
@@ -129,14 +129,7 @@ Además del sprite principal, el componente soporta SVGs personalizados mediante
 
 ```html
 <opo-icon aria-label="Icono personalizado">
-  <svg
-    slot="icon"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    aria-hidden="true"
-    focusable="false"
-  >
+  <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" focusable="false">
     <circle cx="12" cy="12" r="10" />
   </svg>
 </opo-icon>
